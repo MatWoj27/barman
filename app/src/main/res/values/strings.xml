@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Barman</string>
+
+    <!-- Drink list item -->
+    <string name="drink_name_placeholder">Drink name</string>
+    <string name="drink_photo_description">Photo of the drink</string>
 </resources>
