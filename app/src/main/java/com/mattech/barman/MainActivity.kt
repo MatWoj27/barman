@@ -1,8 +1,11 @@
 package com.mattech.barman
 
 import android.app.Activity
+import android.graphics.Rect
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : Activity() {
@@ -13,6 +16,13 @@ class MainActivity : Activity() {
         main_list.layoutManager = LinearLayoutManager(this)
         main_list.adapter = DrinksAdapter(getDrinks(), this)
         main_list.setHasFixedSize(true)
+        main_list.addItemDecoration(object : RecyclerView.ItemDecoration() {
+            override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+                val position = parent.getChildAdapterPosition(view)
+                outRect.top = if (position == 0) 16 else 0
+                outRect.bottom = 16
+            }
+        })
     }
 
     private fun getDrinks(): List<Drink> {
