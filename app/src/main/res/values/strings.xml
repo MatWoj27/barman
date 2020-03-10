@@ -4,4 +4,9 @@
     <!-- Drink list item -->
     <string name="drink_name_placeholder">Drink name</string>
     <string name="drink_photo_description">Photo of the drink</string>
+
+    <!-- Navigation header -->
+    <string name="user_mail_placeholder">sample@mail.com</string>
+    <string name="username">Username</string>
+    <string name="user_photo_description">User\'s profile photo</string>
 </resources>
