@@ -29,7 +29,6 @@ class MainActivity : Activity() {
         presetNavigationHeader()
     }
 
-
     private fun getDrinks(): List<Drink> {
         val drinks: ArrayList<Drink> = ArrayList()
         drinks.add(Drink("Cosmopolitan", 1))
