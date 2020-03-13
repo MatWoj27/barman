@@ -9,4 +9,7 @@
     <string name="user_mail_placeholder">sample@mail.com</string>
     <string name="username">Username</string>
     <string name="user_photo_description">User\'s profile photo</string>
+
+    <!-- Main activity screen -->
+    <string name="add_drink_description">Add new drink</string>
 </resources>
