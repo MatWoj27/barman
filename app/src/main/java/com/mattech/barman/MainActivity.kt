@@ -16,6 +16,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        setSupportActionBar(toolbar)
         main_list.layoutManager = LinearLayoutManager(this)
         main_list.adapter = DrinksAdapter(getDrinks(), this)
         main_list.setHasFixedSize(true)
