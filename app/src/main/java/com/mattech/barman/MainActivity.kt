@@ -2,6 +2,7 @@ package com.mattech.barman
 
 import android.graphics.Rect
 import android.os.Bundle
+import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -28,6 +29,7 @@ class MainActivity : AppCompatActivity() {
             }
         })
         presetNavigationHeader()
+        presetDrawerToggle()
     }
 
     private fun getDrinks(): List<Drink> {
@@ -42,5 +44,12 @@ class MainActivity : AppCompatActivity() {
         val header = drawer.getHeaderView(0)
         val userPhoto = header.user_photo
         Picasso.with(this).load("https://api.adorable.io/avatars/128").transform(CircleTransformation()).into(userPhoto)
+    }
+
+    private fun presetDrawerToggle() {
+        val drawerToggle = ActionBarDrawerToggle(this, drawer_layout, toolbar,
+                R.string.open_drawer_description, R.string.close_drawer_description)
+        drawer_layout.addDrawerListener(drawerToggle)
+        drawerToggle.syncState()
     }
 }

@@ -10,6 +10,10 @@
     <string name="username">Username</string>
     <string name="user_photo_description">User\'s profile photo</string>
 
+    <!-- Drawer toggle -->
+    <string name="open_drawer_description">Open drawer</string>
+    <string name="close_drawer_description">Close drawer</string>
+
     <!-- Main activity screen -->
     <string name="add_drink_description">Add new drink</string>
 </resources>
