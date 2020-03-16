@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import android.widget.Toast
 import com.mattech.barman.utils.CircleTransformation
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
@@ -29,6 +30,7 @@ class MainActivity : AppCompatActivity() {
             }
         })
         presetNavigationHeader()
+        presetNavigationMenu()
         presetDrawerToggle()
     }
 
@@ -44,6 +46,36 @@ class MainActivity : AppCompatActivity() {
         val header = drawer.getHeaderView(0)
         val userPhoto = header.user_photo
         Picasso.with(this).load("https://api.adorable.io/avatars/128").transform(CircleTransformation()).into(userPhoto)
+    }
+
+    private fun presetNavigationMenu() {
+        drawer.setNavigationItemSelectedListener { menuItem ->
+            val result = when (menuItem.itemId) {
+                R.id.long_drinks -> {
+                    Toast.makeText(this@MainActivity, getString(R.string.long_drinks), Toast.LENGTH_SHORT).show()
+//                   TO DO
+                    true
+                }
+                R.id.short_drinks -> {
+                    Toast.makeText(this@MainActivity, getString(R.string.short_drinks), Toast.LENGTH_SHORT).show()
+//                   TO DO
+                    true
+                }
+                R.id.shots -> {
+                    Toast.makeText(this@MainActivity, getString(R.string.shots), Toast.LENGTH_SHORT).show()
+//                    TO DO
+                    true
+                }
+                R.id.snacks -> {
+                    Toast.makeText(this@MainActivity, getString(R.string.snacks), Toast.LENGTH_SHORT).show()
+//                    TO DO
+                    true
+                }
+                else -> false
+            }
+            drawer_layout.closeDrawer(drawer)
+            result
+        }
     }
 
     private fun presetDrawerToggle() {

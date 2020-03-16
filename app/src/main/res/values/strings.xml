@@ -10,6 +10,12 @@
     <string name="username">Username</string>
     <string name="user_photo_description">User\'s profile photo</string>
 
+    <!-- Navigation menu -->
+    <string name="long_drinks">Long drinks</string>
+    <string name="short_drinks">Short drinks</string>
+    <string name="shots">Shots</string>
+    <string name="snacks">Snacks</string>
+
     <!-- Drawer toggle -->
     <string name="open_drawer_description">Open drawer</string>
     <string name="close_drawer_description">Close drawer</string>
