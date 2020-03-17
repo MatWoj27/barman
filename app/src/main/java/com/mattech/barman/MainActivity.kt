@@ -1,5 +1,6 @@
 package com.mattech.barman
 
+import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
 import android.support.v7.app.ActionBarDrawerToggle
@@ -32,6 +33,10 @@ class MainActivity : AppCompatActivity() {
         presetNavigationHeader()
         presetNavigationMenu()
         presetDrawerToggle()
+        add_drink_fab.setOnClickListener {
+            val intent = Intent(applicationContext, CreateRecipeActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun getDrinks(): List<Drink> {
