@@ -14,4 +14,9 @@
         <item name="color">@android:color/white</item>
     </style>
 
+    <!-- Style for CreateRecipeActivity to change cursor and highlight colors in edit texts -->
+    <style name="CreateRecipeTheme" parent="AppTheme">
+        <item name="colorAccent">@color/colorPrimary</item>
+    </style>
+
 </resources>

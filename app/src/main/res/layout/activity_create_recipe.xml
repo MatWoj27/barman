@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:theme="@style/CreateRecipeTheme"
     tools:context="com.mattech.barman.CreateRecipeActivity">
 
     <android.support.v7.widget.Toolbar
@@ -18,7 +19,9 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_below="@id/toolbar"
+        android:layout_marginLeft="10dp"
         android:layout_toLeftOf="@id/add_photo"
+        android:background="@null"
         android:ellipsize="end"
         android:gravity="center_vertical"
         android:hint="@string/name_hint"
@@ -42,6 +45,9 @@
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_below="@id/recipe_name"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@null"
         android:gravity="top"
         android:hint="@string/description_hint" />
 
