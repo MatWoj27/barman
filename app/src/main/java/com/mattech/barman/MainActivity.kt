@@ -33,10 +33,16 @@ class MainActivity : AppCompatActivity() {
         presetNavigationHeader()
         presetNavigationMenu()
         presetDrawerToggle()
-        add_drink_fab.setOnClickListener {
+        add_drink_fab.setOnClickListener { view ->
+            view.isEnabled = false
             val intent = Intent(applicationContext, CreateRecipeActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        add_drink_fab.isEnabled = true
     }
 
     private fun getDrinks(): List<Drink> {
