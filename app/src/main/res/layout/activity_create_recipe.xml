@@ -53,12 +53,55 @@
         android:id="@+id/recipe_description"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@+id/action_buttons_container"
         android:layout_below="@id/separator_line"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:background="@null"
         android:gravity="top"
         android:hint="@string/description_hint" />
+
+    <LinearLayout
+        android:id="@+id/action_buttons_container"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/lightGray"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <Button
+                android:id="@+id/cancel_btn"
+                style="@style/RoundedButtonStyle"
+                android:layout_width="140dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical|right"
+                android:gravity="center"
+                android:text="@string/cancel" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <Button
+                android:id="@+id/save_btn"
+                style="@style/RoundedButtonStyle"
+                android:layout_width="140dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical|left"
+                android:gravity="center"
+                android:text="@string/save" />
+
+        </FrameLayout>
+
+    </LinearLayout>
 
 </RelativeLayout>
