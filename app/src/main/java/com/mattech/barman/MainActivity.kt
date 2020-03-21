@@ -36,6 +36,7 @@ class MainActivity : AppCompatActivity() {
         add_drink_fab.setOnClickListener { view ->
             view.isEnabled = false
             val intent = Intent(applicationContext, CreateRecipeActivity::class.java)
+                    .apply { putExtra(IS_EDIT_TAG, false) }
             startActivity(intent)
         }
     }

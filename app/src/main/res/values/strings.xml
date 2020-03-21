@@ -30,4 +30,9 @@
     <string name="add_photo_description">Add photo</string>
     <string name="cancel">Cancel</string>
     <string name="save">Save</string>
+
+    <!-- Create/edit recipe cancel dialog -->
+    <string name="cancel_message">Are you sure you want to cancel and lose all changes?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>
