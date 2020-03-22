@@ -1,3 +1,3 @@
 package com.mattech.barman
 
-data class Drink(val name: String, val photoId: Int)
+data class Drink(val id: Int, val name: String, val description: String, val ingredients: ArrayList<String>)
