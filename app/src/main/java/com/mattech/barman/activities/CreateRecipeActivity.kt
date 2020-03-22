@@ -1,8 +1,9 @@
-package com.mattech.barman
+package com.mattech.barman.activities
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
+import com.mattech.barman.R
 import kotlinx.android.synthetic.main.activity_create_recipe.*
 
 const val IS_EDIT_TAG = "isEdit"

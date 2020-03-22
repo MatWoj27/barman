@@ -1,4 +1,4 @@
-package com.mattech.barman
+package com.mattech.barman.activities
 
 import android.content.Intent
 import android.graphics.Rect
@@ -9,6 +9,9 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.Toast
+import com.mattech.barman.models.Drink
+import com.mattech.barman.adapters.DrinksAdapter
+import com.mattech.barman.R
 import com.mattech.barman.utils.CircleTransformation
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*

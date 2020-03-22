@@ -1,10 +1,12 @@
-package com.mattech.barman
+package com.mattech.barman.adapters
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.mattech.barman.R
+import com.mattech.barman.models.Drink
 import kotlinx.android.synthetic.main.drink_item.view.*
 
 class DrinksAdapter(val drinks: List<Drink>, val context: Context) : RecyclerView.Adapter<DrinksAdapter.DrinkViewHolder>() {
