@@ -35,4 +35,11 @@
     <string name="cancel_message">Are you sure you want to cancel and lose all changes?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+
+    <!-- Show recipe screen -->
+    <string name="ingredients">Ingredients</string>
+    <string name="preparation">How to prepare</string>
+    <string name="recipe_name_placeholder">Recipe</string>
+    <string name="recipe_photo_description">Photo of the recipe</string>
+    <string name="edit_action">Edit</string>
 </resources>

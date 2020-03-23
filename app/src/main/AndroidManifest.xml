@@ -21,6 +21,9 @@
         <activity
             android:name=".activities.CreateRecipeActivity"
             android:parentActivityName=".activities.MainActivity" />
+        <activity
+            android:name=".activities.ShowRecipeActivity"
+            android:parentActivityName=".activities.MainActivity" />
     </application>
 
 </manifest>
