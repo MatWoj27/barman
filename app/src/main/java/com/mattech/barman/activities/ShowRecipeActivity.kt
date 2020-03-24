@@ -10,7 +10,10 @@ import android.view.WindowManager
 import com.mattech.barman.R
 import kotlinx.android.synthetic.main.activity_show_recipe.*
 
+const val RECIPE_ID_TAG = "recipeId"
+
 class ShowRecipeActivity : AppCompatActivity() {
+    private var recipeId: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,6 +22,7 @@ class ShowRecipeActivity : AppCompatActivity() {
         makeStatusBarTransparent()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
+        recipeId = intent.getIntExtra(RECIPE_ID_TAG, -1)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

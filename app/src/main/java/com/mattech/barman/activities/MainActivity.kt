@@ -18,13 +18,14 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.drawer_header.view.*
 
 class MainActivity : AppCompatActivity() {
+    private val drinksAdapter = DrinksAdapter(getDrinks(), this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
         main_list.layoutManager = LinearLayoutManager(this)
-        main_list.adapter = DrinksAdapter(getDrinks(), this)
+        main_list.adapter = drinksAdapter
         main_list.setHasFixedSize(true)
         main_list.addItemDecoration(object : RecyclerView.ItemDecoration() {
             override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
@@ -47,6 +48,7 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         add_drink_fab.isEnabled = true
+        drinksAdapter.clickEnabled = true
     }
 
     private fun getDrinks(): List<Drink> {
