@@ -1,5 +1,6 @@
 package com.mattech.barman.activities
 
+import android.content.Intent
 import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -14,6 +15,7 @@ const val RECIPE_ID_TAG = "recipeId"
 
 class ShowRecipeActivity : AppCompatActivity() {
     private var recipeId: Int = -1
+    private var clickEnabled = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,6 +27,11 @@ class ShowRecipeActivity : AppCompatActivity() {
         recipeId = intent.getIntExtra(RECIPE_ID_TAG, -1)
     }
 
+    override fun onResume() {
+        super.onResume()
+        clickEnabled = true
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.show_recipe_menu, menu)
         return super.onCreateOptionsMenu(menu)
@@ -32,7 +39,16 @@ class ShowRecipeActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.action_edit -> {
-            // implement go to edit recipe
+            synchronized(this) {
+                if (clickEnabled) {
+                    val intent = Intent(this, CreateRecipeActivity::class.java).apply {
+                        putExtra(IS_EDIT_TAG, true)
+                        putExtra(RECIPE_ID_TAG, recipeId)
+                    }
+                    startActivity(intent)
+                    clickEnabled = false
+                }
+            }
             true
         }
         else -> super.onOptionsItemSelected(item)

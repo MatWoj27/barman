@@ -10,6 +10,7 @@ const val IS_EDIT_TAG = "isEdit"
 
 class CreateRecipeActivity : AppCompatActivity() {
     private var isEdit: Boolean = true
+    private var recipeId: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,6 +19,7 @@ class CreateRecipeActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         title = getString(R.string.create_recipe_toolbar_title)
         isEdit = intent.getBooleanExtra(IS_EDIT_TAG, false)
+        recipeId = intent.getIntExtra(RECIPE_ID_TAG, -1)
         cancel_btn.setOnClickListener({ onCancelClick() })
     }
 
@@ -27,7 +29,8 @@ class CreateRecipeActivity : AppCompatActivity() {
 
     private fun onCancelClick() {
         if (isEdit) {
-//            TO BE IMPLEMENTED
+            finish()
+//            TODO: display discard dialog if any changes were made to the original recipe
         } else {
             val name = recipe_name.text.trim()
             val description = recipe_description.text.trim()
