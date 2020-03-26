@@ -16,7 +16,6 @@ class CreateRecipeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_recipe)
         setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         title = getString(R.string.create_recipe_toolbar_title)
         isEdit = intent.getBooleanExtra(IS_EDIT_TAG, false)
         recipeId = intent.getIntExtra(RECIPE_ID_TAG, -1)
