@@ -16,21 +16,21 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/drink_photo"
+            android:id="@+id/recipe_photo"
             android:layout_width="64dp"
             android:layout_height="64dp"
-            android:contentDescription="@string/drink_photo_description"
+            android:contentDescription="@string/recipe_photo_description"
             android:src="@drawable/photo_placeholder" />
 
         <TextView
-            android:id="@+id/drink_name"
+            android:id="@+id/recipe_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="@string/drink_name_placeholder"
+            android:text="@string/recipe_name_placeholder"
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
     </LinearLayout>

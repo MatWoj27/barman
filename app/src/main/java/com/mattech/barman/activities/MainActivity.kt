@@ -9,8 +9,8 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.Toast
-import com.mattech.barman.models.Drink
-import com.mattech.barman.adapters.DrinksAdapter
+import com.mattech.barman.models.Recipe
+import com.mattech.barman.adapters.RecipeAdapter
 import com.mattech.barman.R
 import com.mattech.barman.utils.CircleTransformation
 import com.squareup.picasso.Picasso
@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.drawer_header.view.*
 
 class MainActivity : AppCompatActivity() {
-    private val drinksAdapter = DrinksAdapter(getDrinks(), this)
+    private val drinksAdapter = RecipeAdapter(getDrinks(), this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,11 +51,11 @@ class MainActivity : AppCompatActivity() {
         drinksAdapter.clickEnabled = true
     }
 
-    private fun getDrinks(): List<Drink> {
-        val drinks: ArrayList<Drink> = ArrayList()
-        drinks.add(Drink(1, "Cosmopolitan", "mix all together", arrayListOf("Vodka 40ml", "Cointreau 20ml")))
-        drinks.add(Drink(2, "Mojito", "mix all together", arrayListOf("Vodka 40ml", "Mint", "Sugar 2 spoons")))
-        drinks.add(Drink(3, "Sex on the beach", "mix all together", arrayListOf("Vodka 40ml", "Orange juice 100ml")))
+    private fun getDrinks(): List<Recipe> {
+        val drinks: ArrayList<Recipe> = ArrayList()
+        drinks.add(Recipe(1, "Cosmopolitan", "mix all together", arrayListOf("Vodka 40ml", "Cointreau 20ml")))
+        drinks.add(Recipe(2, "Mojito", "mix all together", arrayListOf("Vodka 40ml", "Mint", "Sugar 2 spoons")))
+        drinks.add(Recipe(3, "Sex on the beach", "mix all together", arrayListOf("Vodka 40ml", "Orange juice 100ml")))
         return drinks
     }
 

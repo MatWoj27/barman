@@ -1,10 +1,6 @@
 <resources>
     <string name="app_name">Barman</string>
 
-    <!-- Drink list item -->
-    <string name="drink_name_placeholder">Drink name</string>
-    <string name="drink_photo_description">Photo of the drink</string>
-
     <!-- Navigation header -->
     <string name="user_mail_placeholder">sample@mail.com</string>
     <string name="username">Username</string>
@@ -21,7 +17,7 @@
     <string name="close_drawer_description">Close drawer</string>
 
     <!-- Main activity screen -->
-    <string name="add_drink_description">Add new drink</string>
+    <string name="add_recipe_description">Add new recipe</string>
 
     <!-- Create recipe screen -->
     <string name="create_recipe_toolbar_title">Create new recipe!</string>
@@ -36,10 +32,10 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
 
-    <!-- Show recipe screen -->
+    <!-- Show recipe screen | Recipe list item -->
     <string name="ingredients">Ingredients</string>
     <string name="preparation">How to prepare</string>
-    <string name="recipe_name_placeholder">Recipe</string>
+    <string name="recipe_name_placeholder">Recipe name</string>
     <string name="recipe_photo_description">Photo of the recipe</string>
     <string name="edit_action">Edit</string>
 </resources>
