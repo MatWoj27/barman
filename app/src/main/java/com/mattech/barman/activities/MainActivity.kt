@@ -53,9 +53,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun getDrinks(): List<Recipe> {
         val drinks: ArrayList<Recipe> = ArrayList()
-        drinks.add(Recipe(1, "Cosmopolitan", "mix all together", arrayListOf("Vodka 40ml", "Cointreau 20ml")))
-        drinks.add(Recipe(2, "Mojito", "mix all together", arrayListOf("Vodka 40ml", "Mint", "Sugar 2 spoons")))
-        drinks.add(Recipe(3, "Sex on the beach", "mix all together", arrayListOf("Vodka 40ml", "Orange juice 100ml")))
+        drinks.add(Recipe(1, "Drink", "Cosmopolitan", "mix all together", arrayListOf("Vodka 40ml", "Cointreau 20ml")))
+        drinks.add(Recipe(2, "Drink", "Mojito", "mix all together", arrayListOf("Vodka 40ml", "Mint", "Sugar 2 spoons")))
+        drinks.add(Recipe(3, "Drink", "Sex on the beach", "mix all together", arrayListOf("Vodka 40ml", "Orange juice 100ml")))
         return drinks
     }
 
