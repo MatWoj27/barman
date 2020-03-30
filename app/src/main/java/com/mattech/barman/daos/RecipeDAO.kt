@@ -1,5 +1,6 @@
 package com.mattech.barman.daos
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.mattech.barman.models.Recipe
 
@@ -7,7 +8,7 @@ import com.mattech.barman.models.Recipe
 interface RecipeDAO {
 
     @Query("SELECT * FROM recipes WHERE category LIKE :category")
-    fun getRecipes(category: String): List<Recipe>
+    fun getRecipes(category: String): LiveData<List<Recipe>>
 
     @Query("SELECT * FROM recipes WHERE id = :id")
     fun getRecipe(id: Int): Recipe
