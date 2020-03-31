@@ -67,6 +67,7 @@
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:background="@color/lightGray"
+        android:baselineAligned="false"
         android:orientation="horizontal"
         android:weightSum="2">
 
