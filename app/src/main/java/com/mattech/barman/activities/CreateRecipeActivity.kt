@@ -1,8 +1,8 @@
 package com.mattech.barman.activities
 
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
+import androidx.appcompat.app.AlertDialog
 import com.mattech.barman.R
 import kotlinx.android.synthetic.main.activity_create_recipe.*
 
