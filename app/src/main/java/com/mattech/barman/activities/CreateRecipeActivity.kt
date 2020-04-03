@@ -19,7 +19,7 @@ class CreateRecipeActivity : AppCompatActivity() {
         title = getString(R.string.create_recipe_toolbar_title)
         isEdit = intent.getBooleanExtra(IS_EDIT_TAG, false)
         recipeId = intent.getIntExtra(RECIPE_ID_TAG, -1)
-        cancel_btn.setOnClickListener({ onCancelClick() })
+        cancel_btn.setOnClickListener { onCancelClick() }
     }
 
     override fun onBackPressed() {
@@ -38,8 +38,8 @@ class CreateRecipeActivity : AppCompatActivity() {
             } else {
                 AlertDialog.Builder(this)
                         .setMessage(R.string.cancel_message)
-                        .setPositiveButton(R.string.yes, { _, _ -> finish() })
-                        .setNegativeButton(R.string.no, { dialog, _ -> dialog.cancel() })
+                        .setPositiveButton(R.string.yes) { _, _ -> finish() }
+                        .setNegativeButton(R.string.no) { dialog, _ -> dialog.cancel() }
                         .show()
             }
         }
