@@ -2,13 +2,14 @@ package com.mattech.barman.utils
 
 import android.graphics.*
 import com.squareup.picasso.Transformation
+import kotlin.math.min
 
 class CircleTransformation : Transformation {
 
     override fun key() = "circle"
 
     override fun transform(source: Bitmap?): Bitmap {
-        val size = Math.min(source!!.width, source.height)
+        val size = min(source!!.width, source.height)
         val x = (source.width - size) / 2
         val y = (source.height - size) / 2
         val squareBitmap = Bitmap.createBitmap(source, x, y, size, size)

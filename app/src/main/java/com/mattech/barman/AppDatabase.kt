@@ -11,7 +11,7 @@ import com.mattech.barman.type_converters.RecipeTypeConverters
 
 const val DATABASE_NAME = "appDatabase"
 
-@Database(entities = arrayOf(Recipe::class), version = 1)
+@Database(entities = [Recipe::class], version = 1)
 @TypeConverters(RecipeTypeConverters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun getRecipeDAO(): RecipeDAO
