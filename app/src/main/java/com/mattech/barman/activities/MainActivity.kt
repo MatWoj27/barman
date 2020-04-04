@@ -9,31 +9,27 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import android.widget.Toast
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.mattech.barman.models.Recipe
 import com.mattech.barman.adapters.RecipeAdapter
 import com.mattech.barman.R
 import com.mattech.barman.utils.CircleTransformation
+import com.mattech.barman.view_models.RecipeViewModel
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.drawer_header.view.*
 
 class MainActivity : AppCompatActivity() {
-    private val drinksAdapter = RecipeAdapter(getDrinks(), this)
+    private lateinit var viewModel: RecipeViewModel
+    private var recipeAdapter: RecipeAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-        main_list.layoutManager = LinearLayoutManager(this)
-        main_list.adapter = drinksAdapter
-        main_list.setHasFixedSize(true)
-        main_list.addItemDecoration(object : RecyclerView.ItemDecoration() {
-            override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
-                val position = parent.getChildAdapterPosition(view)
-                outRect.top = if (position == 0) 16 else 0
-                outRect.bottom = 16
-            }
-        })
+        viewModel = ViewModelProviders.of(this).get(RecipeViewModel::class.java)
+        viewModel.getRecipes("Long").observe(this, Observer<List<Recipe>> { displayRecipesList(it) })
         presetNavigationHeader()
         presetNavigationMenu()
         presetDrawerToggle()
@@ -48,15 +44,21 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         add_drink_fab.isEnabled = true
-        drinksAdapter.clickEnabled = true
+        recipeAdapter?.clickEnabled = true
     }
 
-    private fun getDrinks(): List<Recipe> {
-        val drinks: ArrayList<Recipe> = ArrayList()
-        drinks.add(Recipe(1, "Drink", "Cosmopolitan", "mix all together", arrayListOf("Vodka 40ml", "Cointreau 20ml")))
-        drinks.add(Recipe(2, "Drink", "Mojito", "mix all together", arrayListOf("Vodka 40ml", "Mint", "Sugar 2 spoons")))
-        drinks.add(Recipe(3, "Drink", "Sex on the beach", "mix all together", arrayListOf("Vodka 40ml", "Orange juice 100ml")))
-        return drinks
+    private fun displayRecipesList(recipes: List<Recipe>) {
+        recipeAdapter = RecipeAdapter(recipes, this)
+        main_list.adapter = recipeAdapter
+        main_list.layoutManager = LinearLayoutManager(this)
+        main_list.setHasFixedSize(true)
+        main_list.addItemDecoration(object : RecyclerView.ItemDecoration() {
+            override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+                val position = parent.getChildAdapterPosition(view)
+                outRect.top = if (position == 0) 16 else 0
+                outRect.bottom = 16
+            }
+        })
     }
 
     private fun presetNavigationHeader() {
