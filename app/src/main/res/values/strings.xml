@@ -25,6 +25,7 @@
     <string name="description_hint">Description</string>
     <string name="add_photo_description">Add photo</string>
     <string name="add_ingredient_list">Add list of ingredients</string>
+    <string name="add_ingredient">Add ingredient</string>
     <string name="cancel">Cancel</string>
     <string name="save">Save</string>
 

@@ -49,39 +49,22 @@
         android:layout_marginRight="5dp"
         android:background="@color/colorPrimary" />
 
-    <FrameLayout
-        android:id="@+id/ingredient_list_container"
+    <include
+        android:id="@+id/ingredients_layout"
+        layout="@layout/ingredients_edit_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/separator_line"
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp">
-
-        <TextView
-            android:id="@+id/add_ingredient_list_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/add_ingredient_list"
-            android:drawableLeft="@drawable/list_icon"
-            android:drawableTint="@android:color/tertiary_text_dark"
-            android:gravity="center_vertical"
-            android:drawablePadding="5dp" />
-
-        <ListView
-            android:id="@+id/ingredient_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone" />
-
-    </FrameLayout>
+        android:layout_marginRight="10dp"
+        android:layout_below="@+id/separator_line"/>
 
     <EditText
         android:id="@+id/recipe_description"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/action_buttons_container"
-        android:layout_below="@id/ingredient_list_container"
+        android:layout_below="@id/ingredients_layout"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:background="@null"

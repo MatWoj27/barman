@@ -2,13 +2,18 @@ package com.mattech.barman.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.PersistableBundle
+import android.view.View
 import androidx.appcompat.app.AlertDialog
 import com.mattech.barman.R
 import kotlinx.android.synthetic.main.activity_create_recipe.*
+import kotlinx.android.synthetic.main.ingredients_edit_layout.*
 
 const val IS_EDIT_TAG = "isEdit"
 
 class CreateRecipeActivity : AppCompatActivity() {
+    private val DISPLAY_INGREDIENT_LIST_TAG = "displayIngredientList"
+    private var displayIngredientList = false
     private var isEdit: Boolean = true
     private var recipeId: Int = -1
 
@@ -19,11 +24,27 @@ class CreateRecipeActivity : AppCompatActivity() {
         title = getString(R.string.create_recipe_toolbar_title)
         isEdit = intent.getBooleanExtra(IS_EDIT_TAG, false)
         recipeId = intent.getIntExtra(RECIPE_ID_TAG, -1)
+        if (savedInstanceState != null && savedInstanceState.getBoolean(DISPLAY_INGREDIENT_LIST_TAG)) {
+            showIngredientList()
+        } else {
+            add_ingredient_list_btn.setOnClickListener { showIngredientList() }
+        }
         cancel_btn.setOnClickListener { onCancelClick() }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean(DISPLAY_INGREDIENT_LIST_TAG, displayIngredientList)
     }
 
     override fun onBackPressed() {
         onCancelClick()
+    }
+
+    private fun showIngredientList() {
+        displayIngredientList = true
+        add_ingredient_list_btn.visibility = View.GONE
+        ingredient_list_container.visibility = View.VISIBLE
     }
 
     private fun onCancelClick() {

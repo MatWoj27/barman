@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/ingredient_list_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ListView
+            android:id="@+id/ingredient_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/add_ingredient_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:drawableLeft="@drawable/add_icon"
+            android:drawablePadding="5dp"
+            android:drawableTint="@android:color/tertiary_text_dark"
+            android:gravity="center_vertical"
+            android:text="@string/add_ingredient" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/add_ingredient_list_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/list_icon"
+        android:drawablePadding="5dp"
+        android:drawableTint="@android:color/tertiary_text_dark"
+        android:gravity="center_vertical"
+        android:text="@string/add_ingredient_list" />
+
+</FrameLayout>
