@@ -6,6 +6,7 @@ import android.os.PersistableBundle
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import com.mattech.barman.R
+import com.mattech.barman.adapters.IngredientAdapter
 import kotlinx.android.synthetic.main.activity_create_recipe.*
 import kotlinx.android.synthetic.main.ingredients_edit_layout.*
 
@@ -45,6 +46,9 @@ class CreateRecipeActivity : AppCompatActivity() {
         displayIngredientList = true
         add_ingredient_list_btn.visibility = View.GONE
         ingredient_list_container.visibility = View.VISIBLE
+        val ingredientAdapter = IngredientAdapter(arrayListOf(""), this) // TODO: if isEdit then take the ingredient list from the recipe
+        ingredient_list.adapter = ingredientAdapter
+        add_ingredient_btn.setOnClickListener { ingredientAdapter.add("") }
     }
 
     private fun onCancelClick() {

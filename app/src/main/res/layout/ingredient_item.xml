@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<EditText xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ingredient"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@null"
+    android:drawableLeft="@drawable/bullet_icon"
+    android:drawablePadding="10dp"
+    android:paddingLeft="8dp"
+    android:drawableTint="@android:color/tertiary_text_dark" />
