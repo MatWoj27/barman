@@ -7,12 +7,13 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import com.mattech.barman.R
 import com.mattech.barman.adapters.IngredientAdapter
+import com.mattech.barman.adapters.IngredientListListener
 import kotlinx.android.synthetic.main.activity_create_recipe.*
 import kotlinx.android.synthetic.main.ingredients_edit_layout.*
 
 const val IS_EDIT_TAG = "isEdit"
 
-class CreateRecipeActivity : AppCompatActivity() {
+class CreateRecipeActivity : AppCompatActivity(), IngredientListListener {
     private val DISPLAY_INGREDIENT_LIST_TAG = "displayIngredientList"
     private var displayIngredientList = false
     private var isEdit: Boolean = true
@@ -25,10 +26,9 @@ class CreateRecipeActivity : AppCompatActivity() {
         title = getString(R.string.create_recipe_toolbar_title)
         isEdit = intent.getBooleanExtra(IS_EDIT_TAG, false)
         recipeId = intent.getIntExtra(RECIPE_ID_TAG, -1)
+        add_ingredient_list_btn.setOnClickListener { showIngredientList() }
         if (savedInstanceState != null && savedInstanceState.getBoolean(DISPLAY_INGREDIENT_LIST_TAG)) {
             showIngredientList()
-        } else {
-            add_ingredient_list_btn.setOnClickListener { showIngredientList() }
         }
         cancel_btn.setOnClickListener { onCancelClick() }
     }
@@ -42,11 +42,21 @@ class CreateRecipeActivity : AppCompatActivity() {
         onCancelClick()
     }
 
+    override fun lastItemRemoved() {
+        hideIngredientList()
+    }
+
+    private fun hideIngredientList() {
+        displayIngredientList = false
+        ingredient_list_container.visibility = View.GONE
+        add_ingredient_list_btn.visibility = View.VISIBLE
+    }
+
     private fun showIngredientList() {
         displayIngredientList = true
         add_ingredient_list_btn.visibility = View.GONE
         ingredient_list_container.visibility = View.VISIBLE
-        val ingredientAdapter = IngredientAdapter(arrayListOf(""), this) // TODO: if isEdit then take the ingredient list from the recipe
+        val ingredientAdapter = IngredientAdapter(arrayListOf(""), this, this) // TODO: if isEdit then take the ingredient list from the recipe
         ingredient_list.adapter = ingredientAdapter
         add_ingredient_btn.setOnClickListener { ingredientAdapter.add("") }
     }
