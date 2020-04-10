@@ -24,9 +24,7 @@ class RecipeAdapter(val recipes: List<Recipe>, val context: Context) : RecyclerV
         }
     }
 
-    override fun getItemCount(): Int {
-        return recipes.size
-    }
+    override fun getItemCount() = recipes.size
 
     override fun onCreateViewHolder(parentViewGroup: ViewGroup, viewType: Int): RecipeViewHolder {
         return RecipeViewHolder(LayoutInflater.from(context).inflate(R.layout.recipe_item, parentViewGroup, false))
