@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AlertDialog
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.mattech.barman.R
 import com.mattech.barman.adapters.IngredientAdapter
 import com.mattech.barman.adapters.IngredientListListener
@@ -55,9 +56,15 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener {
         displayIngredientList = true
         add_ingredient_list_btn.visibility = View.GONE
         ingredient_list_container.visibility = View.VISIBLE
-        val ingredientAdapter = IngredientAdapter(arrayListOf(""), this, this) // TODO: if isEdit then take the ingredient list from the recipe
+        val ingredients = arrayListOf("") // TODO: if isEdit then take the ingredient list from the recipe
+        val ingredientAdapter = IngredientAdapter(ingredients, this, this)
         ingredient_list.adapter = ingredientAdapter
-        add_ingredient_btn.setOnClickListener { ingredientAdapter.add("") }
+        ingredient_list.layoutManager = LinearLayoutManager(this)
+        ingredient_list.isNestedScrollingEnabled = false
+        add_ingredient_btn.setOnClickListener {
+            ingredients.add("")
+            ingredientAdapter.notifyItemInserted(ingredients.size - 1)
+        }
     }
 
     private fun onCancelClick() {

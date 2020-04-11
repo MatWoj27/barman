@@ -5,8 +5,8 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.EditText
+import androidx.recyclerview.widget.RecyclerView
 import com.mattech.barman.R
 import kotlinx.android.synthetic.main.ingredient_item.view.*
 
@@ -14,16 +14,25 @@ interface IngredientListListener {
     fun lastItemRemoved()
 }
 
-class IngredientAdapter(ingredients: List<String>, context: Context, val listener: IngredientListListener) : ArrayAdapter<String>(context, R.layout.ingredient_item, ingredients) {
+class IngredientAdapter(val ingredients: ArrayList<String>, val context: Context, val listener: IngredientListListener) : RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder>() {
 
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val ingredient = getItem(position)
-        val itemView = convertView
-                ?: LayoutInflater.from(context).inflate(R.layout.ingredient_item, parent, false)
-        itemView.ingredient.setText(ingredient)
-        itemView.ingredient.setOnKeyListener { view, keyCode, _ -> handleKeyClick(keyCode, position, view.ingredient) }
-        return itemView
+    inner class IngredientViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val ingredient = itemView.ingredient
+
+        init {
+            ingredient.setOnKeyListener { view, keyCode, _ -> handleKeyClick(keyCode, position, view.ingredient) }
+        }
     }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IngredientViewHolder {
+        return IngredientViewHolder(LayoutInflater.from(context).inflate(R.layout.ingredient_item, parent, false))
+    }
+
+    override fun onBindViewHolder(viewHolder: IngredientViewHolder, position: Int) {
+        viewHolder.ingredient.setText(ingredients[position])
+    }
+
+    override fun getItemCount() = ingredients.size
 
     private fun handleKeyClick(keyCode: Int, position: Int, view: EditText) = when (keyCode) {
         KeyEvent.KEYCODE_ENTER -> enterClicked(position)
@@ -32,13 +41,15 @@ class IngredientAdapter(ingredients: List<String>, context: Context, val listene
     }
 
     private fun enterClicked(position: Int): Boolean {
-        insert("", position + 1)
+        ingredients.add(position + 1, "")
+        notifyDataSetChanged()
         return true
     }
 
-    private fun backspaceClicked(position: Int, view: EditText) = if (view.text.isEmpty() && position < count) {
-        remove(getItem(position))
-        if (count == 0) {
+    private fun backspaceClicked(position: Int, view: EditText) = if (view.text.isEmpty() && position < itemCount) {
+        ingredients.removeAt(position)
+        notifyItemRemoved(position)
+        if (itemCount == 0) {
             listener.lastItemRemoved()
         }
         true
