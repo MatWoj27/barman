@@ -8,4 +8,5 @@ data class Recipe(@PrimaryKey val id: Int,
                   val category: String,
                   val name: String,
                   val description: String,
+                  val photoPath: String,
                   val ingredients: ArrayList<String>)
