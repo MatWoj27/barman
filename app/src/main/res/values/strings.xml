@@ -28,6 +28,8 @@
     <string name="add_ingredient">Add ingredient</string>
     <string name="cancel">Cancel</string>
     <string name="save">Save</string>
+    <string name="camera_error_toast">Problem occurred - unable to take a photo</string>
+    <string name="no_camera_app_toast">No camera application is installed on the device</string>
 
     <!-- Create/edit recipe cancel dialog -->
     <string name="cancel_message">Are you sure you want to cancel and lose all changes?</string>
