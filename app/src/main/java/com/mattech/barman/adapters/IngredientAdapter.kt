@@ -29,7 +29,10 @@ class IngredientAdapter(val ingredients: ArrayList<String>, val context: Context
     }
 
     override fun onBindViewHolder(viewHolder: IngredientViewHolder, position: Int) {
-        viewHolder.ingredient.setText(ingredients[position])
+        viewHolder.ingredient.apply {
+            setText(ingredients[position])
+            requestFocus()
+        }
     }
 
     override fun getItemCount() = ingredients.size
