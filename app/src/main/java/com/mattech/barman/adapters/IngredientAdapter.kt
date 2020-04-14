@@ -20,7 +20,7 @@ class IngredientAdapter(val ingredients: ArrayList<String>, val context: Context
         val ingredient = itemView.ingredient
 
         init {
-            ingredient.setOnKeyListener { view, keyCode, _ -> handleKeyClick(keyCode, position, view.ingredient) }
+            ingredient.setOnKeyListener { view, keyCode, keyEvent -> handleKeyClick(keyEvent, keyCode, position, view.ingredient) }
         }
     }
 
@@ -34,15 +34,19 @@ class IngredientAdapter(val ingredients: ArrayList<String>, val context: Context
 
     override fun getItemCount() = ingredients.size
 
-    private fun handleKeyClick(keyCode: Int, position: Int, view: EditText) = when (keyCode) {
-        KeyEvent.KEYCODE_ENTER -> enterClicked(position)
-        KeyEvent.KEYCODE_DEL -> backspaceClicked(position, view)
-        else -> false
+    private fun handleKeyClick(keyEvent: KeyEvent, keyCode: Int, position: Int, view: EditText) = if (keyEvent.action == KeyEvent.ACTION_DOWN) {
+        when (keyCode) {
+            KeyEvent.KEYCODE_ENTER -> enterClicked(position)
+            KeyEvent.KEYCODE_DEL -> backspaceClicked(position, view)
+            else -> false
+        }
+    } else {
+        false
     }
 
     private fun enterClicked(position: Int): Boolean {
         ingredients.add(position + 1, "")
-        notifyDataSetChanged()
+        notifyItemInserted(position + 1)
         return true
     }
 
