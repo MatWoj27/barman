@@ -24,6 +24,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 const val IS_EDIT_TAG = "isEdit"
+const val RECIPE_CATEGORY_TAG = "recipeCategory"
 
 class CreateRecipeActivity : AppCompatActivity(), IngredientListListener {
     private val DISPLAY_INGREDIENT_LIST_KEY = "displayIngredientList"
@@ -32,6 +33,7 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener {
     private var displayIngredientList = false
     private var isEdit: Boolean = true
     private var recipeId: Int = -1
+    private var recipeCategory: String = "Long"
     private var photoPath: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,6 +41,7 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener {
         setContentView(R.layout.activity_create_recipe)
         setSupportActionBar(toolbar)
         title = getString(R.string.create_recipe_toolbar_title)
+        recipeCategory = intent.getStringExtra(RECIPE_CATEGORY_TAG)
         isEdit = intent.getBooleanExtra(IS_EDIT_TAG, false)
         recipeId = intent.getIntExtra(RECIPE_ID_TAG, -1)
         add_ingredient_list_btn.setOnClickListener { showIngredientList() }
