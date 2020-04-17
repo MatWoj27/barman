@@ -11,11 +11,14 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mattech.barman.R
 import com.mattech.barman.adapters.IngredientAdapter
 import com.mattech.barman.adapters.IngredientListListener
+import com.mattech.barman.models.Recipe
 import com.mattech.barman.utils.CircleTransformation
+import com.mattech.barman.view_models.RecipeViewModel
 import kotlinx.android.synthetic.main.activity_create_recipe.*
 import kotlinx.android.synthetic.main.ingredients_edit_layout.*
 import java.io.File
@@ -32,6 +35,9 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener {
     private val INGREDIENTS_KEY = "ingredients"
     private val FOCUSED_ITEM_POSITION_KEY = "focusedItemPosition"
     private val REQUEST_TAKE_PHOTO = 1
+
+    private lateinit var viewModel: RecipeViewModel
+
     private var displayIngredientList = false
     private var isEdit = false
     private var recipeId: Int = -1
@@ -45,6 +51,7 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener {
         setContentView(R.layout.activity_create_recipe)
         setSupportActionBar(toolbar)
         title = getString(R.string.create_recipe_toolbar_title)
+        viewModel = ViewModelProviders.of(this).get(RecipeViewModel::class.java)
         recipeCategory = intent.getStringExtra(RECIPE_CATEGORY_TAG)
         isEdit = intent.getBooleanExtra(IS_EDIT_TAG, false)
         if (isEdit) {
@@ -61,6 +68,7 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener {
                 showIngredientList()
             }
         }
+        save_btn.setOnClickListener { onSaveClick() }
         cancel_btn.setOnClickListener { onCancelClick() }
         add_photo.setOnClickListener { takePhoto() }
     }
@@ -116,6 +124,22 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener {
             ingredients.add("")
             ingredientAdapter.notifyItemInserted(ingredients.size - 1)
         }
+    }
+
+    private fun onSaveClick() {
+        val recipe = Recipe(recipeId,
+                recipeCategory,
+                recipe_name.text.toString(),
+                recipe_description.text.toString(),
+                photoPath,
+                ingredients)
+        if (isEdit) {
+            // TODO: should be updated only if any change was made
+            viewModel.updateRecipe(recipe)
+        } else {
+            viewModel.addRecipe(recipe)
+        }
+        finish()
     }
 
     private fun onCancelClick() {
