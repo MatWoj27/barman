@@ -1,6 +1,8 @@
 package com.mattech.barman.adapters
 
 import android.content.Context
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -12,15 +14,30 @@ import kotlinx.android.synthetic.main.ingredient_item.view.*
 
 interface IngredientListListener {
     fun lastItemRemoved()
+    fun focusedItemChanged(position: Int)
 }
 
-class IngredientAdapter(val ingredients: ArrayList<String>, val context: Context, val listener: IngredientListListener) : RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder>() {
+class IngredientAdapter(val ingredients: ArrayList<String>, val context: Context, val listener: IngredientListListener, var focusedItemPosition: Int = ingredients.size - 1) : RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder>() {
 
     inner class IngredientViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val ingredient = itemView.ingredient
 
         init {
             ingredient.setOnKeyListener { view, keyCode, keyEvent -> handleKeyClick(keyEvent, keyCode, position, view.ingredient) }
+            ingredient.addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(p0: Editable?) {}
+
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+                override fun onTextChanged(text: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                    ingredients[adapterPosition] = text.toString()
+                }
+            })
+            ingredient.setOnFocusChangeListener { _, hasFocus ->
+                if (hasFocus && adapterPosition != RecyclerView.NO_POSITION) {
+                    listener.focusedItemChanged(adapterPosition)
+                }
+            }
         }
     }
 

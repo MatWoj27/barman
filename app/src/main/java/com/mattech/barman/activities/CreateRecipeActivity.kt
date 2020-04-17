@@ -29,12 +29,16 @@ const val RECIPE_CATEGORY_TAG = "recipeCategory"
 class CreateRecipeActivity : AppCompatActivity(), IngredientListListener {
     private val DISPLAY_INGREDIENT_LIST_KEY = "displayIngredientList"
     private val PHOTO_PATH_KEY = "photoPath"
+    private val INGREDIENTS_KEY = "ingredients"
+    private val FOCUSED_ITEM_POSITION_KEY = "focusedItemPosition"
     private val REQUEST_TAKE_PHOTO = 1
     private var displayIngredientList = false
-    private var isEdit: Boolean = true
+    private var isEdit = false
     private var recipeId: Int = -1
     private var recipeCategory: String = "Long"
-    private var photoPath: String? = null
+    private var photoPath = ""
+    private var ingredients = arrayListOf("")
+    private var focusedItemPosition = ingredients.size - 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,12 +47,20 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener {
         title = getString(R.string.create_recipe_toolbar_title)
         recipeCategory = intent.getStringExtra(RECIPE_CATEGORY_TAG)
         isEdit = intent.getBooleanExtra(IS_EDIT_TAG, false)
-        recipeId = intent.getIntExtra(RECIPE_ID_TAG, -1)
-        add_ingredient_list_btn.setOnClickListener { showIngredientList() }
-        if (savedInstanceState != null && savedInstanceState.getBoolean(DISPLAY_INGREDIENT_LIST_KEY)) {
+        if (isEdit) {
+            recipeId = intent.getIntExtra(RECIPE_ID_TAG, -1)
+            // TODO: if isEdit then take the ingredient list from the recipe
             showIngredientList()
         }
-        photoPath = savedInstanceState?.getString(PHOTO_PATH_KEY)
+        add_ingredient_list_btn.setOnClickListener { showIngredientList() }
+        if (savedInstanceState != null) {
+            photoPath = savedInstanceState.getString(PHOTO_PATH_KEY)
+            if (savedInstanceState.getBoolean(DISPLAY_INGREDIENT_LIST_KEY)) {
+                ingredients = savedInstanceState.getStringArrayList(INGREDIENTS_KEY)
+                focusedItemPosition = savedInstanceState.getInt(FOCUSED_ITEM_POSITION_KEY)
+                showIngredientList()
+            }
+        }
         cancel_btn.setOnClickListener { onCancelClick() }
         add_photo.setOnClickListener { takePhoto() }
     }
@@ -57,6 +69,8 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener {
         super.onSaveInstanceState(outState)
         outState.putBoolean(DISPLAY_INGREDIENT_LIST_KEY, displayIngredientList)
         outState.putString(PHOTO_PATH_KEY, photoPath)
+        outState.putStringArrayList(INGREDIENTS_KEY, ingredients)
+        outState.putInt(FOCUSED_ITEM_POSITION_KEY, focusedItemPosition)
     }
 
     override fun onBackPressed() {
@@ -77,6 +91,10 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener {
         hideIngredientList()
     }
 
+    override fun focusedItemChanged(position: Int) {
+        focusedItemPosition = position
+    }
+
     private fun hideIngredientList() {
         displayIngredientList = false
         ingredient_list_container.visibility = View.GONE
@@ -87,8 +105,10 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener {
         displayIngredientList = true
         add_ingredient_list_btn.visibility = View.GONE
         ingredient_list_container.visibility = View.VISIBLE
-        val ingredients = arrayListOf("") // TODO: if isEdit then take the ingredient list from the recipe
-        val ingredientAdapter = IngredientAdapter(ingredients, this, this)
+        if (ingredients.size == 0) {
+            ingredients.add("")
+        }
+        val ingredientAdapter = IngredientAdapter(ingredients, this, this, focusedItemPosition)
         ingredient_list.adapter = ingredientAdapter
         ingredient_list.layoutManager = LinearLayoutManager(this)
         ingredient_list.isNestedScrollingEnabled = false
