@@ -11,7 +11,7 @@ interface RecipeDAO {
     fun getRecipes(category: String): LiveData<List<Recipe>>
 
     @Query("SELECT * FROM recipes WHERE id = :id")
-    fun getRecipe(id: Int): Recipe
+    fun getRecipe(id: Int): LiveData<Recipe>
 
     @Insert
     fun insertRecipe(recipe: Recipe)

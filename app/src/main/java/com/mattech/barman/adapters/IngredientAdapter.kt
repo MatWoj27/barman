@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.recyclerview.widget.RecyclerView
 import com.mattech.barman.R
-import kotlinx.android.synthetic.main.ingredient_item.view.*
+import kotlinx.android.synthetic.main.ingredient_edit_item.view.*
 
 interface IngredientListListener {
     fun lastItemRemoved()
@@ -42,7 +42,7 @@ class IngredientAdapter(val ingredients: ArrayList<String>, val context: Context
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IngredientViewHolder {
-        return IngredientViewHolder(LayoutInflater.from(context).inflate(R.layout.ingredient_item, parent, false))
+        return IngredientViewHolder(LayoutInflater.from(context).inflate(R.layout.ingredient_edit_item, parent, false))
     }
 
     override fun onBindViewHolder(viewHolder: IngredientViewHolder, position: Int) {

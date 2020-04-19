@@ -10,6 +10,8 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
 
     fun getRecipes(category: String) = repository.getRecipes(category)
 
+    fun getRecipe(id: Int) = repository.getRecipe(id)
+
     fun addRecipe(recipe: Recipe) = repository.insertRecipe(recipe)
 
     fun updateRecipe(recipe: Recipe) = repository.updateRecipe(recipe)

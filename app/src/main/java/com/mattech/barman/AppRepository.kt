@@ -20,6 +20,8 @@ class AppRepository : CoroutineScope {
 
     fun getRecipes(category: String) = recipeDAO.getRecipes(category)
 
+    fun getRecipe(id: Int) = recipeDAO.getRecipe(id)
+
     fun insertRecipe(recipe: Recipe) = launch { insertRecipeBG(recipe) }
 
     private suspend fun insertRecipeBG(recipe: Recipe) {
