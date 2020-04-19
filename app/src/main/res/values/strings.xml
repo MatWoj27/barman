@@ -37,8 +37,8 @@
     <string name="no">No</string>
 
     <!-- Show recipe screen | Recipe list item -->
-    <string name="ingredients">Ingredients</string>
-    <string name="preparation">How to prepare</string>
+    <string name="ingredients">Ingredients:</string>
+    <string name="preparation">How to prepare:</string>
     <string name="recipe_name_placeholder">Recipe name</string>
     <string name="recipe_photo_description">Photo of the recipe</string>
     <string name="edit_action">Edit</string>
