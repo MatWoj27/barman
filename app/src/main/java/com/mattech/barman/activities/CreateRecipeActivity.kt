@@ -40,7 +40,7 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener {
 
     private var displayIngredientList = false
     private var isEdit = false
-    private var recipeId: Int = -1
+    private var recipeId: Int = 0
     private var recipeCategory: String = "Long"
     private var photoPath = ""
     private var ingredients = arrayListOf("")
