@@ -25,6 +25,7 @@ import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 const val IS_EDIT_TAG = "isEdit"
 const val RECIPE_CATEGORY_TAG = "recipeCategory"
@@ -132,7 +133,7 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener {
                 recipe_name.text.toString(),
                 recipe_description.text.toString(),
                 photoPath,
-                ingredients)
+                getNonBlankIngredientList())
         if (isEdit) {
             // TODO: should be updated only if any change was made
             viewModel.updateRecipe(recipe)
@@ -160,6 +161,8 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener {
             }
         }
     }
+
+    private fun getNonBlankIngredientList() = ingredients.filterNot { it.isBlank() } as ArrayList<String>
 
     private fun takePhoto() {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
