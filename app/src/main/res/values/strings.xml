@@ -32,6 +32,7 @@
     <string name="no_camera_app_toast">No camera application is installed on the device</string>
 
     <!-- Create/edit recipe cancel dialog -->
+    <string name="define_name_message">Name has to be defined</string>
     <string name="cancel_message">Are you sure you want to cancel and lose all changes?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>

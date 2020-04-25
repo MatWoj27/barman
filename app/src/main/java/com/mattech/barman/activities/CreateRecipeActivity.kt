@@ -128,19 +128,23 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener {
     }
 
     private fun onSaveClick() {
-        val recipe = Recipe(recipeId,
-                recipeCategory,
-                recipe_name.text.toString(),
-                recipe_description.text.toString(),
-                photoPath,
-                getNonBlankIngredientList())
-        if (isEdit) {
-            // TODO: should be updated only if any change was made
-            viewModel.updateRecipe(recipe)
+        if (recipe_name.text.isNotBlank()) {
+            val recipe = Recipe(recipeId,
+                    recipeCategory,
+                    recipe_name.text.toString(),
+                    recipe_description.text.toString(),
+                    photoPath,
+                    getNonBlankIngredientList())
+            if (isEdit) {
+                // TODO: should be updated only if any change was made
+                viewModel.updateRecipe(recipe)
+            } else {
+                viewModel.addRecipe(recipe)
+            }
+            finish()
         } else {
-            viewModel.addRecipe(recipe)
+            Toast.makeText(this, R.string.define_name_message, Toast.LENGTH_SHORT).show()
         }
-        finish()
     }
 
     private fun onCancelClick() {
