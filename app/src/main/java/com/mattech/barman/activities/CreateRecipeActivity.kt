@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mattech.barman.R
 import com.mattech.barman.adapters.IngredientAdapter
@@ -53,14 +54,7 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener {
         setSupportActionBar(toolbar)
         title = getString(R.string.create_recipe_toolbar_title)
         viewModel = ViewModelProviders.of(this).get(RecipeViewModel::class.java)
-        recipeCategory = intent.getStringExtra(RECIPE_CATEGORY_TAG)
         isEdit = intent.getBooleanExtra(IS_EDIT_TAG, false)
-        if (isEdit) {
-            recipeId = intent.getIntExtra(RECIPE_ID_TAG, -1)
-            // TODO: if isEdit then take the ingredient list from the recipe
-            showIngredientList()
-        }
-        add_ingredient_list_btn.setOnClickListener { showIngredientList() }
         if (savedInstanceState != null) {
             photoPath = savedInstanceState.getString(PHOTO_PATH_KEY)
             if (savedInstanceState.getBoolean(DISPLAY_INGREDIENT_LIST_KEY)) {
@@ -68,7 +62,17 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener {
                 focusedItemPosition = savedInstanceState.getInt(FOCUSED_ITEM_POSITION_KEY)
                 showIngredientList()
             }
+        } else if (isEdit) {
+            recipeId = intent.getIntExtra(RECIPE_ID_TAG, 0)
+            viewModel.getRecipe(recipeId).observe(this, Observer<Recipe> {
+                recipeCategory = it.category
+                photoPath = it.photoPath
+                displayRecipe(it)
+            })
+        } else {
+            recipeCategory = intent.getStringExtra(RECIPE_CATEGORY_TAG)
         }
+        add_ingredient_list_btn.setOnClickListener { showIngredientList() }
         save_btn.setOnClickListener { onSaveClick() }
         cancel_btn.setOnClickListener { onCancelClick() }
         add_photo.setOnClickListener { takePhoto() }
@@ -125,6 +129,15 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener {
             ingredients.add("")
             ingredientAdapter.notifyItemInserted(ingredients.size - 1)
         }
+    }
+
+    private fun displayRecipe(recipe: Recipe) {
+        recipe_name.setText(recipe.name)
+        if (recipe.ingredients.size > 0) {
+            ingredients = recipe.ingredients
+            showIngredientList()
+        }
+        recipe_description.setText(recipe.description)
     }
 
     private fun onSaveClick() {
