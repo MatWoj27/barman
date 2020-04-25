@@ -129,12 +129,7 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener {
 
     private fun onSaveClick() {
         if (recipe_name.text.isNotBlank()) {
-            val recipe = Recipe(recipeId,
-                    recipeCategory,
-                    recipe_name.text.toString(),
-                    recipe_description.text.toString(),
-                    photoPath,
-                    getNonBlankIngredientList())
+            val recipe = createRecipeFromUserInput()
             if (isEdit) {
                 // TODO: should be updated only if any change was made
                 viewModel.updateRecipe(recipe)
@@ -192,4 +187,11 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener {
         val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         return File.createTempFile("JPEG_${timeStamp}_", ".jpg", storageDir)
     }
+
+    private fun createRecipeFromUserInput() = Recipe(recipeId,
+            recipeCategory,
+            recipe_name.text.toString(),
+            recipe_description.text.toString(),
+            photoPath,
+            getNonBlankIngredientList())
 }
