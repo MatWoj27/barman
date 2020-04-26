@@ -33,15 +33,7 @@ class MainActivity : AppCompatActivity() {
         presetNavigationHeader()
         presetNavigationMenu()
         presetDrawerToggle()
-        add_drink_fab.setOnClickListener { view ->
-            view.isEnabled = false
-            val intent = Intent(applicationContext, CreateRecipeActivity::class.java)
-                    .apply {
-                        putExtra(IS_EDIT_TAG, false)
-                        putExtra(RECIPE_CATEGORY_TAG, "Long")
-                    }
-            startActivity(intent)
-        }
+        add_drink_fab.setOnClickListener(::onAddClick)
     }
 
     override fun onResume() {
@@ -62,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         })
         recipeAdapter = RecipeAdapter(context = this)
         main_list.adapter = recipeAdapter
-        viewModel.getRecipes("Long").observe(this, Observer<List<Recipe>> { recipeAdapter.setRecipes(it)})
+        viewModel.getRecipes("Long").observe(this, Observer<List<Recipe>> { recipeAdapter.setRecipes(it) })
     }
 
     private fun presetNavigationHeader() {
@@ -106,5 +98,15 @@ class MainActivity : AppCompatActivity() {
                 R.string.open_drawer_description, R.string.close_drawer_description)
         drawer_layout.addDrawerListener(drawerToggle)
         drawerToggle.syncState()
+    }
+
+    private fun onAddClick(view: View) {
+        view.isEnabled = false
+        val intent = Intent(applicationContext, CreateRecipeActivity::class.java)
+                .apply {
+                    putExtra(IS_EDIT_TAG, false)
+                    putExtra(RECIPE_CATEGORY_TAG, "Long")
+                }
+        startActivity(intent)
     }
 }
