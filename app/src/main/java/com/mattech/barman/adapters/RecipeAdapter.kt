@@ -53,6 +53,8 @@ class RecipeAdapter(private val recipes: MutableList<Recipe> = mutableListOf(), 
         if (imageFile.exists()) {
             val bitmap = BitmapFactory.decodeFile(imageFile.absolutePath)
             imageView.setImageBitmap(bitmap)
+        } else {
+            imageView.setImageDrawable(context.getDrawable(R.drawable.photo_placeholder))
         }
     }
 
