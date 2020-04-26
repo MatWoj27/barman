@@ -22,14 +22,14 @@ import kotlinx.android.synthetic.main.drawer_header.view.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: RecipeViewModel
-    private var recipeAdapter: RecipeAdapter? = null
+    private lateinit var recipeAdapter: RecipeAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
         viewModel = ViewModelProviders.of(this).get(RecipeViewModel::class.java)
-        viewModel.getRecipes("Long").observe(this, Observer<List<Recipe>> { displayRecipesList(it) })
+        presetRecipeList()
         presetNavigationHeader()
         presetNavigationMenu()
         presetDrawerToggle()
@@ -50,9 +50,7 @@ class MainActivity : AppCompatActivity() {
         recipeAdapter?.clickEnabled = true
     }
 
-    private fun displayRecipesList(recipes: List<Recipe>) {
-        recipeAdapter = RecipeAdapter(recipes, this)
-        main_list.adapter = recipeAdapter
+    private fun presetRecipeList() {
         main_list.layoutManager = LinearLayoutManager(this)
         main_list.setHasFixedSize(true)
         main_list.addItemDecoration(object : RecyclerView.ItemDecoration() {
@@ -62,6 +60,9 @@ class MainActivity : AppCompatActivity() {
                 outRect.bottom = 16
             }
         })
+        recipeAdapter = RecipeAdapter(context = this)
+        main_list.adapter = recipeAdapter
+        viewModel.getRecipes("Long").observe(this, Observer<List<Recipe>> { recipeAdapter.setRecipes(it)})
     }
 
     private fun presetNavigationHeader() {

@@ -15,7 +15,7 @@ import com.mattech.barman.models.Recipe
 import kotlinx.android.synthetic.main.recipe_item.view.*
 import java.io.File
 
-class RecipeAdapter(val recipes: List<Recipe>, val context: Context) : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
+class RecipeAdapter(private val recipes: MutableList<Recipe> = mutableListOf(), val context: Context) : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
     var clickEnabled = true
 
     inner class RecipeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -54,5 +54,11 @@ class RecipeAdapter(val recipes: List<Recipe>, val context: Context) : RecyclerV
             val bitmap = BitmapFactory.decodeFile(imageFile.absolutePath)
             imageView.setImageBitmap(bitmap)
         }
+    }
+
+    fun setRecipes(recipes: List<Recipe>) {
+        this.recipes.clear()
+        this.recipes.addAll(recipes)
+        notifyDataSetChanged()
     }
 }
