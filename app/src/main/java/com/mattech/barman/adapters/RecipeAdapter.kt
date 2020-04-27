@@ -49,13 +49,15 @@ class RecipeAdapter(private val recipes: MutableList<Recipe> = mutableListOf(), 
     }
 
     private fun displayPhotoIfExists(imageView: ImageView, photoPath: String) {
-        val imageFile = File(photoPath)
-        if (imageFile.exists()) {
-            val bitmap = BitmapFactory.decodeFile(imageFile.absolutePath)
-            imageView.setImageBitmap(bitmap)
-        } else {
-            imageView.setImageDrawable(context.getDrawable(R.drawable.photo_placeholder))
+        if (photoPath.isNotEmpty()) {
+            val imageFile = File(photoPath)
+            if (imageFile.exists()) {
+                val bitmap = BitmapFactory.decodeFile(imageFile.absolutePath)
+                imageView.setImageBitmap(bitmap)
+                return
+            }
         }
+        imageView.setImageDrawable(context.getDrawable(R.drawable.photo_placeholder))
     }
 
     fun setRecipes(recipes: List<Recipe>) {
