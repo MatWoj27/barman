@@ -19,6 +19,7 @@ import com.mattech.barman.adapters.IngredientAdapter
 import com.mattech.barman.adapters.IngredientListListener
 import com.mattech.barman.models.Recipe
 import com.mattech.barman.utils.CircleTransformation
+import com.mattech.barman.utils.ImageUtil
 import com.mattech.barman.view_models.RecipeViewModel
 import kotlinx.android.synthetic.main.activity_create_recipe.*
 import kotlinx.android.synthetic.main.ingredients_edit_layout.*
@@ -93,6 +94,7 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
+            ImageUtil.rotateImageIfRequired(photoPath)
             val bitmap = data?.extras?.get("data") as? Bitmap
             if (bitmap != null) {
                 add_photo.setImageBitmap(CircleTransformation().transform(bitmap))
