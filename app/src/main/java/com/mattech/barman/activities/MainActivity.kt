@@ -21,13 +21,19 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.drawer_header.view.*
 
 class MainActivity : AppCompatActivity() {
+    private val RECIPE_CATEGORY_KEY = "recipeCategory"
+
     private lateinit var viewModel: RecipeViewModel
     private lateinit var recipeAdapter: RecipeAdapter
+    private var recipeCategory = Recipe.Category.LONG_DRINK.categoryName
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+        if (savedInstanceState != null) {
+            recipeCategory = savedInstanceState.getString(RECIPE_CATEGORY_KEY)!!
+        }
         viewModel = ViewModelProviders.of(this).get(RecipeViewModel::class.java)
         presetRecipeList()
         presetNavigationHeader()
@@ -42,6 +48,11 @@ class MainActivity : AppCompatActivity() {
         recipeAdapter.clickEnabled = true
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(RECIPE_CATEGORY_KEY, recipeCategory)
+    }
+
     private fun presetRecipeList() {
         main_list.layoutManager = LinearLayoutManager(this)
         main_list.setHasFixedSize(true)
@@ -54,7 +65,7 @@ class MainActivity : AppCompatActivity() {
         })
         recipeAdapter = RecipeAdapter(context = this)
         main_list.adapter = recipeAdapter
-        viewModel.getRecipes("Long").observe(this, Observer<List<Recipe>> { recipeAdapter.setRecipes(it) })
+        viewModel.getRecipes(recipeCategory).observe(this, Observer<List<Recipe>> { recipeAdapter.setRecipes(it) })
     }
 
     private fun presetNavigationHeader() {
@@ -68,25 +79,28 @@ class MainActivity : AppCompatActivity() {
             val result = when (menuItem.itemId) {
                 R.id.long_drinks -> {
                     Toast.makeText(this@MainActivity, getString(R.string.long_drinks), Toast.LENGTH_SHORT).show()
-//                   TO DO
+                    recipeCategory = Recipe.Category.LONG_DRINK.categoryName
                     true
                 }
                 R.id.short_drinks -> {
                     Toast.makeText(this@MainActivity, getString(R.string.short_drinks), Toast.LENGTH_SHORT).show()
-//                   TO DO
+                    recipeCategory = Recipe.Category.SHORT_DRINK.categoryName
                     true
                 }
                 R.id.shots -> {
                     Toast.makeText(this@MainActivity, getString(R.string.shots), Toast.LENGTH_SHORT).show()
-//                    TO DO
+                    recipeCategory = Recipe.Category.SHOT.categoryName
                     true
                 }
                 R.id.snacks -> {
                     Toast.makeText(this@MainActivity, getString(R.string.snacks), Toast.LENGTH_SHORT).show()
-//                    TO DO
+                    recipeCategory = Recipe.Category.SNACK.categoryName
                     true
                 }
                 else -> false
+            }
+            if (result) {
+                viewModel.getRecipes(recipeCategory).observe(this, Observer<List<Recipe>> { recipeAdapter.setRecipes(it) })
             }
             drawer_layout.closeDrawer(drawer)
             result
@@ -105,7 +119,7 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(applicationContext, CreateRecipeActivity::class.java)
                 .apply {
                     putExtra(IS_EDIT_TAG, false)
-                    putExtra(RECIPE_CATEGORY_TAG, "Long")
+                    putExtra(RECIPE_CATEGORY_TAG, recipeCategory)
                 }
         startActivity(intent)
     }

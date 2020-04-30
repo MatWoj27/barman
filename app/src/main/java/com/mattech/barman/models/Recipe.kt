@@ -9,4 +9,11 @@ data class Recipe(@PrimaryKey(autoGenerate = true) val id: Int,
                   val name: String,
                   val description: String,
                   val photoPath: String,
-                  val ingredients: ArrayList<String>)
+                  val ingredients: ArrayList<String>) {
+    enum class Category(val categoryName: String) {
+        LONG_DRINK("Long"),
+        SHORT_DRINK("Short"),
+        SHOT("Shot"),
+        SNACK("Snack")
+    }
+}
