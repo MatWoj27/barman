@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         add_drink_fab.isEnabled = true
-        recipeAdapter?.clickEnabled = true
+        recipeAdapter.clickEnabled = true
     }
 
     private fun presetRecipeList() {
