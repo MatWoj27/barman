@@ -14,6 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.mattech.barman.R
 import com.mattech.barman.models.Recipe
+import com.mattech.barman.utils.ImageUtil
 import com.mattech.barman.view_models.RecipeViewModel
 import kotlinx.android.synthetic.main.activity_show_recipe.*
 import java.io.File
@@ -79,13 +80,8 @@ class ShowRecipeActivity : AppCompatActivity() {
         displayPhotoIfExists(recipe.photoPath)
     }
 
-    private fun displayPhotoIfExists(photoPath: String) {
-        val imageFile = File(photoPath)
-        if (imageFile.exists()) {
-            val bitmap = BitmapFactory.decodeFile(imageFile.absolutePath)
-            recipe_photo.setImageBitmap(bitmap)
-        }
-    }
+    private fun displayPhotoIfExists(photoPath: String) =
+            ImageUtil.getBitmap(photoPath)?.let { recipe_photo.setImageBitmap(it) }
 
     private fun displayIngredientsIfDefined(ingredients: List<String>) {
         if (ingredients.isNotEmpty()) {
