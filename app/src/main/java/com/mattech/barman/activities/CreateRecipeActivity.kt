@@ -162,9 +162,7 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener {
             finish()
 //            TODO: display discard dialog if any changes were made to the original recipe
         } else {
-            val name = recipe_name.text.trim()
-            val description = recipe_description.text.trim()
-            if (name.isEmpty() && description.isEmpty()) {
+            if (isEmptyDraft()) {
                 finish()
             } else {
                 AlertDialog.Builder(this)
@@ -174,6 +172,13 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener {
                         .show()
             }
         }
+    }
+
+    private fun isEmptyDraft(): Boolean {
+        val name = recipe_name.text.trim()
+        val description = recipe_description.text.trim()
+        val ingredientCount = getNonBlankIngredientList().size
+        return name.isEmpty() && description.isEmpty() && ingredientCount == 0 && photoPath.isEmpty()
     }
 
     private fun getNonBlankIngredientList() = ingredients.filterNot { it.isBlank() } as ArrayList<String>
