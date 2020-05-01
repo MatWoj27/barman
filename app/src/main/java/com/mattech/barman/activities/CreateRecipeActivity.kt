@@ -167,7 +167,13 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener {
             } else {
                 AlertDialog.Builder(this)
                         .setMessage(R.string.cancel_message)
-                        .setPositiveButton(R.string.yes) { _, _ -> finish() }
+                        .setPositiveButton(R.string.yes) { _, _ ->
+                            if (photoPath.isNotEmpty()) {
+                                val photoFile = File(photoPath)
+                                photoFile.delete()
+                            }
+                            finish()
+                        }
                         .setNegativeButton(R.string.no) { dialog, _ -> dialog.cancel() }
                         .show()
             }
