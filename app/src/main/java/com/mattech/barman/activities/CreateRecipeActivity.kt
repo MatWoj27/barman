@@ -93,11 +93,16 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
-            ImageUtil.rotateImageIfRequired(photoPath)
-            val bitmap = data?.extras?.get("data") as? Bitmap
-            if (bitmap != null) {
-                add_photo.setImageBitmap(CircleTransformation().transform(bitmap))
+        if (requestCode == REQUEST_TAKE_PHOTO) {
+            if (resultCode == RESULT_OK) {
+                ImageUtil.rotateImageIfRequired(photoPath)
+                val bitmap = data?.extras?.get("data") as? Bitmap
+                if (bitmap != null) {
+                    add_photo.setImageBitmap(CircleTransformation().transform(bitmap))
+                }
+            } else {
+                deletePhotoFile()
+                photoPath = ""
             }
         }
     }
@@ -169,8 +174,7 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener {
                         .setMessage(R.string.cancel_message)
                         .setPositiveButton(R.string.yes) { _, _ ->
                             if (photoPath.isNotEmpty()) {
-                                val photoFile = File(photoPath)
-                                photoFile.delete()
+                                deletePhotoFile()
                             }
                             finish()
                         }
@@ -220,4 +224,9 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener {
             recipe_description.text.toString(),
             photoPath,
             getNonBlankIngredientList())
+
+    private fun deletePhotoFile() {
+        val photoFile = File(photoPath)
+        photoFile.delete()
+    }
 }
