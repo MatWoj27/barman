@@ -11,6 +11,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
+import androidx.core.widget.ImageViewCompat
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -57,7 +58,12 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener {
         viewModel = ViewModelProviders.of(this).get(RecipeViewModel::class.java)
         isEdit = intent.getBooleanExtra(IS_EDIT_TAG, false)
         if (savedInstanceState != null) {
-            photoPath = savedInstanceState.getString(PHOTO_PATH_KEY)
+            savedInstanceState.getString(PHOTO_PATH_KEY)?.let {
+                if (it.isNotEmpty()) {
+                    photoPath = it
+                    displayPhotoThumbnailAsAddPhoto()
+                }
+            }
             if (savedInstanceState.getBoolean(DISPLAY_INGREDIENT_LIST_KEY)) {
                 ingredients = savedInstanceState.getStringArrayList(INGREDIENTS_KEY)
                 focusedItemPosition = savedInstanceState.getInt(FOCUSED_ITEM_POSITION_KEY)
@@ -96,10 +102,7 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener {
         if (requestCode == REQUEST_TAKE_PHOTO) {
             if (resultCode == RESULT_OK) {
                 ImageUtil.rotateImageIfRequired(photoPath)
-                val bitmap = data?.extras?.get("data") as? Bitmap
-                if (bitmap != null) {
-                    add_photo.setImageBitmap(CircleTransformation().transform(bitmap))
-                }
+                displayPhotoThumbnailAsAddPhoto()
             } else {
                 deletePhotoFile()
                 photoPath = ""
@@ -145,6 +148,16 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener {
             showIngredientList()
         }
         recipe_description.setText(recipe.description)
+        if (photoPath.isNotEmpty()) {
+            displayPhotoThumbnailAsAddPhoto()
+        }
+    }
+
+    private fun displayPhotoThumbnailAsAddPhoto() {
+        ImageUtil.getBitmap(photoPath)?.let {
+            ImageViewCompat.setImageTintList(add_photo, null)
+            add_photo.setImageBitmap(CircleTransformation().transform(it))
+        }
     }
 
     private fun onSaveClick() {
