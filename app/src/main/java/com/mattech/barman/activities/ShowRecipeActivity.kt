@@ -1,7 +1,6 @@
 package com.mattech.barman.activities
 
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -17,7 +16,6 @@ import com.mattech.barman.models.Recipe
 import com.mattech.barman.utils.ImageUtil
 import com.mattech.barman.view_models.RecipeViewModel
 import kotlinx.android.synthetic.main.activity_show_recipe.*
-import java.io.File
 
 const val RECIPE_ID_TAG = "recipeId"
 
