@@ -38,14 +38,15 @@ class ImageUtil {
             }
         }
 
-        fun getBitmap(photoPath: String): Bitmap? {
+        fun getBitmap(photoPath: String): Bitmap? = if (photoPath.isNotEmpty()) {
             val imageFile = File(photoPath)
-            return if (imageFile.exists()) {
+            if (imageFile.exists()) {
                 BitmapFactory.decodeFile(imageFile.absolutePath)
             } else {
                 null
             }
+        } else {
+            null
         }
     }
-
 }
