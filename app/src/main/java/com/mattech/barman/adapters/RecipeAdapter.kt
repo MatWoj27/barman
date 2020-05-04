@@ -2,7 +2,6 @@ package com.mattech.barman.adapters
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.BitmapFactory
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -12,8 +11,8 @@ import com.mattech.barman.R
 import com.mattech.barman.activities.RECIPE_ID_TAG
 import com.mattech.barman.activities.ShowRecipeActivity
 import com.mattech.barman.models.Recipe
+import com.mattech.barman.utils.ImageUtil
 import kotlinx.android.synthetic.main.recipe_item.view.*
-import java.io.File
 
 class RecipeAdapter(private val recipes: MutableList<Recipe> = mutableListOf(), val context: Context) : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
     var clickEnabled = true
@@ -49,15 +48,8 @@ class RecipeAdapter(private val recipes: MutableList<Recipe> = mutableListOf(), 
     }
 
     private fun displayPhotoIfExists(imageView: ImageView, photoPath: String) {
-        if (photoPath.isNotEmpty()) {
-            val imageFile = File(photoPath)
-            if (imageFile.exists()) {
-                val bitmap = BitmapFactory.decodeFile(imageFile.absolutePath)
-                imageView.setImageBitmap(bitmap)
-                return
-            }
-        }
-        imageView.setImageDrawable(context.getDrawable(R.drawable.photo_placeholder))
+        ImageUtil.getBitmap(photoPath)?.let { imageView.setImageBitmap(it) }
+                ?: imageView.setImageDrawable(context.getDrawable(R.drawable.photo_placeholder))
     }
 
     fun setRecipes(recipes: List<Recipe>) {
