@@ -31,9 +31,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-        if (savedInstanceState != null) {
-            recipeCategory = savedInstanceState.getString(RECIPE_CATEGORY_KEY)!!
-        }
+        savedInstanceState?.let { recipeCategory = it.getString(RECIPE_CATEGORY_KEY)!! }
         viewModel = ViewModelProviders.of(this).get(RecipeViewModel::class.java)
         presetRecipeList()
         presetNavigationHeader()
