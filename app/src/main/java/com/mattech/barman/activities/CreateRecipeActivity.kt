@@ -227,7 +227,7 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener {
     private fun createImageFile(): File {
         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
         val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        return File.createTempFile("JPEG_${timeStamp}_", ".jpg", storageDir)
+        return File.createTempFile("WEBP_${timeStamp}_", ".webp", storageDir)
     }
 
     private fun createRecipeFromUserInput() = Recipe(recipeId,
