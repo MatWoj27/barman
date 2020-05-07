@@ -20,6 +20,7 @@ import com.mattech.barman.adapters.IngredientListListener
 import com.mattech.barman.models.Recipe
 import com.mattech.barman.utils.CircleTransformation
 import com.mattech.barman.utils.ImageUtil
+import com.mattech.barman.utils.Resolution
 import com.mattech.barman.view_models.RecipeViewModel
 import kotlinx.android.synthetic.main.activity_create_recipe.*
 import kotlinx.android.synthetic.main.ingredients_edit_layout.*
@@ -100,7 +101,7 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_TAKE_PHOTO) {
             if (resultCode == RESULT_OK) {
-                ImageUtil.rotateImageIfRequired(photoPath)
+                ImageUtil.handleSamplingAndRotation(photoPath, Resolution.HIGH)
                 displayPhotoThumbnailAsAddPhoto()
             } else {
                 deletePhotoFile()
@@ -227,7 +228,7 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener {
     private fun createImageFile(): File {
         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
         val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        return File.createTempFile("JPEG_${timeStamp}_", ".jpg", storageDir)
+        return File.createTempFile("WEBP_${timeStamp}_", ".webp", storageDir)
     }
 
     private fun createRecipeFromUserInput() = Recipe(recipeId,
