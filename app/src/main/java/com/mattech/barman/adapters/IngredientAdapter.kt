@@ -20,7 +20,7 @@ interface IngredientListListener {
 class IngredientAdapter(val ingredients: ArrayList<String>, val context: Context, val listener: IngredientListListener, var focusedItemPosition: Int = ingredients.size - 1) : RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder>() {
 
     inner class IngredientViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val ingredient = itemView.ingredient
+        val ingredient: EditText = itemView.ingredient
 
         init {
             ingredient.setOnKeyListener { view, keyCode, keyEvent -> handleKeyClick(keyEvent, keyCode, position, view.ingredient) }

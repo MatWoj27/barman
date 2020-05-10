@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import com.mattech.barman.R
 import com.mattech.barman.activities.RECIPE_ID_TAG
 import com.mattech.barman.activities.ShowRecipeActivity
@@ -18,8 +19,8 @@ class RecipeAdapter(private val recipes: MutableList<Recipe> = mutableListOf(), 
     var clickEnabled = true
 
     inner class RecipeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val recipeName = view.recipe_name
-        val recipePhoto = view.recipe_photo
+        val recipeName: TextView = view.recipe_name
+        val recipePhoto: ImageView = view.recipe_photo
 
         init {
             view.setOnClickListener { itemClicked(adapterPosition) }
