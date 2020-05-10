@@ -65,8 +65,10 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener {
                 }
             }
             if (savedInstanceState.getBoolean(DISPLAY_INGREDIENT_LIST_KEY)) {
-                ingredients = savedInstanceState.getStringArrayList(INGREDIENTS_KEY)
-                focusedItemPosition = savedInstanceState.getInt(FOCUSED_ITEM_POSITION_KEY)
+                savedInstanceState.getStringArrayList(INGREDIENTS_KEY)?.let {
+                    ingredients = it
+                    focusedItemPosition = savedInstanceState.getInt(FOCUSED_ITEM_POSITION_KEY)
+                }
                 showIngredientList()
             }
         } else if (isEdit) {
