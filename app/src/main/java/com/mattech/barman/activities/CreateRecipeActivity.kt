@@ -38,6 +38,7 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener {
     private val PHOTO_PATH_KEY = "photoPath"
     private val INGREDIENTS_KEY = "ingredients"
     private val FOCUSED_ITEM_POSITION_KEY = "focusedItemPosition"
+    private val CANCEL_DIALOG_DISPLAYED_KEY = "cancelDialogDisplayed"
     private val REQUEST_TAKE_PHOTO = 1
 
     private lateinit var viewModel: RecipeViewModel
@@ -49,6 +50,7 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener {
     private var photoPath = ""
     private var ingredients = arrayListOf("")
     private var focusedItemPosition = ingredients.size - 1
+    private var cancelDialogDisplayed = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,6 +72,9 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener {
                     focusedItemPosition = savedInstanceState.getInt(FOCUSED_ITEM_POSITION_KEY)
                 }
                 showIngredientList()
+            }
+            if (savedInstanceState.getBoolean(CANCEL_DIALOG_DISPLAYED_KEY)) {
+                displayCancelDialog()
             }
         } else if (isEdit) {
             recipeId = intent.getIntExtra(RECIPE_ID_TAG, 0)
@@ -93,6 +98,7 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener {
         outState.putString(PHOTO_PATH_KEY, photoPath)
         outState.putStringArrayList(INGREDIENTS_KEY, ingredients)
         outState.putInt(FOCUSED_ITEM_POSITION_KEY, focusedItemPosition)
+        outState.putBoolean(CANCEL_DIALOG_DISPLAYED_KEY, cancelDialogDisplayed)
     }
 
     override fun onBackPressed() {
@@ -185,18 +191,24 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener {
             if (isEmptyDraft()) {
                 finish()
             } else {
-                AlertDialog.Builder(this)
-                        .setMessage(R.string.cancel_message)
-                        .setPositiveButton(R.string.yes) { _, _ ->
-                            if (photoPath.isNotEmpty()) {
-                                deletePhotoFile()
-                            }
-                            finish()
-                        }
-                        .setNegativeButton(R.string.no) { dialog, _ -> dialog.cancel() }
-                        .show()
+                displayCancelDialog();
             }
         }
+    }
+
+    private fun displayCancelDialog() {
+        AlertDialog.Builder(this)
+                .setMessage(R.string.cancel_message)
+                .setPositiveButton(R.string.yes) { _, _ ->
+                    if (photoPath.isNotEmpty()) {
+                        deletePhotoFile()
+                    }
+                    finish()
+                }
+                .setNegativeButton(R.string.no) { dialog, _ -> dialog.cancel() }
+                .setOnCancelListener { cancelDialogDisplayed = false }
+                .show()
+        cancelDialogDisplayed = true
     }
 
     private fun isEmptyDraft(): Boolean {
