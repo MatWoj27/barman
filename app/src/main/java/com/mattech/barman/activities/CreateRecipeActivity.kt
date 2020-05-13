@@ -8,7 +8,6 @@ import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
 import androidx.core.widget.ImageViewCompat
 import androidx.lifecycle.ViewModelProviders
@@ -17,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.mattech.barman.R
 import com.mattech.barman.adapters.IngredientAdapter
 import com.mattech.barman.adapters.IngredientListListener
+import com.mattech.barman.dialogs.ConfirmationDialogFragment
 import com.mattech.barman.models.Recipe
 import com.mattech.barman.utils.CircleTransformation
 import com.mattech.barman.utils.ImageUtil
@@ -33,12 +33,11 @@ import kotlin.collections.ArrayList
 const val IS_EDIT_TAG = "isEdit"
 const val RECIPE_CATEGORY_TAG = "recipeCategory"
 
-class CreateRecipeActivity : AppCompatActivity(), IngredientListListener {
+class CreateRecipeActivity : AppCompatActivity(), IngredientListListener, ConfirmationDialogFragment.ConfirmActionListener {
     private val DISPLAY_INGREDIENT_LIST_KEY = "displayIngredientList"
     private val PHOTO_PATH_KEY = "photoPath"
     private val INGREDIENTS_KEY = "ingredients"
     private val FOCUSED_ITEM_POSITION_KEY = "focusedItemPosition"
-    private val CANCEL_DIALOG_DISPLAYED_KEY = "cancelDialogDisplayed"
     private val REQUEST_TAKE_PHOTO = 1
 
     private lateinit var viewModel: RecipeViewModel
@@ -50,7 +49,6 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener {
     private var photoPath = ""
     private var ingredients = arrayListOf("")
     private var focusedItemPosition = ingredients.size - 1
-    private var cancelDialogDisplayed = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,9 +70,6 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener {
                     focusedItemPosition = savedInstanceState.getInt(FOCUSED_ITEM_POSITION_KEY)
                 }
                 showIngredientList()
-            }
-            if (savedInstanceState.getBoolean(CANCEL_DIALOG_DISPLAYED_KEY)) {
-                displayCancelDialog()
             }
         } else if (isEdit) {
             recipeId = intent.getIntExtra(RECIPE_ID_TAG, 0)
@@ -98,7 +93,6 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener {
         outState.putString(PHOTO_PATH_KEY, photoPath)
         outState.putStringArrayList(INGREDIENTS_KEY, ingredients)
         outState.putInt(FOCUSED_ITEM_POSITION_KEY, focusedItemPosition)
-        outState.putBoolean(CANCEL_DIALOG_DISPLAYED_KEY, cancelDialogDisplayed)
     }
 
     override fun onBackPressed() {
@@ -125,6 +119,15 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener {
     override fun focusedItemChanged(position: Int) {
         focusedItemPosition = position
     }
+
+    override fun onConfirm() {
+        if (photoPath.isNotEmpty()) {
+            deletePhotoFile()
+        }
+        finish()
+    }
+
+    override fun onReject() {}
 
     private fun hideIngredientList() {
         displayIngredientList = false
@@ -191,24 +194,11 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener {
             if (isEmptyDraft()) {
                 finish()
             } else {
-                displayCancelDialog();
+                ConfirmationDialogFragment.newInstance(getString(R.string.cancel_message)).apply {
+                    show(supportFragmentManager, null)
+                }
             }
         }
-    }
-
-    private fun displayCancelDialog() {
-        AlertDialog.Builder(this)
-                .setMessage(R.string.cancel_message)
-                .setPositiveButton(R.string.yes) { _, _ ->
-                    if (photoPath.isNotEmpty()) {
-                        deletePhotoFile()
-                    }
-                    finish()
-                }
-                .setNegativeButton(R.string.no) { dialog, _ -> dialog.cancel() }
-                .setOnCancelListener { cancelDialogDisplayed = false }
-                .show()
-        cancelDialogDisplayed = true
     }
 
     private fun isEmptyDraft(): Boolean {
