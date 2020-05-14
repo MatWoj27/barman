@@ -13,6 +13,7 @@ import androidx.core.widget.ImageViewCompat
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.mattech.barman.R
 import com.mattech.barman.adapters.IngredientAdapter
 import com.mattech.barman.adapters.IngredientListListener
@@ -48,7 +49,7 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener, Confir
     private var recipeCategory: String = "Long"
     private var photoPath = ""
     private var ingredients = arrayListOf("")
-    private var focusedItemPosition = ingredients.size - 1
+    private var focusedItemPosition = RecyclerView.NO_POSITION
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -148,8 +149,17 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener, Confir
         ingredient_list.isNestedScrollingEnabled = false
         add_ingredient_btn.setOnClickListener {
             ingredients.add("")
-            ingredientAdapter.notifyItemInserted(ingredients.size - 1)
+            focusedItemPosition = ingredients.size - 1
+            ingredientAdapter.focusedItemPosition = focusedItemPosition
+            ingredientAdapter.notifyItemInserted(focusedItemPosition)
         }
+        recipe_name.setOnFocusChangeListener { _, hasFocus -> if (hasFocus) removeFocusFromAdapter(ingredientAdapter) }
+        recipe_description.setOnFocusChangeListener { _, hasFocus -> if (hasFocus) removeFocusFromAdapter(ingredientAdapter) }
+    }
+
+    private fun removeFocusFromAdapter(adapter: IngredientAdapter) {
+        focusedItemPosition = RecyclerView.NO_POSITION
+        adapter.focusedItemPosition = focusedItemPosition
     }
 
     private fun displayRecipe(recipe: Recipe) {

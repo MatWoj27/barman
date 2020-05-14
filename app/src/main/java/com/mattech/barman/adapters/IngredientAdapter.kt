@@ -17,7 +17,7 @@ interface IngredientListListener {
     fun focusedItemChanged(position: Int)
 }
 
-class IngredientAdapter(val ingredients: ArrayList<String>, val context: Context, val listener: IngredientListListener, var focusedItemPosition: Int = ingredients.size - 1) : RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder>() {
+class IngredientAdapter(val ingredients: ArrayList<String>, val context: Context, val listener: IngredientListListener, var focusedItemPosition: Int) : RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder>() {
 
     inner class IngredientViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val ingredient: EditText = itemView.ingredient
@@ -35,6 +35,7 @@ class IngredientAdapter(val ingredients: ArrayList<String>, val context: Context
             })
             ingredient.setOnFocusChangeListener { _, hasFocus ->
                 if (hasFocus && adapterPosition != RecyclerView.NO_POSITION) {
+                    focusedItemPosition = adapterPosition
                     listener.focusedItemChanged(adapterPosition)
                 }
             }
@@ -48,7 +49,9 @@ class IngredientAdapter(val ingredients: ArrayList<String>, val context: Context
     override fun onBindViewHolder(viewHolder: IngredientViewHolder, position: Int) {
         viewHolder.ingredient.apply {
             setText(ingredients[position])
-            requestFocus()
+            if (focusedItemPosition != RecyclerView.NO_POSITION) {
+                requestFocus()
+            }
         }
     }
 
