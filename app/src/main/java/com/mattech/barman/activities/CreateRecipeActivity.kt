@@ -136,12 +136,6 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener, Confir
         add_ingredient_list_btn.visibility = View.VISIBLE
     }
 
-    inner class FocusMovedListener(private val adapter: IngredientAdapter) : View.OnFocusChangeListener {
-        override fun onFocusChange(p0: View?, hasFocus: Boolean) {
-            if (hasFocus) removeFocusFromAdapter(adapter)
-        }
-    }
-
     private fun showIngredientList() {
         displayIngredientList = true
         add_ingredient_list_btn.visibility = View.GONE
@@ -161,11 +155,6 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener, Confir
         }
         recipe_name.onFocusChangeListener = FocusMovedListener(ingredientAdapter)
         recipe_description.onFocusChangeListener = FocusMovedListener(ingredientAdapter)
-    }
-
-    private fun removeFocusFromAdapter(adapter: IngredientAdapter) {
-        focusedItemPosition = RecyclerView.NO_POSITION
-        adapter.focusedItemPosition = focusedItemPosition
     }
 
     private fun displayRecipe(recipe: Recipe) {
@@ -261,5 +250,14 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener, Confir
     private fun deletePhotoFile() {
         val photoFile = File(photoPath)
         photoFile.delete()
+    }
+
+    inner class FocusMovedListener(private val adapter: IngredientAdapter) : View.OnFocusChangeListener {
+        override fun onFocusChange(p0: View?, hasFocus: Boolean) {
+            if (hasFocus) {
+                focusedItemPosition = RecyclerView.NO_POSITION
+                adapter.focusedItemPosition = focusedItemPosition
+            }
+        }
     }
 }
