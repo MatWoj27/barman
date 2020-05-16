@@ -75,9 +75,10 @@ class IngredientAdapter(val ingredients: ArrayList<String>, val context: Context
 
     private fun backspaceClicked(position: Int, view: EditText) = if (view.text.isEmpty() && position < itemCount) {
         ingredients.removeAt(position)
-        notifyItemRemoved(position)
         if (itemCount == 0) {
             listener.lastItemRemoved()
+        } else {
+            notifyItemRemoved(position)
         }
         true
     } else {
