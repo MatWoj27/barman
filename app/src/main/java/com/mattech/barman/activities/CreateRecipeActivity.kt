@@ -49,7 +49,7 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener, Confir
     private var recipeCategory: String = "Long"
     private var photoPath = ""
     private var ingredients = arrayListOf("")
-    private var focusedItemPosition = RecyclerView.NO_POSITION
+    private var focusedItemPosition = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,6 +79,7 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener, Confir
                 photoPath = it.photoPath
                 displayRecipe(it)
             })
+            focusedItemPosition = RecyclerView.NO_POSITION
         } else {
             recipeCategory = intent.getStringExtra(RECIPE_CATEGORY_TAG)
         }
