@@ -49,8 +49,9 @@ class IngredientAdapter(val ingredients: ArrayList<String>, val context: Context
     override fun onBindViewHolder(viewHolder: IngredientViewHolder, position: Int) {
         viewHolder.ingredient.apply {
             setText(ingredients[position])
-            if (focusedItemPosition != RecyclerView.NO_POSITION) {
+            if (focusedItemPosition != RecyclerView.NO_POSITION && focusedItemPosition == position) {
                 requestFocus()
+                setSelection(text.length)
             }
         }
     }
@@ -69,6 +70,7 @@ class IngredientAdapter(val ingredients: ArrayList<String>, val context: Context
 
     private fun enterClicked(position: Int): Boolean {
         ingredients.add(position + 1, "")
+        focusedItemPosition = position + 1
         notifyItemInserted(position + 1)
         return true
     }
@@ -78,7 +80,9 @@ class IngredientAdapter(val ingredients: ArrayList<String>, val context: Context
         if (itemCount == 0) {
             listener.lastItemRemoved()
         } else {
+            focusedItemPosition = position - 1
             notifyItemRemoved(position)
+            notifyItemChanged(focusedItemPosition)
         }
         true
     } else {
