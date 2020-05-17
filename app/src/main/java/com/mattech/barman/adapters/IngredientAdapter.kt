@@ -7,10 +7,19 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.recyclerview.widget.RecyclerView
 import com.mattech.barman.R
 import kotlinx.android.synthetic.main.ingredient_edit_item.view.*
+
+fun EditText.showKeyboard() {
+    post {
+        requestFocus()
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
+    }
+}
 
 interface IngredientListListener {
     fun lastItemRemoved()
@@ -52,6 +61,7 @@ class IngredientAdapter(val ingredients: ArrayList<String>, val context: Context
             if (focusedItemPosition != RecyclerView.NO_POSITION && focusedItemPosition == position) {
                 requestFocus()
                 setSelection(text.length)
+                showKeyboard()
             }
         }
     }
