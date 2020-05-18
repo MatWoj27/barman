@@ -77,9 +77,11 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener, Confir
             viewModel.getRecipe(recipeId).observe(this, Observer<Recipe> {
                 recipeCategory = it.category
                 photoPath = it.photoPath
+                if (it.ingredients.size > 0) {
+                    focusedItemPosition = RecyclerView.NO_POSITION
+                }
                 displayRecipe(it)
             })
-            focusedItemPosition = RecyclerView.NO_POSITION
         } else {
             recipeCategory = intent.getStringExtra(RECIPE_CATEGORY_TAG)
         }
