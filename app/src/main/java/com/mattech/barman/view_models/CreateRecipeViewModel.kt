@@ -5,12 +5,12 @@ import androidx.lifecycle.AndroidViewModel
 import com.mattech.barman.AppRepository
 import com.mattech.barman.models.Recipe
 
-class RecipeViewModel(application: Application) : AndroidViewModel(application) {
+class CreateRecipeViewModel(application: Application) : AndroidViewModel(application) {
     private val repository = AppRepository(application)
-
-    fun getRecipes(category: String) = repository.getRecipes(category)
 
     fun getRecipe(id: Int) = repository.getRecipe(id)
 
-    fun deleteRecipe(recipe: Recipe) = repository.deleteRecipe(recipe)
+    fun addRecipe(recipe: Recipe) = repository.insertRecipe(recipe)
+
+    fun updateRecipe(recipe: Recipe) = repository.updateRecipe(recipe)
 }

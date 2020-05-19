@@ -22,7 +22,7 @@ import com.mattech.barman.models.Recipe
 import com.mattech.barman.utils.CircleTransformation
 import com.mattech.barman.utils.ImageUtil
 import com.mattech.barman.utils.Resolution
-import com.mattech.barman.view_models.RecipeViewModel
+import com.mattech.barman.view_models.CreateRecipeViewModel
 import kotlinx.android.synthetic.main.activity_create_recipe.*
 import kotlinx.android.synthetic.main.ingredients_edit_layout.*
 import java.io.File
@@ -41,7 +41,7 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener, Confir
     private val FOCUSED_ITEM_POSITION_KEY = "focusedItemPosition"
     private val REQUEST_TAKE_PHOTO = 1
 
-    private lateinit var viewModel: RecipeViewModel
+    private lateinit var viewModel: CreateRecipeViewModel
 
     private var displayIngredientList = false
     private var isEdit = false
@@ -56,7 +56,7 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener, Confir
         setContentView(R.layout.activity_create_recipe)
         setSupportActionBar(toolbar)
         title = getString(R.string.create_recipe_toolbar_title)
-        viewModel = ViewModelProviders.of(this).get(RecipeViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(CreateRecipeViewModel::class.java)
         isEdit = intent.getBooleanExtra(IS_EDIT_TAG, false)
         if (savedInstanceState != null) {
             savedInstanceState.getString(PHOTO_PATH_KEY)?.let {
