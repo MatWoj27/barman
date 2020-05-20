@@ -13,6 +13,8 @@ import com.mattech.barman.activities.RECIPE_ID_TAG
 import com.mattech.barman.activities.ShowRecipeActivity
 import com.mattech.barman.models.Recipe
 import com.mattech.barman.utils.ImageUtil
+import com.mattech.barman.utils.ViewAnimator
+import com.mattech.barman.utils.toBitmap
 import kotlinx.android.synthetic.main.recipe_item.view.*
 
 class RecipeAdapter(private val recipes: MutableList<Recipe> = mutableListOf(), val context: Context) : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
@@ -24,6 +26,16 @@ class RecipeAdapter(private val recipes: MutableList<Recipe> = mutableListOf(), 
 
         init {
             view.setOnClickListener { itemClicked(adapterPosition) }
+            view.setOnLongClickListener {
+                animateCheckedPhotoChange()
+                true
+            }
+        }
+
+        private fun animateCheckedPhotoChange() {
+            context.getDrawable(R.drawable.checked_item)?.toBitmap()?.let {
+                ViewAnimator.animatedImageChange(context, recipePhoto, it)
+            }
         }
     }
 
