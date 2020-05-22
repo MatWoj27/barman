@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
                 outRect.bottom = 16
             }
         })
-        recipeAdapter = RecipeAdapter(context = this)
+        recipeAdapter = RecipeAdapter(context = this, selectedRecipes = viewModel.selectedRecipes)
         main_list.adapter = recipeAdapter
         viewModel.getRecipes(recipeCategory).observe(this, Observer<List<Recipe>> { recipeAdapter.setRecipes(it) })
     }

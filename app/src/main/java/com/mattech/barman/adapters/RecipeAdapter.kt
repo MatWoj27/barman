@@ -17,7 +17,7 @@ import com.mattech.barman.utils.ViewAnimator
 import com.mattech.barman.utils.toBitmap
 import kotlinx.android.synthetic.main.recipe_item.view.*
 
-class RecipeAdapter(private val recipes: MutableList<Recipe> = mutableListOf(), val context: Context) : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
+class RecipeAdapter(private val recipes: MutableList<Recipe> = mutableListOf(), val context: Context, val selectedRecipes: MutableSet<Int>) : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
     var clickEnabled = true
 
     inner class RecipeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -27,6 +27,7 @@ class RecipeAdapter(private val recipes: MutableList<Recipe> = mutableListOf(), 
         init {
             view.setOnClickListener { itemClicked(adapterPosition) }
             view.setOnLongClickListener {
+                selectedRecipes.add(adapterPosition)
                 animateCheckedPhotoChange()
                 true
             }
@@ -48,6 +49,9 @@ class RecipeAdapter(private val recipes: MutableList<Recipe> = mutableListOf(), 
     override fun onBindViewHolder(viewHolder: RecipeViewHolder, position: Int) {
         viewHolder.recipeName.text = recipes[position].name
         displayPhotoIfExists(viewHolder.recipePhoto, recipes[position].photoPath)
+        if (selectedRecipes.contains(position)) {
+            viewHolder.recipePhoto.setImageDrawable(context.getDrawable(R.drawable.checked_item))
+        }
     }
 
     @Synchronized
