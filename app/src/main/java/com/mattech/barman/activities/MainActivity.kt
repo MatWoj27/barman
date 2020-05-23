@@ -3,6 +3,8 @@ package com.mattech.barman.activities
 import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,13 +16,14 @@ import androidx.lifecycle.ViewModelProviders
 import com.mattech.barman.models.Recipe
 import com.mattech.barman.adapters.RecipeAdapter
 import com.mattech.barman.R
+import com.mattech.barman.adapters.SelectionListener
 import com.mattech.barman.utils.CircleTransformation
 import com.mattech.barman.view_models.RecipeViewModel
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.drawer_header.view.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), SelectionListener {
     private val RECIPE_CATEGORY_KEY = "recipeCategory"
 
     private lateinit var viewModel: RecipeViewModel
@@ -30,9 +33,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbar)
         savedInstanceState?.let { recipeCategory = it.getString(RECIPE_CATEGORY_KEY)!! }
         viewModel = ViewModelProviders.of(this).get(RecipeViewModel::class.java)
+        setSupportActionBar(toolbar)
         presetRecipeList()
         presetNavigationHeader()
         presetNavigationMenu()
@@ -51,6 +54,30 @@ class MainActivity : AppCompatActivity() {
         outState.putString(RECIPE_CATEGORY_KEY, recipeCategory)
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.recipe_list_menu, menu)
+        val deleteItem = menu?.findItem(R.id.action_delete)
+        if (viewModel.showDeleteAction) {
+            deleteItem?.isVisible = true
+        }
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.action_delete -> {
+//          TODO:  delete selected recipes
+            true
+        }
+        else -> super.onOptionsItemSelected(item)
+    }
+
+    override fun itemSelected(position: Int) {
+        if (!viewModel.showDeleteAction) {
+            viewModel.showDeleteAction = true
+            invalidateOptionsMenu()
+        }
+    }
+
     private fun presetRecipeList() {
         main_list.layoutManager = LinearLayoutManager(this)
         main_list.setHasFixedSize(true)
@@ -61,7 +88,7 @@ class MainActivity : AppCompatActivity() {
                 outRect.bottom = 16
             }
         })
-        recipeAdapter = RecipeAdapter(context = this, selectedRecipes = viewModel.selectedRecipes)
+        recipeAdapter = RecipeAdapter(context = this, selectedRecipes = viewModel.selectedRecipes, listener = this)
         main_list.adapter = recipeAdapter
         viewModel.getRecipes(recipeCategory).observe(this, Observer<List<Recipe>> { recipeAdapter.setRecipes(it) })
     }

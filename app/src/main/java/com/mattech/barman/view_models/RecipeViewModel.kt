@@ -10,10 +10,12 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
     private val repository = AppRepository(application)
     private var category: String = ""
     val selectedRecipes: MutableSet<Int> = mutableSetOf()
+    var showDeleteAction = false
 
     fun getRecipes(category: String): LiveData<List<Recipe>> {
         if (this.category != category) {
             selectedRecipes.clear()
+            showDeleteAction = false
             this.category = category
         }
         return repository.getRecipes(category)

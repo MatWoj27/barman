@@ -17,7 +17,11 @@ import com.mattech.barman.utils.ViewAnimator
 import com.mattech.barman.utils.toBitmap
 import kotlinx.android.synthetic.main.recipe_item.view.*
 
-class RecipeAdapter(private val recipes: MutableList<Recipe> = mutableListOf(), val context: Context, val selectedRecipes: MutableSet<Int>) : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
+interface SelectionListener {
+    fun itemSelected(position: Int)
+}
+
+class RecipeAdapter(private val recipes: MutableList<Recipe> = mutableListOf(), val context: Context, val selectedRecipes: MutableSet<Int>, val listener: SelectionListener) : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
     var clickEnabled = true
 
     inner class RecipeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -28,6 +32,7 @@ class RecipeAdapter(private val recipes: MutableList<Recipe> = mutableListOf(), 
             view.setOnClickListener { itemClicked(adapterPosition) }
             view.setOnLongClickListener {
                 selectedRecipes.add(adapterPosition)
+                listener.itemSelected(adapterPosition)
                 animateCheckedPhotoChange()
                 true
             }
