@@ -74,8 +74,12 @@ class MainActivity : AppCompatActivity(), SelectionListener {
     override fun itemSelected(position: Int) {
         if (!viewModel.showDeleteAction) {
             viewModel.showDeleteAction = true
-            invalidateOptionsMenu()
+        } else if (viewModel.selectedRecipes.size == 0) {
+            viewModel.showDeleteAction = false
+        } else {
+            return
         }
+        invalidateOptionsMenu()
     }
 
     private fun presetRecipeList() {

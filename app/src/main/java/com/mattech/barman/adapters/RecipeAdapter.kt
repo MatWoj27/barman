@@ -31,15 +31,26 @@ class RecipeAdapter(private val recipes: MutableList<Recipe> = mutableListOf(), 
         init {
             view.setOnClickListener { itemClicked(adapterPosition) }
             view.setOnLongClickListener {
-                selectedRecipes.add(adapterPosition)
+                val isSelected = selectedRecipes.contains(adapterPosition)
+                if (isSelected) {
+                    selectedRecipes.remove(adapterPosition)
+                } else {
+                    selectedRecipes.add(adapterPosition)
+                }
                 listener.itemSelected(adapterPosition)
-                animateCheckedPhotoChange()
+                animateCheckedPhotoChange(!isSelected)
                 true
             }
         }
 
-        private fun animateCheckedPhotoChange() {
-            context.getDrawable(R.drawable.checked_item)?.toBitmap()?.let {
+        private fun animateCheckedPhotoChange(select: Boolean) {
+            val photoBitmap = if (select) {
+                context.getDrawable(R.drawable.checked_item)?.toBitmap()
+            } else {
+                ImageUtil.getBitmap(recipes[adapterPosition].photoPath)
+                        ?: context.getDrawable(R.drawable.photo_placeholder)?.toBitmap()
+            }
+            photoBitmap?.let {
                 ViewAnimator.animatedImageChange(context, recipePhoto, it)
             }
         }
