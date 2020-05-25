@@ -94,7 +94,7 @@ class MainActivity : AppCompatActivity(), SelectionListener {
         })
         recipeAdapter = RecipeAdapter(context = this, selectedRecipes = viewModel.selectedRecipes, listener = this)
         main_list.adapter = recipeAdapter
-        viewModel.getRecipes(recipeCategory).observe(this, Observer<List<Recipe>> { recipeAdapter.setRecipes(it) })
+        viewModel.getRecipes(recipeCategory).observe(this, Observer { recipeAdapter.setRecipes(it) })
     }
 
     private fun presetNavigationHeader() {
