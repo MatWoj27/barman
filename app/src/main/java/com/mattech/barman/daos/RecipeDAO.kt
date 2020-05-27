@@ -19,6 +19,6 @@ interface RecipeDAO {
     @Update
     fun updateRecipe(recipe: Recipe)
 
-    @Delete
-    fun deleteRecipe(recipe: Recipe)
+    @Query("DELETE FROM recipes WHERE id in (:idSet)")
+    fun deleteRecipesById(idSet: Set<Int>)
 }

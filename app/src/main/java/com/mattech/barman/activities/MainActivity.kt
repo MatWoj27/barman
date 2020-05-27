@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.action_delete -> {
-//          TODO:  delete selected recipes
+            viewModel.deleteSelectedRecipes()
             true
         }
         else -> super.onOptionsItemSelected(item)
