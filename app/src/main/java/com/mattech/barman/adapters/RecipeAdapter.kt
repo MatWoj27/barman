@@ -27,12 +27,13 @@ class RecipeAdapter(private val recipes: MutableList<Recipe> = mutableListOf(), 
         init {
             view.setOnClickListener { itemClicked(adapterPosition) }
             view.setOnLongClickListener {
-                val isSelected = selectedRecipes.contains(adapterPosition)
+                val id = recipes[adapterPosition].id
+                val isSelected = selectedRecipes.contains(id)
                 isSelected.let {
                     if (it) {
-                        selectedRecipes.remove(adapterPosition)
+                        selectedRecipes.remove(id)
                     } else {
-                        selectedRecipes.add(adapterPosition)
+                        selectedRecipes.add(id)
                     }
                     animateCheckedPhotoChange(!it)
                 }
@@ -62,7 +63,7 @@ class RecipeAdapter(private val recipes: MutableList<Recipe> = mutableListOf(), 
     override fun onBindViewHolder(viewHolder: RecipeViewHolder, position: Int) {
         viewHolder.recipeName.text = recipes[position].name
         displayPhotoIfExists(viewHolder.recipePhoto, recipes[position].photoPath)
-        if (selectedRecipes.contains(position)) {
+        if (selectedRecipes.contains(recipes[position].id)) {
             viewHolder.recipePhoto.setImageDrawable(context.getDrawable(R.drawable.checked_item))
         }
     }
