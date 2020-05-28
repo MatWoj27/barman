@@ -62,9 +62,10 @@ class RecipeAdapter(private val recipes: MutableList<Recipe> = mutableListOf(), 
 
     override fun onBindViewHolder(viewHolder: RecipeViewHolder, position: Int) {
         viewHolder.recipeName.text = recipes[position].name
-        displayPhotoIfExists(viewHolder.recipePhoto, recipes[position].photoPath)
         if (selectedRecipes.contains(recipes[position].id)) {
             viewHolder.recipePhoto.setImageDrawable(context.getDrawable(R.drawable.checked_item))
+        } else {
+            displayPhotoIfExists(viewHolder.recipePhoto, recipes[position].photoPath)
         }
     }
 
