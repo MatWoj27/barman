@@ -60,12 +60,12 @@ class RecipeAdapter(private val recipes: MutableList<Recipe> = mutableListOf(), 
         return RecipeViewHolder(LayoutInflater.from(context).inflate(R.layout.recipe_item, parentViewGroup, false))
     }
 
-    override fun onBindViewHolder(viewHolder: RecipeViewHolder, position: Int) {
-        viewHolder.recipeName.text = recipes[position].name
-        if (selectedRecipes.contains(recipes[position].id)) {
+    override fun onBindViewHolder(viewHolder: RecipeViewHolder, position: Int) = recipes[position].let {
+        viewHolder.recipeName.text = it.name
+        if (selectedRecipes.contains(it.id)) {
             viewHolder.recipePhoto.setImageDrawable(context.getDrawable(R.drawable.checked_item))
         } else {
-            displayPhotoIfExists(viewHolder.recipePhoto, recipes[position].photoPath)
+            displayPhotoIfExists(viewHolder.recipePhoto, it.photoPath)
         }
     }
 
