@@ -116,7 +116,7 @@ class MainActivity : AppCompatActivity() {
                 else -> false
             }
             if (result) {
-                viewModel.getRecipes(recipeCategory).observe(this, Observer<List<Recipe>> { recipeAdapter.setRecipes(it) })
+                viewModel.getRecipes(recipeCategory).observe(this, Observer { recipeAdapter.setRecipes(it) })
             }
             drawer_layout.closeDrawer(drawer)
             result
