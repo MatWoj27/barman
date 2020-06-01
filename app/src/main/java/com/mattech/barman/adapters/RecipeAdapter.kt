@@ -85,8 +85,18 @@ class RecipeAdapter(private val recipes: MutableList<Recipe> = mutableListOf(), 
     }
 
     fun setRecipes(recipes: List<Recipe>) {
-        this.recipes.clear()
-        this.recipes.addAll(recipes)
-        notifyDataSetChanged()
+        if (recipes.size < this.recipes.size) {
+            val removedRecipes = this.recipes.filter { recipe -> !recipes.contains(recipe) }
+            removedRecipes.map { recipe -> this.recipes.indexOf(recipe) }.asReversed().forEach { notifyItemRemoved(it) }
+            this.recipes.removeAll(removedRecipes)
+        } else if (this.recipes.size > 0 && recipes.size > this.recipes.size) {
+            val addedRecipe = recipes.first { recipe -> !this.recipes.contains(recipe) }
+            this.recipes.add(addedRecipe)
+            notifyItemInserted(recipes.size - 1)
+        } else {
+            this.recipes.clear()
+            this.recipes.addAll(recipes)
+            notifyDataSetChanged()
+        }
     }
 }
