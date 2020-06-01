@@ -84,12 +84,12 @@ class RecipeAdapter(private val recipes: MutableList<Recipe> = mutableListOf(), 
                 ?: imageView.setImageDrawable(context.getDrawable(R.drawable.photo_placeholder))
     }
 
-    fun setRecipes(recipes: List<Recipe>) {
-        if (recipes.size < this.recipes.size) {
+    fun setRecipes(recipes: List<Recipe>, isNewDataSet: Boolean = false) {
+        if (!isNewDataSet && recipes.size < this.recipes.size) {
             val removedRecipes = this.recipes.filter { recipe -> !recipes.contains(recipe) }
             removedRecipes.map { recipe -> this.recipes.indexOf(recipe) }.asReversed().forEach { notifyItemRemoved(it) }
             this.recipes.removeAll(removedRecipes)
-        } else if (this.recipes.size > 0 && recipes.size > this.recipes.size) {
+        } else if (!isNewDataSet && this.recipes.size > 0 && recipes.size > this.recipes.size) {
             val addedRecipe = recipes.first { recipe -> !this.recipes.contains(recipe) }
             this.recipes.add(addedRecipe)
             notifyItemInserted(recipes.size - 1)
