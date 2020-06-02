@@ -74,7 +74,7 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener, Confir
             }
         } else if (isEdit) {
             recipeId = intent.getIntExtra(RECIPE_ID_TAG, 0)
-            viewModel.getRecipe(recipeId).observe(this, Observer<Recipe> {
+            viewModel.getRecipe(recipeId).observe(this, Observer {
                 recipeCategory = it.category
                 photoPath = it.photoPath
                 if (it.ingredients.size > 0) {

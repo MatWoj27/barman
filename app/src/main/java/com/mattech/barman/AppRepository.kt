@@ -38,11 +38,11 @@ class AppRepository : CoroutineScope {
         }
     }
 
-    fun deleteRecipe(recipe: Recipe) = launch { deleteRecipeBG(recipe) }
+    fun deleteRecipesById(idSet: Set<Int>) = launch { deleteRecipesByIdBG(idSet) }
 
-    private suspend fun deleteRecipeBG(recipe: Recipe) {
+    private suspend fun deleteRecipesByIdBG(idSet: Set<Int>) {
         withContext(Dispatchers.IO) {
-            recipeDAO.deleteRecipe(recipe)
+            recipeDAO.deleteRecipesById(idSet)
         }
     }
 }

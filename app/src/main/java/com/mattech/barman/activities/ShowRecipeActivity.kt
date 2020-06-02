@@ -32,7 +32,7 @@ class ShowRecipeActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(false)
         recipeId = intent.getIntExtra(RECIPE_ID_TAG, -1)
         val viewModel = ViewModelProviders.of(this).get(RecipeViewModel::class.java)
-        viewModel.getRecipe(recipeId).observe(this, Observer<Recipe> { displayRecipe(it) })
+        viewModel.getRecipe(recipeId).observe(this, Observer { displayRecipe(it) })
     }
 
     override fun onResume() {
@@ -42,7 +42,7 @@ class ShowRecipeActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.show_recipe_menu, menu)
-        return super.onCreateOptionsMenu(menu)
+        return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
