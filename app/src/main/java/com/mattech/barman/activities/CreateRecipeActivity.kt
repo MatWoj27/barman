@@ -46,7 +46,7 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener, Confir
     private var displayIngredientList = false
     private var isEdit = false
     private var recipeId: Int = 0
-    private var recipeCategory: String = "Long"
+    private var recipeCategory: String = Recipe.Category.LONG_DRINK.categoryName
     private var photoPath = ""
     private var ingredients = arrayListOf("")
     private var focusedItemPosition = 0
