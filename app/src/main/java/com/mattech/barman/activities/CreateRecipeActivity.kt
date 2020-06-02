@@ -54,10 +54,9 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener, Confir
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_recipe)
-        setSupportActionBar(toolbar)
-        title = getString(R.string.create_recipe_toolbar_title)
-        viewModel = ViewModelProviders.of(this).get(CreateRecipeViewModel::class.java)
         isEdit = intent.getBooleanExtra(IS_EDIT_TAG, false)
+        presetToolbar()
+        viewModel = ViewModelProviders.of(this).get(CreateRecipeViewModel::class.java)
         if (savedInstanceState != null) {
             savedInstanceState.getString(PHOTO_PATH_KEY)?.let {
                 if (it.isNotEmpty()) {
@@ -132,6 +131,11 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener, Confir
     }
 
     override fun onReject() {}
+
+    private fun presetToolbar() {
+        setSupportActionBar(toolbar)
+        title = if (isEdit) getString(R.string.edit_recipe_toolbar_title) else getString(R.string.create_recipe_toolbar_title)
+    }
 
     private fun hideIngredientList() {
         displayIngredientList = false
