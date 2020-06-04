@@ -7,9 +7,7 @@ import com.google.gson.reflect.TypeToken
 class RecipeTypeConverters {
 
     @TypeConverter
-    fun arrayListToString(list: ArrayList<String>): String {
-        return Gson().toJson(list)
-    }
+    fun arrayListToString(list: ArrayList<String>): String = Gson().toJson(list)
 
     @TypeConverter
     fun stringToArrayList(data: String): ArrayList<String> {
