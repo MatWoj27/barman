@@ -59,10 +59,8 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener, Confir
         viewModel = ViewModelProviders.of(this).get(CreateRecipeViewModel::class.java)
         if (savedInstanceState != null) {
             savedInstanceState.getString(PHOTO_PATH_KEY)?.let {
-                if (it.isNotEmpty()) {
-                    photoPath = it
-                    displayPhotoThumbnailAsAddPhoto()
-                }
+                photoPath = it
+                displayPhotoThumbnailAsAddPhoto()
             }
             if (savedInstanceState.getBoolean(DISPLAY_INGREDIENT_LIST_KEY)) {
                 savedInstanceState.getStringArrayList(INGREDIENTS_KEY)?.let {
@@ -171,9 +169,7 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener, Confir
             showIngredientList()
         }
         recipe_description.setText(recipe.description)
-        if (photoPath.isNotEmpty()) {
-            displayPhotoThumbnailAsAddPhoto()
-        }
+        displayPhotoThumbnailAsAddPhoto()
     }
 
     private fun displayPhotoThumbnailAsAddPhoto() {
