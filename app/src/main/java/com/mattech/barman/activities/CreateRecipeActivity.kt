@@ -74,9 +74,6 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener, Confir
             viewModel.getRecipe(recipeId).observe(this, Observer {
                 recipeCategory = it.category
                 photoPath = it.photoPath
-                if (it.ingredients.size > 0) {
-                    focusedItemPosition = RecyclerView.NO_POSITION
-                }
                 displayRecipe(it)
             })
         } else {
@@ -165,6 +162,7 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener, Confir
     private fun displayRecipe(recipe: Recipe) {
         recipe_name.setText(recipe.name)
         if (recipe.ingredients.size > 0) {
+            focusedItemPosition = RecyclerView.NO_POSITION
             ingredients = recipe.ingredients
             showIngredientList()
         }
