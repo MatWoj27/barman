@@ -172,11 +172,9 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener, Confir
         displayPhotoThumbnailAsAddPhoto()
     }
 
-    private fun displayPhotoThumbnailAsAddPhoto() {
-        ImageUtil.getBitmap(photoPath)?.let {
-            ImageViewCompat.setImageTintList(add_photo, null)
-            add_photo.setImageBitmap(CircleTransformation().transform(it))
-        }
+    private fun displayPhotoThumbnailAsAddPhoto() = ImageUtil.getBitmap(photoPath)?.let {
+        ImageViewCompat.setImageTintList(add_photo, null)
+        add_photo.setImageBitmap(CircleTransformation().transform(it))
     }
 
     private fun onSaveClick() {
