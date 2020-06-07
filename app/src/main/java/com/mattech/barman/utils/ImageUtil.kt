@@ -1,5 +1,6 @@
 package com.mattech.barman.utils
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
@@ -7,8 +8,12 @@ import android.graphics.Matrix
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.media.ExifInterface
+import android.os.Environment
 import java.io.File
 import java.io.FileOutputStream
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
 import kotlin.math.roundToInt
 
 fun Drawable.toBitmap(): Bitmap {
@@ -98,6 +103,13 @@ class ImageUtil {
             } else {
                 null
             }
+        }
+
+        @Throws(IOException::class)
+        fun createImageFile(context: Context): File {
+            val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+            val storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+            return File.createTempFile("WEBP_${timeStamp}_", ".webp", storageDir)
         }
     }
 }

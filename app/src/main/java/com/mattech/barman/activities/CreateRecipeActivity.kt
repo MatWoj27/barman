@@ -3,7 +3,6 @@ package com.mattech.barman.activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
@@ -25,10 +24,7 @@ import com.mattech.barman.utils.Resolution
 import com.mattech.barman.view_models.CreateRecipeViewModel
 import kotlinx.android.synthetic.main.activity_create_recipe.*
 import kotlinx.android.synthetic.main.ingredients_edit_layout.*
-import java.io.File
 import java.io.IOException
-import java.text.SimpleDateFormat
-import java.util.*
 
 const val IS_EDIT_TAG = "isEdit"
 const val RECIPE_CATEGORY_TAG = "recipeCategory"
@@ -184,7 +180,7 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener, Confir
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         if (intent.resolveActivity(packageManager) != null) {
             try {
-                val photo = createImageFile()
+                val photo = ImageUtil.createImageFile(this)
                 viewModel.photoPath = photo.absolutePath
                 val photoUri = FileProvider.getUriForFile(this, "com.mattech.barman.fileprovider", photo)
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
@@ -196,13 +192,6 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener, Confir
         } else {
             Toast.makeText(this, getString(R.string.no_camera_app_toast), Toast.LENGTH_SHORT).show()
         }
-    }
-
-    @Throws(IOException::class)
-    private fun createImageFile(): File {
-        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        return File.createTempFile("WEBP_${timeStamp}_", ".webp", storageDir)
     }
 
     private fun createRecipeFromUserInput() = Recipe(viewModel.recipeId,
