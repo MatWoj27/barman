@@ -56,9 +56,7 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener, Confir
         add_photo.setOnClickListener { takePhoto() }
     }
 
-    override fun onBackPressed() {
-        onCancelClick()
-    }
+    override fun onBackPressed() = onCancelClick()
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -73,17 +71,13 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener, Confir
         }
     }
 
-    override fun lastItemRemoved() {
-        hideIngredientList()
-    }
+    override fun lastItemRemoved() = hideIngredientList()
 
     override fun focusedItemChanged(position: Int) {
         viewModel.focusedItemPosition = position
     }
 
-    override fun onConfirm() {
-        finish()
-    }
+    override fun onConfirm() = finish()
 
     override fun onReject() {}
 
