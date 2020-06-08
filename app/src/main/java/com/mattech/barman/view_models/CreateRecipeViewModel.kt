@@ -2,6 +2,8 @@ package com.mattech.barman.view_models
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.Transformations
+import androidx.recyclerview.widget.RecyclerView
 import com.mattech.barman.AppRepository
 import com.mattech.barman.models.Recipe
 import java.io.File
@@ -18,7 +20,17 @@ class CreateRecipeViewModel(application: Application) : AndroidViewModel(applica
     var displayIngredientList = false
     var removePhoto = true
 
-    fun getRecipe() = repository.getRecipe(recipeId)
+    fun getRecipe() = Transformations.map(repository.getRecipe(recipeId)) { recipe ->
+        recipeCategory = recipe.category
+        photoPath = recipe.photoPath
+        if (recipe.ingredients.size > 0) {
+            ingredients = recipe.ingredients
+            focusedItemPosition = RecyclerView.NO_POSITION
+            displayIngredientList = true
+        }
+        recipe
+    }
+
 
     fun addRecipe(recipe: Recipe) {
         removePhoto = false

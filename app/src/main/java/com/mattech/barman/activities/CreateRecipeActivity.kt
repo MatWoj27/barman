@@ -42,11 +42,7 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener, Confir
         presetToolbar()
         if (viewModel.isEdit) {
             viewModel.recipeId = intent.getIntExtra(RECIPE_ID_TAG, 0)
-            viewModel.getRecipe().observe(this, Observer {
-                viewModel.recipeCategory = it.category
-                viewModel.photoPath = it.photoPath
-                displayRecipe(it)
-            })
+            viewModel.getRecipe().observe(this, Observer { displayRecipe(it) })
         } else {
             viewModel.recipeCategory = intent.getStringExtra(RECIPE_CATEGORY_TAG)
             displayPhotoThumbnailAsAddPhoto()
@@ -125,9 +121,7 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener, Confir
 
     private fun displayRecipe(recipe: Recipe) {
         recipe_name.setText(recipe.name)
-        if (recipe.ingredients.size > 0) {
-            viewModel.focusedItemPosition = RecyclerView.NO_POSITION
-            viewModel.ingredients = recipe.ingredients
+        if (viewModel.displayIngredientList) {
             showIngredientList()
         }
         recipe_description.setText(recipe.description)
