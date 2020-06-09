@@ -100,9 +100,11 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener, Confir
             viewModel.ingredients.add("")
         }
         val ingredientAdapter = IngredientAdapter(viewModel.ingredients, this, this, viewModel.focusedItemPosition)
-        ingredient_list.adapter = ingredientAdapter
-        ingredient_list.layoutManager = LinearLayoutManager(this)
-        ingredient_list.isNestedScrollingEnabled = false
+        ingredient_list.apply {
+            adapter = ingredientAdapter
+            layoutManager = LinearLayoutManager(this@CreateRecipeActivity)
+            isNestedScrollingEnabled = false
+        }
         add_ingredient_btn.setOnClickListener {
             viewModel.ingredients.add("")
             viewModel.focusedItemPosition = viewModel.ingredients.size - 1
