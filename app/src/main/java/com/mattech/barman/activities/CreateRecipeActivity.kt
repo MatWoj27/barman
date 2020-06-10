@@ -50,6 +50,8 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener, Confir
                 showIngredientList()
             }
         }
+        recipe_name.addTextChangedListener(viewModel.recipeNameWatcher)
+        recipe_description.addTextChangedListener(viewModel.recipeDescriptionWatcher)
         add_ingredient_list_btn.setOnClickListener { showIngredientList() }
         save_btn.setOnClickListener { onSaveClick() }
         cancel_btn.setOnClickListener { onCancelClick() }

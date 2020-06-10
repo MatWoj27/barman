@@ -1,6 +1,8 @@
 package com.mattech.barman.view_models
 
 import android.app.Application
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.Transformations
 import androidx.recyclerview.widget.RecyclerView
@@ -8,11 +10,19 @@ import com.mattech.barman.AppRepository
 import com.mattech.barman.models.Recipe
 import java.io.File
 
+abstract class TextChangedWatcher : TextWatcher {
+    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+    override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+}
+
 class CreateRecipeViewModel(application: Application) : AndroidViewModel(application) {
     private val repository = AppRepository(application)
 
     var isEdit = false
     var recipeId: Int = 0
+    var recipeName = ""
+    var recipeDescription = ""
     var recipeCategory: String = Recipe.Category.LONG_DRINK.categoryName
     var photoPath = ""
     var ingredients = arrayListOf("")
@@ -20,7 +30,21 @@ class CreateRecipeViewModel(application: Application) : AndroidViewModel(applica
     var displayIngredientList = false
     var removePhoto = true
 
+    val recipeNameWatcher = object : TextChangedWatcher() {
+        override fun afterTextChanged(text: Editable?) {
+            recipeName = text.toString()
+        }
+    }
+
+    val recipeDescriptionWatcher = object : TextChangedWatcher() {
+        override fun afterTextChanged(text: Editable?) {
+            recipeDescription = text.toString()
+        }
+    }
+
     fun getRecipe() = Transformations.map(repository.getRecipe(recipeId)) { recipe ->
+        recipeName = recipe.name
+        recipeDescription = recipe.description
         recipeCategory = recipe.category
         photoPath = recipe.photoPath
         if (recipe.ingredients.size > 0) {
@@ -30,7 +54,6 @@ class CreateRecipeViewModel(application: Application) : AndroidViewModel(applica
         }
         recipe
     }
-
 
     fun addRecipe(recipe: Recipe) {
         removePhoto = false
