@@ -151,7 +151,7 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener, Confir
             finish()
 //            TODO: display discard dialog if any changes were made to the original recipe
         } else {
-            if (isEmptyDraft()) {
+            if (viewModel.isEmptyDraft()) {
                 finish()
             } else {
                 ConfirmationDialogFragment.newInstance(getString(R.string.cancel_message)).apply {
@@ -159,13 +159,6 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener, Confir
                 }
             }
         }
-    }
-
-    private fun isEmptyDraft(): Boolean {
-        val name = recipe_name.text.trim()
-        val description = recipe_description.text.trim()
-        val ingredientCount = viewModel.getNonBlankIngredientList().size
-        return name.isEmpty() && description.isEmpty() && ingredientCount == 0 && viewModel.photoPath.isEmpty()
     }
 
     private fun takePhoto() {

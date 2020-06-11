@@ -8,6 +8,7 @@ import androidx.lifecycle.Transformations
 import androidx.recyclerview.widget.RecyclerView
 import com.mattech.barman.AppRepository
 import com.mattech.barman.models.Recipe
+import kotlinx.android.synthetic.main.activity_create_recipe.*
 import java.io.File
 
 abstract class TextChangedWatcher : TextWatcher {
@@ -67,6 +68,13 @@ class CreateRecipeViewModel(application: Application) : AndroidViewModel(applica
         if (!isEdit && photoPath.isNotEmpty() && removePhoto) {
             deletePhotoFile()
         }
+    }
+
+    fun isEmptyDraft(): Boolean {
+        val name = recipeName.trim()
+        val description = recipeDescription.trim()
+        val ingredientCount = getNonBlankIngredientList().size
+        return name.isEmpty() && description.isEmpty() && ingredientCount == 0 && photoPath.isEmpty()
     }
 
     fun getNonBlankIngredientList() = ingredients.filterNot { it.isBlank() } as ArrayList<String>
