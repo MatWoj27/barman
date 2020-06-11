@@ -8,7 +8,6 @@ import androidx.lifecycle.Transformations
 import androidx.recyclerview.widget.RecyclerView
 import com.mattech.barman.AppRepository
 import com.mattech.barman.models.Recipe
-import kotlinx.android.synthetic.main.activity_create_recipe.*
 import java.io.File
 
 abstract class TextChangedWatcher : TextWatcher {
@@ -56,12 +55,22 @@ class CreateRecipeViewModel(application: Application) : AndroidViewModel(applica
         recipe
     }
 
-    fun addRecipe(recipe: Recipe) {
+    fun saveRecipe() {
+        val recipe = createRecipeFromUserInput()
+        if (isEdit) {
+            // TODO: should be updated only if any change was made
+            updateRecipe(recipe)
+        } else {
+            addRecipe(recipe)
+        }
+    }
+
+    private fun addRecipe(recipe: Recipe) {
         removePhoto = false
         repository.insertRecipe(recipe)
     }
 
-    fun updateRecipe(recipe: Recipe) = repository.updateRecipe(recipe)
+    private fun updateRecipe(recipe: Recipe) = repository.updateRecipe(recipe)
 
     override fun onCleared() {
         super.onCleared()
@@ -70,6 +79,13 @@ class CreateRecipeViewModel(application: Application) : AndroidViewModel(applica
         }
     }
 
+    private fun createRecipeFromUserInput() = Recipe(recipeId,
+            recipeCategory,
+            recipeName,
+            recipeDescription,
+            photoPath,
+            getNonBlankIngredientList())
+
     fun isEmptyDraft(): Boolean {
         val name = recipeName.trim()
         val description = recipeDescription.trim()
@@ -77,7 +93,7 @@ class CreateRecipeViewModel(application: Application) : AndroidViewModel(applica
         return name.isEmpty() && description.isEmpty() && ingredientCount == 0 && photoPath.isEmpty()
     }
 
-    fun getNonBlankIngredientList() = ingredients.filterNot { it.isBlank() } as ArrayList<String>
+    private fun getNonBlankIngredientList() = ingredients.filterNot { it.isBlank() } as ArrayList<String>
 
     fun deletePhotoFile() {
         val photoFile = File(photoPath)

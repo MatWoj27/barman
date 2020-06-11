@@ -133,13 +133,7 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener, Confir
 
     private fun onSaveClick() {
         if (recipe_name.text.isNotBlank()) {
-            val recipe = createRecipeFromUserInput()
-            if (viewModel.isEdit) {
-                // TODO: should be updated only if any change was made
-                viewModel.updateRecipe(recipe)
-            } else {
-                viewModel.addRecipe(recipe)
-            }
+            viewModel.saveRecipe()
             finish()
         } else {
             Toast.makeText(this, R.string.define_name_message, Toast.LENGTH_SHORT).show()
@@ -178,13 +172,6 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener, Confir
             Toast.makeText(this, getString(R.string.no_camera_app_toast), Toast.LENGTH_SHORT).show()
         }
     }
-
-    private fun createRecipeFromUserInput() = Recipe(viewModel.recipeId,
-            viewModel.recipeCategory,
-            recipe_name.text.toString(),
-            recipe_description.text.toString(),
-            viewModel.photoPath,
-            viewModel.getNonBlankIngredientList())
 
     inner class FocusMovedListener(private val adapter: IngredientAdapter) : View.OnFocusChangeListener {
         override fun onFocusChange(p0: View?, hasFocus: Boolean) {
