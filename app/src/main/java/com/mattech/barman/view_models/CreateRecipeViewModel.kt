@@ -19,6 +19,8 @@ abstract class TextChangedWatcher : TextWatcher {
 class CreateRecipeViewModel(application: Application) : AndroidViewModel(application) {
     private val repository = AppRepository(application)
 
+    private var removePhoto = true
+
     var isEdit = false
     var recipeId: Int = 0
     var recipeName = ""
@@ -28,7 +30,6 @@ class CreateRecipeViewModel(application: Application) : AndroidViewModel(applica
     var ingredients = arrayListOf("")
     var focusedItemPosition = 0
     var displayIngredientList = false
-    var removePhoto = true
 
     val recipeNameWatcher = object : TextChangedWatcher() {
         override fun afterTextChanged(text: Editable?) {
