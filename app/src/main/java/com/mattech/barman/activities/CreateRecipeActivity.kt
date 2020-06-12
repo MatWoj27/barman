@@ -68,7 +68,6 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener, Confir
                 displayPhotoThumbnailAsAddPhoto()
             } else {
                 viewModel.deletePhotoFile()
-                viewModel.photoPath = ""
             }
         }
     }

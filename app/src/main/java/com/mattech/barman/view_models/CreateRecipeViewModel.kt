@@ -98,5 +98,6 @@ class CreateRecipeViewModel(application: Application) : AndroidViewModel(applica
     fun deletePhotoFile() {
         val photoFile = File(photoPath)
         photoFile.delete()
+        photoPath = ""
     }
 }
