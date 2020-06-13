@@ -34,13 +34,13 @@ class IngredientAdapter(val ingredients: ArrayList<String>, val context: Context
         init {
             ingredient.setOnKeyListener { view, keyCode, keyEvent -> handleKeyClick(keyEvent, keyCode, position, view.ingredient) }
             ingredient.addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(p0: Editable?) {}
+                override fun afterTextChanged(text: Editable?) {
+                    ingredients[adapterPosition] = text.toString()
+                }
 
                 override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
-                override fun onTextChanged(text: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    ingredients[adapterPosition] = text.toString()
-                }
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             })
             ingredient.setOnFocusChangeListener { _, hasFocus ->
                 if (hasFocus && adapterPosition != RecyclerView.NO_POSITION) {
