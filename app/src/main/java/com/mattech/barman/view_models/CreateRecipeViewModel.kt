@@ -19,6 +19,7 @@ abstract class TextChangedWatcher : TextWatcher {
 class CreateRecipeViewModel(application: Application) : AndroidViewModel(application) {
     private val repository = AppRepository(application)
 
+    private var originalRecipe: Recipe? = null
     private var removePhoto = true
 
     var isEdit = false
@@ -44,16 +45,13 @@ class CreateRecipeViewModel(application: Application) : AndroidViewModel(applica
     }
 
     fun getRecipe() = Transformations.map(repository.getRecipe(recipeId)) { recipe ->
-        recipeName = recipe.name
-        recipeDescription = recipe.description
-        recipeCategory = recipe.category
-        photoPath = recipe.photoPath
-        if (recipe.ingredients.size > 0) {
-            ingredients = recipe.ingredients
-            focusedItemPosition = RecyclerView.NO_POSITION
-            displayIngredientList = true
+        if (originalRecipe == null) {
+            originalRecipe = recipe
+            loadRecipe(recipe)
+            recipe
+        } else {
+            createRecipeFromUserInput()
         }
-        recipe
     }
 
     fun saveRecipe() {
@@ -77,6 +75,18 @@ class CreateRecipeViewModel(application: Application) : AndroidViewModel(applica
         super.onCleared()
         if (!isEdit && photoPath.isNotEmpty() && removePhoto) {
             deletePhotoFile()
+        }
+    }
+
+    private fun loadRecipe(recipe: Recipe) {
+        recipeName = recipe.name
+        recipeDescription = recipe.description
+        recipeCategory = recipe.category
+        photoPath = recipe.photoPath
+        if (recipe.ingredients.size > 0) {
+            ingredients = recipe.ingredients
+            focusedItemPosition = RecyclerView.NO_POSITION
+            displayIngredientList = true
         }
     }
 
