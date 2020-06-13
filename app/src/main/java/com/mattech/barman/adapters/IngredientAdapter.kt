@@ -51,9 +51,7 @@ class IngredientAdapter(val ingredients: ArrayList<String>, val context: Context
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IngredientViewHolder {
-        return IngredientViewHolder(LayoutInflater.from(context).inflate(R.layout.ingredient_edit_item, parent, false))
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = IngredientViewHolder(LayoutInflater.from(context).inflate(R.layout.ingredient_edit_item, parent, false))
 
     override fun onBindViewHolder(viewHolder: IngredientViewHolder, position: Int) {
         viewHolder.ingredient.apply {
