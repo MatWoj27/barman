@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mattech.barman.AppRepository
 import com.mattech.barman.models.Recipe
 import java.io.File
+import kotlin.collections.ArrayList
 
 abstract class TextChangedWatcher : TextWatcher {
     override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -57,8 +58,7 @@ class CreateRecipeViewModel(application: Application) : AndroidViewModel(applica
     fun saveRecipe() {
         val recipe = createRecipeFromUserInput()
         if (isEdit) {
-            // TODO: should be updated only if any change was made
-            updateRecipe(recipe)
+            originalRecipe?.let { if (it != recipe) updateRecipe(recipe) }
         } else {
             addRecipe(recipe)
         }
@@ -84,7 +84,8 @@ class CreateRecipeViewModel(application: Application) : AndroidViewModel(applica
         recipeCategory = recipe.category
         photoPath = recipe.photoPath
         if (recipe.ingredients.size > 0) {
-            ingredients = recipe.ingredients
+            ingredients.clear()
+            ingredients.addAll(recipe.ingredients)
             focusedItemPosition = RecyclerView.NO_POSITION
             displayIngredientList = true
         }
