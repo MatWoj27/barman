@@ -140,17 +140,12 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener, Confir
     }
 
     private fun onCancelClick() {
-        if (viewModel.isEdit) {
-            finish()
-//            TODO: display discard dialog if any changes were made to the original recipe
-        } else {
-            if (viewModel.isEmptyDraft()) {
-                finish()
-            } else {
-                ConfirmationDialogFragment.newInstance(getString(R.string.cancel_message)).apply {
-                    show(supportFragmentManager, null)
-                }
+        if (viewModel.anyChangesApplied()) {
+            ConfirmationDialogFragment.newInstance(getString(R.string.cancel_message)).apply {
+                show(supportFragmentManager, null)
             }
+        } else {
+            finish()
         }
     }
 

@@ -98,7 +98,7 @@ class CreateRecipeViewModel(application: Application) : AndroidViewModel(applica
             photoPath,
             getNonBlankIngredientList())
 
-    fun isEmptyDraft(): Boolean {
+    private fun isEmptyDraft(): Boolean {
         val name = recipeName.trim()
         val description = recipeDescription.trim()
         val ingredientCount = getNonBlankIngredientList().size
@@ -106,6 +106,8 @@ class CreateRecipeViewModel(application: Application) : AndroidViewModel(applica
     }
 
     private fun getNonBlankIngredientList() = ingredients.filterNot { it.isBlank() } as ArrayList<String>
+
+    fun anyChangesApplied() = ((isEdit && originalRecipe != createRecipeFromUserInput()) || (!isEdit && !isEmptyDraft()))
 
     fun deletePhotoFile() {
         val photoFile = File(photoPath)
