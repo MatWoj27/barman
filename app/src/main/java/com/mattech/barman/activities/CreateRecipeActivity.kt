@@ -130,13 +130,11 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener, Confir
         add_photo.setImageBitmap(CircleTransformation().transform(it))
     }
 
-    private fun onSaveClick() {
-        if (recipe_name.text.isNotBlank()) {
-            viewModel.saveRecipe()
-            finish()
-        } else {
-            Toast.makeText(this, R.string.define_name_message, Toast.LENGTH_SHORT).show()
-        }
+    private fun onSaveClick() = if (recipe_name.text.isNotBlank()) {
+        viewModel.saveRecipe()
+        finish()
+    } else {
+        Toast.makeText(this, R.string.define_name_message, Toast.LENGTH_SHORT).show()
     }
 
     private fun onCancelClick() {
