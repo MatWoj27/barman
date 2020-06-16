@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.mattech.barman.models.Recipe
 import com.mattech.barman.adapters.RecipeAdapter
 import com.mattech.barman.R
@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         savedInstanceState?.let { recipeCategory = it.getString(RECIPE_CATEGORY_KEY)!! }
-        viewModel = ViewModelProviders.of(this).get(RecipeViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(RecipeViewModel::class.java)
         setSupportActionBar(toolbar)
         presetRecipeList()
         presetNavigationHeader()

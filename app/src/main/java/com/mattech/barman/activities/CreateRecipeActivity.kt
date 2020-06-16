@@ -9,8 +9,8 @@ import android.view.View
 import android.widget.Toast
 import androidx.core.content.FileProvider
 import androidx.core.widget.ImageViewCompat
-import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mattech.barman.R
@@ -37,7 +37,7 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener, Confir
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_recipe)
-        viewModel = ViewModelProviders.of(this).get(CreateRecipeViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(CreateRecipeViewModel::class.java)
         viewModel.isEdit = intent.getBooleanExtra(IS_EDIT_TAG, false)
         presetToolbar()
         if (viewModel.isEdit) {
