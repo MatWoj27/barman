@@ -14,7 +14,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.mattech.barman.R
 import com.mattech.barman.models.Recipe
 import com.mattech.barman.utils.ImageUtil
-import com.mattech.barman.view_models.RecipeViewModel
+import com.mattech.barman.view_models.ShowRecipeViewModel
 import kotlinx.android.synthetic.main.activity_show_recipe.*
 
 const val RECIPE_ID_TAG = "recipeId"
@@ -31,7 +31,7 @@ class ShowRecipeActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         recipeId = intent.getIntExtra(RECIPE_ID_TAG, -1)
-        val viewModel = ViewModelProviders.of(this).get(RecipeViewModel::class.java)
+        val viewModel = ViewModelProviders.of(this).get(ShowRecipeViewModel::class.java)
         viewModel.getRecipe(recipeId).observe(this, Observer { displayRecipe(it) })
     }
 
