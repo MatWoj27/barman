@@ -56,9 +56,7 @@ class RecipeAdapter(private val recipes: MutableList<Recipe> = mutableListOf(), 
 
     override fun getItemCount() = recipes.size
 
-    override fun onCreateViewHolder(parentViewGroup: ViewGroup, viewType: Int): RecipeViewHolder {
-        return RecipeViewHolder(LayoutInflater.from(context).inflate(R.layout.recipe_item, parentViewGroup, false))
-    }
+    override fun onCreateViewHolder(parentViewGroup: ViewGroup, viewType: Int) = RecipeViewHolder(LayoutInflater.from(context).inflate(R.layout.recipe_item, parentViewGroup, false))
 
     override fun onBindViewHolder(viewHolder: RecipeViewHolder, position: Int) = recipes[position].let {
         viewHolder.recipeName.text = it.name
