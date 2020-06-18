@@ -132,7 +132,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun onAddClick(view: View) {
         view.isEnabled = false
-        val intent = Intent(applicationContext, CreateRecipeActivity::class.java)
+        val intent = Intent(this, CreateRecipeActivity::class.java)
                 .apply {
                     putExtra(IS_EDIT_TAG, false)
                     putExtra(RECIPE_CATEGORY_TAG, recipeCategory)
