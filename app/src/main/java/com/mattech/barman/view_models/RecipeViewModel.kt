@@ -44,8 +44,6 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
         return repository.getRecipes(category)
     }
 
-    fun getRecipe(id: Int) = repository.getRecipe(id)
-
     fun deleteSelectedRecipes() {
         val idSet = HashSet(selectedRecipes)
         repository.deleteRecipesById(idSet)

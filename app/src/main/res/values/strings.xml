@@ -21,6 +21,7 @@
 
     <!-- Create recipe screen -->
     <string name="create_recipe_toolbar_title">Create new recipe!</string>
+    <string name="edit_recipe_toolbar_title">Edit recipe</string>
     <string name="name_hint">Name</string>
     <string name="description_hint">Description</string>
     <string name="add_photo_description">Add photo</string>

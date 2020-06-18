@@ -19,8 +19,10 @@ class ViewAnimator {
                 override fun onAnimationStart(animation: Animation) {}
                 override fun onAnimationRepeat(animation: Animation) {}
                 override fun onAnimationEnd(animation: Animation) {
-                    imageView.setImageBitmap(image)
-                    imageView.startAnimation(inAnimation)
+                    imageView.apply {
+                        setImageBitmap(image)
+                        startAnimation(inAnimation)
+                    }
                 }
             })
 
