@@ -69,17 +69,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun presetRecipeList() {
-        main_list.layoutManager = LinearLayoutManager(this)
-        main_list.setHasFixedSize(true)
-        main_list.addItemDecoration(object : RecyclerView.ItemDecoration() {
-            override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
-                val position = parent.getChildAdapterPosition(view)
-                outRect.top = if (position == 0) 16 else 0
-                outRect.bottom = 16
-            }
-        })
         recipeAdapter = RecipeAdapter(context = this, selectedRecipes = viewModel.selectedRecipes)
-        main_list.adapter = recipeAdapter
+        main_list.apply {
+            layoutManager = LinearLayoutManager(this@MainActivity)
+            setHasFixedSize(true)
+            addItemDecoration(object : RecyclerView.ItemDecoration() {
+                override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+                    val position = parent.getChildAdapterPosition(view)
+                    outRect.top = if (position == 0) 16 else 0
+                    outRect.bottom = 16
+                }
+            })
+            adapter = recipeAdapter
+        }
         viewModel.getRecipes(recipeCategory).observe(this, Observer { recipeAdapter.setRecipes(it) })
         viewModel.showDeleteAction.observe(this, Observer { invalidateOptionsMenu() })
     }
