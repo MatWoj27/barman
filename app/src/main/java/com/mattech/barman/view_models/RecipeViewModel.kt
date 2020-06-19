@@ -10,11 +10,11 @@ import com.mattech.barman.models.Recipe
 class RecipeViewModel(application: Application) : AndroidViewModel(application) {
     private val repository = AppRepository(application)
     private var category: String = ""
-    val selectedRecipes = MutableIdSet()
+    val selectedRecipes = MutableRecipeSet()
     var showDeleteAction = MutableLiveData<Boolean>(false)
 
-    inner class MutableIdSet : HashSet<Int>() {
-        override fun remove(element: Int): Boolean {
+    inner class MutableRecipeSet : HashSet<Recipe>() {
+        override fun remove(element: Recipe): Boolean {
             val result = super.remove(element)
             if (result && size == 0) {
                 showDeleteAction.value = false
@@ -22,7 +22,7 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
             return result
         }
 
-        override fun add(element: Int): Boolean {
+        override fun add(element: Recipe): Boolean {
             val result = super.add(element)
             if (result && size == 1) {
                 showDeleteAction.value = true
@@ -45,8 +45,8 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun deleteSelectedRecipes() {
-        val idSet = HashSet(selectedRecipes)
-        repository.deleteRecipesById(idSet)
+        val recipeSet = HashSet(selectedRecipes)
+        repository.deleteRecipesById(recipeSet)
         selectedRecipes.clear()
     }
 }

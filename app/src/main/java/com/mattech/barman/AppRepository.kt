@@ -7,6 +7,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
 import kotlin.coroutines.CoroutineContext
 
 class AppRepository : CoroutineScope {
@@ -38,11 +39,12 @@ class AppRepository : CoroutineScope {
         }
     }
 
-    fun deleteRecipesById(idSet: Set<Int>) = launch { deleteRecipesByIdBG(idSet) }
+    fun deleteRecipesById(recipes: Set<Recipe>) = launch { deleteRecipesByIdBG(recipes) }
 
-    private suspend fun deleteRecipesByIdBG(idSet: Set<Int>) {
+    private suspend fun deleteRecipesByIdBG(recipes: Set<Recipe>) {
         withContext(Dispatchers.IO) {
-            recipeDAO.deleteRecipesById(idSet)
+            recipes.filter { it.photoPath.isNotEmpty() }.forEach { File(it.photoPath).delete() }
+            recipeDAO.deleteRecipesById(recipes.map { it.id }.toSet())
         }
     }
 }

@@ -17,7 +17,7 @@ import com.mattech.barman.utils.ViewAnimator
 import com.mattech.barman.utils.toBitmap
 import kotlinx.android.synthetic.main.recipe_item.view.*
 
-class RecipeAdapter(private val recipes: MutableList<Recipe> = mutableListOf(), val context: Context, val selectedRecipes: MutableSet<Int>) : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
+class RecipeAdapter(private val recipes: MutableList<Recipe> = mutableListOf(), val context: Context, val selectedRecipes: MutableSet<Recipe>) : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
     var clickEnabled = true
 
     inner class RecipeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -27,15 +27,14 @@ class RecipeAdapter(private val recipes: MutableList<Recipe> = mutableListOf(), 
         init {
             view.setOnClickListener { itemClicked(adapterPosition) }
             view.setOnLongClickListener {
-                val id = recipes[adapterPosition].id
-                val isSelected = selectedRecipes.contains(id)
-                isSelected.let {
-                    if (it) {
-                        selectedRecipes.remove(id)
+                recipes[adapterPosition].let {
+                    val isSelected = selectedRecipes.contains(it)
+                    if (isSelected) {
+                        selectedRecipes.remove(it)
                     } else {
-                        selectedRecipes.add(id)
+                        selectedRecipes.add(it)
                     }
-                    animateCheckedPhotoChange(!it)
+                    animateCheckedPhotoChange(!isSelected)
                 }
                 true
             }
@@ -60,7 +59,7 @@ class RecipeAdapter(private val recipes: MutableList<Recipe> = mutableListOf(), 
 
     override fun onBindViewHolder(viewHolder: RecipeViewHolder, position: Int) = recipes[position].let {
         viewHolder.recipeName.text = it.name
-        if (selectedRecipes.contains(it.id)) {
+        if (selectedRecipes.contains(it)) {
             viewHolder.recipePhoto.setImageDrawable(context.getDrawable(R.drawable.checked_item))
         } else {
             displayPhotoIfExists(viewHolder.recipePhoto, it.photoPath)
