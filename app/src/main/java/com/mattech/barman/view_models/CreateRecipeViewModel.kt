@@ -27,7 +27,7 @@ class CreateRecipeViewModel(application: Application) : AndroidViewModel(applica
     var recipeId: Int = 0
     var recipeName = ""
     var recipeDescription = ""
-    var recipeCategory: String = Recipe.Category.LONG_DRINK.categoryName
+    var recipeCategory = Recipe.Category.LONG_DRINK.categoryName
     var photoPath = ""
     var ingredients = arrayListOf("")
     var focusedItemPosition = 0
