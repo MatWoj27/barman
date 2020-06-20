@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.view.View
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.mattech.barman.models.Recipe
@@ -96,22 +95,18 @@ class MainActivity : AppCompatActivity() {
         drawer.setNavigationItemSelectedListener { menuItem ->
             val result = when (menuItem.itemId) {
                 R.id.long_drinks -> {
-                    Toast.makeText(this@MainActivity, getString(R.string.long_drinks), Toast.LENGTH_SHORT).show()
                     recipeCategory = Recipe.Category.LONG_DRINK.categoryName
                     true
                 }
                 R.id.short_drinks -> {
-                    Toast.makeText(this@MainActivity, getString(R.string.short_drinks), Toast.LENGTH_SHORT).show()
                     recipeCategory = Recipe.Category.SHORT_DRINK.categoryName
                     true
                 }
                 R.id.shots -> {
-                    Toast.makeText(this@MainActivity, getString(R.string.shots), Toast.LENGTH_SHORT).show()
                     recipeCategory = Recipe.Category.SHOT.categoryName
                     true
                 }
                 R.id.snacks -> {
-                    Toast.makeText(this@MainActivity, getString(R.string.snacks), Toast.LENGTH_SHORT).show()
                     recipeCategory = Recipe.Category.SNACK.categoryName
                     true
                 }
