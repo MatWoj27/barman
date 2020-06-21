@@ -25,26 +25,20 @@ class AppRepository : CoroutineScope {
 
     fun insertRecipe(recipe: Recipe) = launch { insertRecipeBG(recipe) }
 
-    private suspend fun insertRecipeBG(recipe: Recipe) {
-        withContext(Dispatchers.IO) {
-            recipeDAO.insertRecipe(recipe)
-        }
+    private suspend fun insertRecipeBG(recipe: Recipe) = withContext(Dispatchers.IO) {
+        recipeDAO.insertRecipe(recipe)
     }
 
     fun updateRecipe(recipe: Recipe) = launch { updateRecipeBG(recipe) }
 
-    private suspend fun updateRecipeBG(recipe: Recipe) {
-        withContext(Dispatchers.IO) {
-            recipeDAO.updateRecipe(recipe)
-        }
+    private suspend fun updateRecipeBG(recipe: Recipe) = withContext(Dispatchers.IO) {
+        recipeDAO.updateRecipe(recipe)
     }
 
     fun deleteRecipesById(recipes: Set<Recipe>) = launch { deleteRecipesByIdBG(recipes) }
 
-    private suspend fun deleteRecipesByIdBG(recipes: Set<Recipe>) {
-        withContext(Dispatchers.IO) {
-            recipes.filter { it.photoPath.isNotEmpty() }.forEach { File(it.photoPath).delete() }
-            recipeDAO.deleteRecipesById(recipes.map { it.id }.toSet())
-        }
+    private suspend fun deleteRecipesByIdBG(recipes: Set<Recipe>) = withContext(Dispatchers.IO) {
+        recipes.filter { it.photoPath.isNotEmpty() }.forEach { File(it.photoPath).delete() }
+        recipeDAO.deleteRecipesById(recipes.map { it.id }.toSet())
     }
 }
