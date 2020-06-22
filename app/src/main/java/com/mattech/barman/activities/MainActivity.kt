@@ -22,16 +22,12 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.drawer_header.view.*
 
 class MainActivity : AppCompatActivity() {
-    private val RECIPE_CATEGORY_KEY = "recipeCategory"
-
     private lateinit var viewModel: RecipeViewModel
     private lateinit var recipeAdapter: RecipeAdapter
-    private var recipeCategory = Recipe.Category.LONG_DRINK.categoryName
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        savedInstanceState?.let { recipeCategory = it.getString(RECIPE_CATEGORY_KEY)!! }
         viewModel = ViewModelProvider(this).get(RecipeViewModel::class.java)
         setSupportActionBar(toolbar)
         presetRecipeList()
@@ -45,11 +41,6 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         add_drink_fab.isEnabled = true
         recipeAdapter.clickEnabled = true
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString(RECIPE_CATEGORY_KEY, recipeCategory)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -81,7 +72,7 @@ class MainActivity : AppCompatActivity() {
             })
             adapter = recipeAdapter
         }
-        viewModel.getRecipes(recipeCategory).observe(this, Observer { recipeAdapter.setRecipes(it) })
+        viewModel.getRecipes().observe(this, Observer { recipeAdapter.setRecipes(it, true) })
         viewModel.showDeleteAction.observe(this, Observer { invalidateOptionsMenu() })
     }
 
@@ -93,30 +84,16 @@ class MainActivity : AppCompatActivity() {
 
     private fun presetNavigationMenu() {
         drawer.setNavigationItemSelectedListener { menuItem ->
-            val result = when (menuItem.itemId) {
-                R.id.long_drinks -> {
-                    recipeCategory = Recipe.Category.LONG_DRINK.categoryName
-                    true
-                }
-                R.id.short_drinks -> {
-                    recipeCategory = Recipe.Category.SHORT_DRINK.categoryName
-                    true
-                }
-                R.id.shots -> {
-                    recipeCategory = Recipe.Category.SHOT.categoryName
-                    true
-                }
-                R.id.snacks -> {
-                    recipeCategory = Recipe.Category.SNACK.categoryName
-                    true
-                }
-                else -> false
+            val recipeCategory = when (menuItem.itemId) {
+                R.id.long_drinks -> Recipe.Category.LONG_DRINK.categoryName
+                R.id.short_drinks -> Recipe.Category.SHORT_DRINK.categoryName
+                R.id.shots -> Recipe.Category.SHOT.categoryName
+                R.id.snacks -> Recipe.Category.SNACK.categoryName
+                else -> null
             }
-            if (result) {
-                viewModel.getRecipes(recipeCategory).observe(this, Observer { recipeAdapter.setRecipes(it, true) })
-            }
+            recipeCategory?.let { viewModel.category = it }
             drawer_layout.closeDrawer(drawer)
-            result
+            recipeCategory != null
         }
     }
 
@@ -132,7 +109,7 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, CreateRecipeActivity::class.java)
                 .apply {
                     putExtra(IS_EDIT_TAG, false)
-                    putExtra(RECIPE_CATEGORY_TAG, recipeCategory)
+                    putExtra(RECIPE_CATEGORY_TAG, viewModel.category)
                 }
         startActivity(intent)
     }

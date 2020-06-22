@@ -2,16 +2,27 @@ package com.mattech.barman.view_models
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import com.mattech.barman.AppRepository
 import com.mattech.barman.models.Recipe
 
 class RecipeViewModel(application: Application) : AndroidViewModel(application) {
     private val repository = AppRepository(application)
-    private var category: String = ""
     val selectedRecipes = MutableRecipeSet()
     var showDeleteAction = MutableLiveData<Boolean>(false)
+    var category = Recipe.Category.LONG_DRINK.categoryName
+        set(value) {
+            if (field != value) {
+                selectedRecipes.clear()
+                field = value
+                recipes?.let {
+                    repository.getRecipes(value).observeForever { recipes?.postValue(it) }
+                }
+            }
+        }
+
+    private var recipes: MutableLiveData<List<Recipe>>? = null
 
     inner class MutableRecipeSet : HashSet<Recipe>() {
         override fun remove(element: Recipe): Boolean {
@@ -36,12 +47,11 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
-    fun getRecipes(category: String): LiveData<List<Recipe>> {
-        if (this.category != category) {
-            selectedRecipes.clear()
-            this.category = category
+    fun getRecipes() = Transformations.switchMap(repository.getRecipes(category)) {
+        if (recipes == null) {
+            recipes = MutableLiveData(it)
         }
-        return repository.getRecipes(category)
+        recipes
     }
 
     fun deleteSelectedRecipes() {
