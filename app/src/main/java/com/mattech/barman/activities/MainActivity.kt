@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity() {
             })
             adapter = recipeAdapter
         }
-        viewModel.getRecipes().observe(this, Observer { recipeAdapter.setRecipes(it, true) })
+        viewModel.getRecipes().observe(this, Observer { recipeAdapter.setRecipes(it) })
         viewModel.showDeleteAction.observe(this, Observer { invalidateOptionsMenu() })
     }
 
