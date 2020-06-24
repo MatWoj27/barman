@@ -18,6 +18,7 @@ import com.mattech.barman.utils.toBitmap
 import kotlinx.android.synthetic.main.recipe_item.view.*
 
 class RecipeAdapter(private val recipes: MutableList<Recipe> = mutableListOf(), val context: Context, val selectedRecipes: MutableSet<Recipe>) : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
+    private var category = ""
     var clickEnabled = true
 
     inner class RecipeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -81,16 +82,18 @@ class RecipeAdapter(private val recipes: MutableList<Recipe> = mutableListOf(), 
                 ?: imageView.setImageDrawable(context.getDrawable(R.drawable.photo_placeholder))
     }
 
-    fun setRecipes(recipes: List<Recipe>) {
-        if (recipes.size < this.recipes.size) {
+    fun setRecipes(recipes: List<Recipe>, category: String) {
+        val isNewDataSet = category != this.category
+        if (!isNewDataSet && recipes.size < this.recipes.size) {
             val removedRecipes = this.recipes.filter { recipe -> !recipes.contains(recipe) }
             removedRecipes.map { recipe -> this.recipes.indexOf(recipe) }.asReversed().forEach { notifyItemRemoved(it) }
             this.recipes.removeAll(removedRecipes)
-        } else if (this.recipes.size > 0 && recipes.size > this.recipes.size) {
+        } else if (!isNewDataSet && recipes.size > this.recipes.size) {
             val addedRecipe = recipes.first { recipe -> !this.recipes.contains(recipe) }
             this.recipes.add(addedRecipe)
             notifyItemInserted(recipes.size - 1)
         } else {
+            this.category = category
             this.recipes.clear()
             this.recipes.addAll(recipes)
             notifyDataSetChanged()

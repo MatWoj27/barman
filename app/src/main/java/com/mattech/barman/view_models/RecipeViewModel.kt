@@ -50,6 +50,8 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
     fun getRecipes() = Transformations.switchMap(repository.getRecipes(category)) {
         if (recipes == null) {
             recipes = MutableLiveData(it)
+        } else {
+            recipes!!.value = it
         }
         recipes
     }
