@@ -77,10 +77,8 @@ class RecipeAdapter(private val recipes: MutableList<Recipe> = mutableListOf(), 
         }
     }
 
-    private fun displayPhotoIfExists(imageView: ImageView, photoPath: String) {
-        ImageUtil.getBitmap(photoPath)?.let { imageView.setImageBitmap(it) }
-                ?: imageView.setImageDrawable(context.getDrawable(R.drawable.photo_placeholder))
-    }
+    private fun displayPhotoIfExists(imageView: ImageView, photoPath: String) = ImageUtil.getBitmap(photoPath)?.let { imageView.setImageBitmap(it) }
+            ?: imageView.setImageDrawable(context.getDrawable(R.drawable.photo_placeholder))
 
     fun setRecipes(recipes: List<Recipe>, category: String) {
         val isNewDataSet = category != this.category
