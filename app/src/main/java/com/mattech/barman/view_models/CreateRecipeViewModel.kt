@@ -32,6 +32,7 @@ class CreateRecipeViewModel(application: Application) : AndroidViewModel(applica
 
     private var originalRecipe: Recipe? = null
     private var removePhoto = true
+    private var tmpPhotoPath = ""
 
     var isEdit = false
     var recipeId: Int = 0
@@ -84,7 +85,7 @@ class CreateRecipeViewModel(application: Application) : AndroidViewModel(applica
     override fun onCleared() {
         super.onCleared()
         if (!isEdit && photoPath.isNotEmpty() && removePhoto) {
-            deletePhotoFile()
+            deletePhotoFile(photoPath)
         }
     }
 
@@ -122,7 +123,7 @@ class CreateRecipeViewModel(application: Application) : AndroidViewModel(applica
         if (intent.resolveActivity(context.packageManager) != null) {
             try {
                 val photo = ImageUtil.createImageFile(context)
-                photoPath = photo.absolutePath
+                tmpPhotoPath = photo.absolutePath
                 val photoUri = FileProvider.getUriForFile(context, "com.mattech.barman.fileprovider", photo)
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
                 return intent
@@ -138,15 +139,15 @@ class CreateRecipeViewModel(application: Application) : AndroidViewModel(applica
 
     fun handlePhotoRequestResult(photoAccepted: Boolean) = if (photoAccepted) {
         ImageUtil.handleSamplingAndRotation(photoPath, Resolution.HIGH)
+        photoPath = tmpPhotoPath
     } else {
-        deletePhotoFile()
+        deletePhotoFile(tmpPhotoPath)
     }
 
     fun anyChangesApplied() = ((isEdit && originalRecipe != createRecipeFromUserInput()) || (!isEdit && !isEmptyDraft()))
 
-    private fun deletePhotoFile() {
-        val photoFile = File(photoPath)
+    private fun deletePhotoFile(path: String) {
+        val photoFile = File(path)
         photoFile.delete()
-        photoPath = ""
     }
 }
