@@ -3,11 +3,8 @@ package com.mattech.barman.activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.MediaStore
-import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.core.content.FileProvider
 import androidx.core.widget.ImageViewCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -20,11 +17,9 @@ import com.mattech.barman.dialogs.ConfirmationDialogFragment
 import com.mattech.barman.models.Recipe
 import com.mattech.barman.utils.CircleTransformation
 import com.mattech.barman.utils.ImageUtil
-import com.mattech.barman.utils.Resolution
 import com.mattech.barman.view_models.CreateRecipeViewModel
 import kotlinx.android.synthetic.main.activity_create_recipe.*
 import kotlinx.android.synthetic.main.ingredients_edit_layout.*
-import java.io.IOException
 
 const val IS_EDIT_TAG = "isEdit"
 const val RECIPE_CATEGORY_TAG = "recipeCategory"
@@ -63,11 +58,10 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener, Confir
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_TAKE_PHOTO) {
-            if (resultCode == RESULT_OK) {
-                ImageUtil.handleSamplingAndRotation(viewModel.photoPath, Resolution.HIGH)
+            val photoAccepted = resultCode == RESULT_OK
+            viewModel.handlePhotoRequestResult(photoAccepted)
+            if (photoAccepted) {
                 displayPhotoThumbnailAsAddPhoto()
-            } else {
-                viewModel.deletePhotoFile()
             }
         }
     }
@@ -147,23 +141,7 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener, Confir
         }
     }
 
-    private fun takePhoto() {
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        if (intent.resolveActivity(packageManager) != null) {
-            try {
-                val photo = ImageUtil.createImageFile(this)
-                viewModel.photoPath = photo.absolutePath
-                val photoUri = FileProvider.getUriForFile(this, "com.mattech.barman.fileprovider", photo)
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
-                startActivityForResult(intent, REQUEST_TAKE_PHOTO)
-            } catch (ex: IOException) {
-                Log.e(javaClass.simpleName, "Failed to create a file for a photo: $ex")
-                Toast.makeText(this, getString(R.string.camera_error_toast), Toast.LENGTH_SHORT).show()
-            }
-        } else {
-            Toast.makeText(this, getString(R.string.no_camera_app_toast), Toast.LENGTH_SHORT).show()
-        }
-    }
+    private fun takePhoto() = viewModel.getPhotoIntent(this)?.let { startActivityForResult(it, REQUEST_TAKE_PHOTO) }
 
     inner class FocusMovedListener(private val adapter: IngredientAdapter) : View.OnFocusChangeListener {
         override fun onFocusChange(p0: View?, hasFocus: Boolean) {

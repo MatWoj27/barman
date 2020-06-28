@@ -1,14 +1,24 @@
 package com.mattech.barman.view_models
 
 import android.app.Application
+import android.content.Context
+import android.content.Intent
+import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
+import android.widget.Toast
+import androidx.core.content.FileProvider
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.Transformations
 import androidx.recyclerview.widget.RecyclerView
 import com.mattech.barman.AppRepository
+import com.mattech.barman.R
 import com.mattech.barman.models.Recipe
+import com.mattech.barman.utils.ImageUtil
+import com.mattech.barman.utils.Resolution
 import java.io.File
+import java.io.IOException
 import kotlin.collections.ArrayList
 
 abstract class TextChangedWatcher : TextWatcher {
@@ -107,9 +117,34 @@ class CreateRecipeViewModel(application: Application) : AndroidViewModel(applica
 
     private fun getNonBlankIngredientList() = ingredients.filterNot { it.isBlank() } as ArrayList<String>
 
+    fun getPhotoIntent(context: Context): Intent? {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        if (intent.resolveActivity(context.packageManager) != null) {
+            try {
+                val photo = ImageUtil.createImageFile(context)
+                photoPath = photo.absolutePath
+                val photoUri = FileProvider.getUriForFile(context, "com.mattech.barman.fileprovider", photo)
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
+                return intent
+            } catch (ex: IOException) {
+                Log.e(javaClass.simpleName, "Failed to create a file for a photo: $ex")
+                Toast.makeText(context, context.getString(R.string.camera_error_toast), Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            Toast.makeText(context, context.getString(R.string.no_camera_app_toast), Toast.LENGTH_SHORT).show()
+        }
+        return null
+    }
+
+    fun handlePhotoRequestResult(photoAccepted: Boolean) = if (photoAccepted) {
+        ImageUtil.handleSamplingAndRotation(photoPath, Resolution.HIGH)
+    } else {
+        deletePhotoFile()
+    }
+
     fun anyChangesApplied() = ((isEdit && originalRecipe != createRecipeFromUserInput()) || (!isEdit && !isEmptyDraft()))
 
-    fun deletePhotoFile() {
+    private fun deletePhotoFile() {
         val photoFile = File(photoPath)
         photoFile.delete()
         photoPath = ""
