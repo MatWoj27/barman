@@ -40,9 +40,15 @@ class CreateRecipeViewModel(application: Application) : AndroidViewModel(applica
     var recipeDescription = ""
     var recipeCategory = Recipe.Category.LONG_DRINK.categoryName
     var photoPath = ""
-    var ingredients = arrayListOf("")
+    var ingredients: ArrayList<String> = arrayListOf()
     var focusedItemPosition = 0
     var displayIngredientList = false
+        set(value) {
+            field = value
+            if (value && ingredients.size == 0) {
+                ingredients.add("")
+            }
+        }
 
     val recipeNameWatcher = object : TextChangedWatcher() {
         override fun afterTextChanged(text: Editable?) {
@@ -95,7 +101,6 @@ class CreateRecipeViewModel(application: Application) : AndroidViewModel(applica
         recipeCategory = recipe.category
         photoPath = recipe.photoPath
         if (recipe.ingredients.size > 0) {
-            ingredients.clear()
             ingredients.addAll(recipe.ingredients)
             focusedItemPosition = RecyclerView.NO_POSITION
             displayIngredientList = true

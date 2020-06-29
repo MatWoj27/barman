@@ -91,9 +91,6 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener, Confir
         viewModel.displayIngredientList = true
         add_ingredient_list_btn.visibility = View.GONE
         ingredient_list_container.visibility = View.VISIBLE
-        if (viewModel.ingredients.size == 0) {
-            viewModel.ingredients.add("")
-        }
         val ingredientAdapter = IngredientAdapter(viewModel.ingredients, this, this, viewModel.focusedItemPosition)
         ingredient_list.apply {
             adapter = ingredientAdapter
