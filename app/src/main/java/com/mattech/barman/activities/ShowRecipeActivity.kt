@@ -73,11 +73,11 @@ class ShowRecipeActivity : AppCompatActivity() {
         }
     }
 
-    private fun displayRecipe(recipe: Recipe) {
-        recipe_name.text = recipe.name
-        recipe_description.text = recipe.description
-        displayIngredientsIfDefined(recipe.ingredients)
-        displayPhotoIfExists(recipe.photoPath)
+    private fun displayRecipe(recipe: Recipe) = with(recipe) {
+        recipe_name.text = name
+        recipe_description.text = description
+        displayIngredientsIfDefined(ingredients)
+        displayPhotoIfExists(photoPath)
     }
 
     private fun displayPhotoIfExists(photoPath: String) =
