@@ -28,8 +28,10 @@ class ShowRecipeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_show_recipe)
         setSupportActionBar(toolbar)
         makeStatusBarTransparent()
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            setDisplayShowTitleEnabled(false)
+        }
         recipeId = intent.getIntExtra(RECIPE_ID_TAG, -1)
         val viewModel = ViewModelProvider(this).get(ShowRecipeViewModel::class.java)
         viewModel.getRecipe(recipeId).observe(this, Observer { displayRecipe(it) })
