@@ -63,13 +63,7 @@ class MainActivity : AppCompatActivity() {
         main_list.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
             setHasFixedSize(true)
-            addItemDecoration(object : RecyclerView.ItemDecoration() {
-                override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
-                    val position = parent.getChildAdapterPosition(view)
-                    outRect.top = if (position == 0) 16 else 0
-                    outRect.bottom = 16
-                }
-            })
+            addItemDecoration(MainListDecorator())
             adapter = recipeAdapter
         }
         viewModel.getRecipes().observe(this, Observer { recipeAdapter.setRecipes(it, viewModel.category) })
@@ -112,5 +106,13 @@ class MainActivity : AppCompatActivity() {
                     putExtra(RECIPE_CATEGORY_TAG, viewModel.category)
                 }
         startActivity(intent)
+    }
+
+    private class MainListDecorator : RecyclerView.ItemDecoration() {
+        override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+            val position = parent.getChildAdapterPosition(view)
+            outRect.top = if (position == 0) 16 else 0
+            outRect.bottom = 16
+        }
     }
 }
