@@ -140,7 +140,7 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener, Confir
 
     private fun takePhoto() = viewModel.getPhotoIntent(this)?.let { startActivityForResult(it, REQUEST_TAKE_PHOTO) }
 
-    inner class FocusMovedListener(private val adapter: IngredientAdapter) : View.OnFocusChangeListener {
+    private inner class FocusMovedListener(private val adapter: IngredientAdapter) : View.OnFocusChangeListener {
         override fun onFocusChange(p0: View?, hasFocus: Boolean) {
             if (hasFocus) {
                 viewModel.focusedItemPosition = RecyclerView.NO_POSITION
