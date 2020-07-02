@@ -95,13 +95,13 @@ class CreateRecipeViewModel(application: Application) : AndroidViewModel(applica
         }
     }
 
-    private fun loadRecipe(recipe: Recipe) {
-        recipeName = recipe.name
-        recipeDescription = recipe.description
-        recipeCategory = recipe.category
-        photoPath = recipe.photoPath
-        if (recipe.ingredients.size > 0) {
-            ingredients.addAll(recipe.ingredients)
+    private fun loadRecipe(recipe: Recipe) = with(recipe) {
+        recipeName = name
+        recipeDescription = description
+        recipeCategory = category
+        this@CreateRecipeViewModel.photoPath = photoPath
+        if (ingredients.size > 0) {
+            this@CreateRecipeViewModel.ingredients.addAll(ingredients)
             focusedItemPosition = RecyclerView.NO_POSITION
             displayIngredientList = true
         }
