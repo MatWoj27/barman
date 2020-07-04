@@ -35,6 +35,12 @@ class CreateRecipeViewModel(application: Application) : AndroidViewModel(applica
     private var tmpPhotoPath = ""
 
     var isEdit = false
+        set(value) {
+            if (value && !field) {
+                removePhoto = false
+            }
+            field = value
+        }
     var recipeId: Int = 0
     var recipeName = ""
     var recipeDescription = ""
@@ -74,6 +80,7 @@ class CreateRecipeViewModel(application: Application) : AndroidViewModel(applica
 
     fun saveRecipe() {
         val recipe = createRecipeFromUserInput()
+        removePhoto = false
         if (isEdit) {
             originalRecipe?.let { if (it != recipe) updateRecipe(recipe) }
         } else {
@@ -81,16 +88,13 @@ class CreateRecipeViewModel(application: Application) : AndroidViewModel(applica
         }
     }
 
-    private fun addRecipe(recipe: Recipe) {
-        removePhoto = false
-        repository.insertRecipe(recipe)
-    }
+    private fun addRecipe(recipe: Recipe) = repository.insertRecipe(recipe)
 
     private fun updateRecipe(recipe: Recipe) = repository.updateRecipe(recipe)
 
     override fun onCleared() {
         super.onCleared()
-        if (!isEdit && photoPath.isNotEmpty() && removePhoto) {
+        if (photoPath.isNotEmpty() && removePhoto) {
             deletePhotoFile(photoPath)
         }
     }
@@ -145,6 +149,7 @@ class CreateRecipeViewModel(application: Application) : AndroidViewModel(applica
     fun handlePhotoRequestResult(photoAccepted: Boolean) = if (photoAccepted) {
         ImageUtil.handleSamplingAndRotation(photoPath, Resolution.HIGH)
         photoPath = tmpPhotoPath
+        removePhoto = true
     } else {
         deletePhotoFile(tmpPhotoPath)
     }
