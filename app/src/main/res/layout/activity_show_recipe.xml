@@ -38,8 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|left"
             android:layout_marginBottom="10dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
+            android:layout_marginHorizontal="8dp"
             android:text="@string/recipe_name_placeholder"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textColor="@android:color/white" />
@@ -63,8 +62,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimaryLight"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
+                android:paddingHorizontal="8dp"
                 android:text="@string/ingredients"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="@android:color/black" />
@@ -73,8 +71,7 @@
                 android:id="@+id/ingredients_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
+                android:layout_marginHorizontal="8dp"
                 android:listSelector="@android:color/transparent"
                 android:divider="@null" />
 
@@ -84,8 +81,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimaryLight"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
+            android:paddingHorizontal="8dp"
             android:text="@string/preparation"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@android:color/black" />
@@ -95,8 +91,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
+            android:layout_marginHorizontal="8dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@android:color/black" />
 
