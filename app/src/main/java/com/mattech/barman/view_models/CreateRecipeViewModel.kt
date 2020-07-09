@@ -147,6 +147,9 @@ class CreateRecipeViewModel(application: Application) : AndroidViewModel(applica
     }
 
     fun handlePhotoRequestResult(photoAccepted: Boolean) = if (photoAccepted) {
+        if (photoPath.isNotEmpty()) {
+            deletePhotoFile(photoPath)
+        }
         ImageUtil.handleSamplingAndRotation(tmpPhotoPath, Resolution.HIGH)
         photoPath = tmpPhotoPath
         removePhoto = true
