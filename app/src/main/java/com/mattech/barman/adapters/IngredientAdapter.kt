@@ -32,7 +32,7 @@ class IngredientAdapter(val ingredients: ArrayList<String>, val context: Context
         val ingredient: EditText = itemView.ingredient
 
         init {
-            ingredient.setOnKeyListener { view, keyCode, keyEvent -> handleKeyClick(keyEvent, keyCode, position, view.ingredient) }
+            ingredient.setOnKeyListener { view, keyCode, keyEvent -> handleKeyClick(keyEvent, keyCode, adapterPosition, view.ingredient) }
             ingredient.addTextChangedListener(object : TextWatcher {
                 override fun afterTextChanged(text: Editable?) {
                     ingredients[adapterPosition] = text.toString()
