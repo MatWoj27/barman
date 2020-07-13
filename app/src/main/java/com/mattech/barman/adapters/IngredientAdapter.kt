@@ -32,15 +32,34 @@ class IngredientAdapter(val ingredients: ArrayList<String>, val context: Context
         val ingredient: EditText = itemView.ingredient
 
         init {
-            ingredient.setOnKeyListener { view, keyCode, keyEvent -> handleKeyClick(keyEvent, keyCode, adapterPosition, view.ingredient) }
+            ingredient.setOnKeyListener { view, keyCode, keyEvent ->
+                if (keyEvent.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_DEL) {
+                    backspaceClicked(adapterPosition, view as EditText)
+                } else {
+                    false
+                }
+            }
             ingredient.addTextChangedListener(object : TextWatcher {
+                var enterClicked = false
+
                 override fun afterTextChanged(text: Editable?) {
-                    ingredients[adapterPosition] = text.toString()
+                    if (enterClicked) {
+                        enterClicked(adapterPosition)
+                        enterClicked = false
+                    } else {
+                        ingredients[adapterPosition] = text.toString()
+                    }
                 }
 
                 override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
-                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+                override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
+                    text?.let {
+                        if (it.length > before && it[start] == '\n') {
+                            enterClicked = true
+                        }
+                    }
+                }
             })
             ingredient.setOnFocusChangeListener { _, hasFocus ->
                 if (hasFocus && adapterPosition != RecyclerView.NO_POSITION) {
@@ -66,21 +85,12 @@ class IngredientAdapter(val ingredients: ArrayList<String>, val context: Context
 
     override fun getItemCount() = ingredients.size
 
-    private fun handleKeyClick(keyEvent: KeyEvent, keyCode: Int, position: Int, view: EditText) = if (keyEvent.action == KeyEvent.ACTION_DOWN) {
-        when (keyCode) {
-            KeyEvent.KEYCODE_ENTER -> enterClicked(position)
-            KeyEvent.KEYCODE_DEL -> backspaceClicked(position, view)
-            else -> false
-        }
-    } else {
-        false
-    }
-
-    private fun enterClicked(position: Int): Boolean {
+    private fun enterClicked(position: Int) {
+        ingredients[position] = ingredients[position].replace(Regex("\\n"), "")
         ingredients.add(position + 1, "")
         focusedItemPosition = position + 1
+        notifyItemChanged(position)
         notifyItemInserted(position + 1)
-        return true
     }
 
     private fun backspaceClicked(position: Int, view: EditText) = if (view.text.isEmpty() && position < itemCount) {
