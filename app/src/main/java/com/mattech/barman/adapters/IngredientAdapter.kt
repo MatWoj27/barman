@@ -32,39 +32,41 @@ class IngredientAdapter(val ingredients: ArrayList<String>, val context: Context
         val ingredient: EditText = itemView.ingredient
 
         init {
-            ingredient.setOnKeyListener { view, keyCode, keyEvent ->
-                if (keyEvent.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_DEL) {
-                    backspaceClicked(adapterPosition, view as EditText)
-                } else {
-                    false
-                }
-            }
-            ingredient.addTextChangedListener(object : TextWatcher {
-                var enterClicked = false
-
-                override fun afterTextChanged(text: Editable?) {
-                    if (enterClicked) {
-                        enterClicked(adapterPosition)
-                        enterClicked = false
+            ingredient.apply {
+                setOnKeyListener { view, keyCode, keyEvent ->
+                    if (keyEvent.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_DEL) {
+                        backspaceClicked(adapterPosition, view as EditText)
                     } else {
-                        ingredients[adapterPosition] = text.toString()
+                        false
                     }
                 }
+                addTextChangedListener(object : TextWatcher {
+                    var enterClicked = false
 
-                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-
-                override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
-                    text?.let {
-                        if (it.length > before && it[start] == '\n') {
-                            enterClicked = true
+                    override fun afterTextChanged(text: Editable?) {
+                        if (enterClicked) {
+                            enterClicked(adapterPosition)
+                            enterClicked = false
+                        } else {
+                            ingredients[adapterPosition] = text.toString()
                         }
                     }
-                }
-            })
-            ingredient.setOnFocusChangeListener { _, hasFocus ->
-                if (hasFocus && adapterPosition != RecyclerView.NO_POSITION) {
-                    focusedItemPosition = adapterPosition
-                    listener.focusedItemChanged(adapterPosition)
+
+                    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+                    override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
+                        text?.let {
+                            if (it.length > before && it[start] == '\n') {
+                                enterClicked = true
+                            }
+                        }
+                    }
+                })
+                setOnFocusChangeListener { _, hasFocus ->
+                    if (hasFocus && adapterPosition != RecyclerView.NO_POSITION) {
+                        focusedItemPosition = adapterPosition
+                        listener.focusedItemChanged(adapterPosition)
+                    }
                 }
             }
         }
