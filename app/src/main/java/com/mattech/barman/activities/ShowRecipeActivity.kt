@@ -73,7 +73,7 @@ class ShowRecipeActivity : AppCompatActivity() {
 
     private fun displayRecipe(recipe: Recipe) = with(recipe) {
         recipe_name.text = name
-        recipe_description.text = description
+        displayDescriptionIfDefined(description)
         displayIngredientsIfDefined(ingredients)
         displayPhotoIfExists(photoPath)
     }
@@ -86,5 +86,12 @@ class ShowRecipeActivity : AppCompatActivity() {
             ingredient_list_container.visibility = View.VISIBLE
             ingredients_list.adapter = ArrayAdapter<String>(this, R.layout.ingredient_show_item, ingredients)
         }
+    }
+
+    private fun displayDescriptionIfDefined(description: String) = if (description.isNotBlank()) {
+        recipe_description_container.visibility = View.VISIBLE
+        recipe_description.text = description
+    } else {
+        recipe_description_container.visibility = View.GONE
     }
 }
