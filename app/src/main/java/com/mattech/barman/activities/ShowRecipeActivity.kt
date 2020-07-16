@@ -81,11 +81,11 @@ class ShowRecipeActivity : AppCompatActivity() {
     private fun displayPhotoIfExists(photoPath: String) =
             ImageUtil.getBitmap(photoPath)?.let { recipe_photo.setImageBitmap(it) }
 
-    private fun displayIngredientsIfDefined(ingredients: List<String>) {
-        if (ingredients.isNotEmpty()) {
-            ingredient_list_container.visibility = View.VISIBLE
-            ingredients_list.adapter = ArrayAdapter<String>(this, R.layout.ingredient_show_item, ingredients)
-        }
+    private fun displayIngredientsIfDefined(ingredients: List<String>) = if (ingredients.isNotEmpty()) {
+        ingredient_list_container.visibility = View.VISIBLE
+        ingredients_list.adapter = ArrayAdapter<String>(this, R.layout.ingredient_show_item, ingredients)
+    } else {
+        ingredient_list_container.visibility = View.GONE
     }
 
     private fun displayDescriptionIfDefined(description: String) = if (description.isNotBlank()) {
