@@ -41,23 +41,17 @@ class IngredientAdapter(val ingredients: ArrayList<String>, val context: Context
                     }
                 }
                 addTextChangedListener(object : TextWatcher {
-                    var enterClicked = false
-
-                    override fun afterTextChanged(text: Editable?) {
-                        if (enterClicked) {
-                            enterClicked(adapterPosition)
-                            enterClicked = false
-                        } else {
-                            ingredients[adapterPosition] = text.toString()
-                        }
-                    }
+                    override fun afterTextChanged(text: Editable?) {}
 
                     override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
                     override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
                         text?.let {
                             if (it.length > before && it[start] == '\n') {
-                                enterClicked = true
+                                ingredient.setText(ingredient.text.replace(Regex("\\n"), ""))
+                                enterClicked(adapterPosition)
+                            } else {
+                                ingredients[adapterPosition] = text.toString()
                             }
                         }
                     }
@@ -88,10 +82,8 @@ class IngredientAdapter(val ingredients: ArrayList<String>, val context: Context
     override fun getItemCount() = ingredients.size
 
     private fun enterClicked(position: Int) {
-        ingredients[position] = ingredients[position].replace(Regex("\\n"), "")
         ingredients.add(position + 1, "")
         focusedItemPosition = position + 1
-        notifyItemChanged(position)
         notifyItemInserted(position + 1)
     }
 
