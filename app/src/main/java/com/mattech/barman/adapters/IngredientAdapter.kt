@@ -47,7 +47,7 @@ class IngredientAdapter(val ingredients: ArrayList<String>, val context: Context
 
                     override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
                         text?.let {
-                            if (it.length > before && it[start] == '\n') {
+                            if (count > before && it[start] == '\n') {
                                 ingredient.setText(ingredient.text.replace(Regex("\\n"), ""))
                                 enterClicked(adapterPosition)
                             } else {
