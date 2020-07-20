@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -32,6 +33,7 @@ class ShowRecipeActivity : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
             setDisplayShowTitleEnabled(false)
         }
+        recipe_description.movementMethod = ScrollingMovementMethod()
         recipeId = intent.getIntExtra(RECIPE_ID_TAG, -1)
         val viewModel = ViewModelProvider(this).get(ShowRecipeViewModel::class.java)
         viewModel.getRecipe(recipeId).observe(this, Observer { displayRecipe(it) })
