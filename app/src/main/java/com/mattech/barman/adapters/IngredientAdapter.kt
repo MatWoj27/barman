@@ -48,8 +48,10 @@ class IngredientAdapter(val ingredients: ArrayList<String>, val context: Context
                     override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
                         text?.let {
                             if (count > before && it[start] == '\n') {
-                                ingredient.setText(ingredient.text.replace(Regex("\\n"), ""))
-                                enterClicked(adapterPosition)
+                                val finalText = ingredient.text.substring(0, start)
+                                ingredient.setText(finalText)
+                                val movedText = if (finalText.length != it.length - 1) it.substring(start + 1, it.length) else ""
+                                enterClicked(adapterPosition, movedText)
                             } else {
                                 ingredients[adapterPosition] = text.toString()
                             }
@@ -81,8 +83,8 @@ class IngredientAdapter(val ingredients: ArrayList<String>, val context: Context
 
     override fun getItemCount() = ingredients.size
 
-    private fun enterClicked(position: Int) {
-        ingredients.add(position + 1, "")
+    private fun enterClicked(position: Int, movedText: String) {
+        ingredients.add(position + 1, movedText)
         focusedItemPosition = position + 1
         notifyItemInserted(position + 1)
     }
