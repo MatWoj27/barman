@@ -76,8 +76,9 @@
                         android:id="@+id/ingredients_list"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="8dp"
+                        android:paddingHorizontal="8dp"
                         android:listSelector="@android:color/transparent"
+                        android:scrollbarStyle="outsideOverlay"
                         android:divider="@null" />
 
                 </LinearLayout>
