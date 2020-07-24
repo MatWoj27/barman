@@ -51,19 +51,22 @@ class ShowRecipeActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.action_edit -> {
-            synchronized(this) {
-                if (clickEnabled) {
-                    val intent = Intent(this, CreateRecipeActivity::class.java).apply {
-                        putExtra(IS_EDIT_TAG, true)
-                        putExtra(RECIPE_ID_TAG, recipeId)
-                    }
-                    startActivity(intent)
-                    clickEnabled = false
-                }
-            }
+            onEditActionSelected()
             true
         }
         else -> super.onOptionsItemSelected(item)
+    }
+
+    @Synchronized
+    private fun onEditActionSelected() {
+        if (clickEnabled) {
+            val intent = Intent(this, CreateRecipeActivity::class.java).apply {
+                putExtra(IS_EDIT_TAG, true)
+                putExtra(RECIPE_ID_TAG, recipeId)
+            }
+            startActivity(intent)
+            clickEnabled = false
+        }
     }
 
     private fun makeStatusBarTransparent() = window.apply {
