@@ -1,6 +1,8 @@
 package com.mattech.barman.activities
 
 import android.content.Intent
+import android.content.res.Configuration
+import android.graphics.Bitmap
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -16,6 +18,7 @@ import com.mattech.barman.R
 import com.mattech.barman.models.Recipe
 import com.mattech.barman.utils.ImageUtil
 import com.mattech.barman.view_models.ShowRecipeViewModel
+import jp.wasabeef.blurry.Blurry
 import kotlinx.android.synthetic.main.activity_show_recipe.*
 
 const val RECIPE_ID_TAG = "recipeId"
@@ -83,8 +86,16 @@ class ShowRecipeActivity : AppCompatActivity() {
         displayPhotoIfExists(photoPath)
     }
 
-    private fun displayPhotoIfExists(photoPath: String) =
-            ImageUtil.getBitmap(photoPath)?.let { recipe_photo.setImageBitmap(it) }
+    private fun displayPhotoIfExists(photoPath: String) = ImageUtil.getBitmap(photoPath)?.let {
+        recipe_photo.setImageBitmap(it)
+        displayBlurryBackgroundIfLandscape(it)
+    }
+
+    private fun displayBlurryBackgroundIfLandscape(photo: Bitmap) {
+        if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            Blurry.with(this).from(photo).into(background)
+        }
+    }
 
     private fun displayIngredientsIfDefined(ingredients: List<String>) = if (ingredients.isNotEmpty()) {
         ingredient_list_container.visibility = View.VISIBLE
