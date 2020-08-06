@@ -27,6 +27,8 @@ const val RECIPE_CATEGORY_TAG = "recipeCategory"
 class CreateRecipeActivity : AppCompatActivity(), IngredientListListener, ConfirmationDialogFragment.ConfirmActionListener {
     private val REQUEST_TAKE_PHOTO = 1
 
+    private var cancelClickEnabled = true
+
     private lateinit var viewModel: CreateRecipeViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,6 +77,10 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener, Confir
     override fun onConfirm() = finish()
 
     override fun onReject() {}
+
+    override fun onDialogDismissed() {
+        cancelClickEnabled = true
+    }
 
     private fun presetToolbar() {
         setSupportActionBar(toolbar)
@@ -128,13 +134,17 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener, Confir
         Toast.makeText(this, R.string.define_name_message, Toast.LENGTH_SHORT).show()
     }
 
+    @Synchronized
     private fun onCancelClick() {
-        if (viewModel.anyChangesApplied()) {
-            ConfirmationDialogFragment.newInstance(getString(R.string.cancel_message)).apply {
-                show(supportFragmentManager, null)
+        if (cancelClickEnabled) {
+            if (viewModel.anyChangesApplied()) {
+                ConfirmationDialogFragment.newInstance(getString(R.string.cancel_message)).apply {
+                    show(supportFragmentManager, null)
+                }
+                cancelClickEnabled = false
+            } else {
+                finish()
             }
-        } else {
-            finish()
         }
     }
 
