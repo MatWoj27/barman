@@ -1,6 +1,7 @@
 package com.mattech.barman.dialogs
 
 import android.content.Context
+import android.content.DialogInterface
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
@@ -17,6 +18,7 @@ class ConfirmationDialogFragment : DialogFragment() {
     interface ConfirmActionListener {
         fun onConfirm()
         fun onReject()
+        fun onDialogDismissed()
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?) = AlertDialog.Builder(requireContext())
@@ -28,6 +30,11 @@ class ConfirmationDialogFragment : DialogFragment() {
                 listener?.onReject()
             }
             .create()
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        listener?.onDialogDismissed()
+    }
 
     companion object {
         const val MESSAGE_KEY = "message"
