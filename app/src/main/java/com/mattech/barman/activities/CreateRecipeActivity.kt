@@ -27,6 +27,7 @@ const val RECIPE_CATEGORY_TAG = "recipeCategory"
 class CreateRecipeActivity : AppCompatActivity(), IngredientListListener, ConfirmationDialogFragment.ConfirmActionListener {
     private val REQUEST_TAKE_PHOTO = 1
 
+    private var saveClickEnabled = true
     private var cancelClickEnabled = true
 
     private lateinit var viewModel: CreateRecipeViewModel
@@ -127,11 +128,18 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener, Confir
         add_photo.setImageBitmap(CircleTransformation().transform(it))
     }
 
-    private fun onSaveClick() = if (recipe_name.text.isNotBlank()) {
-        viewModel.saveRecipe()
-        finish()
-    } else {
-        Toast.makeText(this, R.string.define_name_message, Toast.LENGTH_SHORT).show()
+    @Synchronized
+    private fun onSaveClick() {
+        if (saveClickEnabled) {
+            saveClickEnabled = if (recipe_name.text.isNotBlank()) {
+                viewModel.saveRecipe()
+                finish()
+                false
+            } else {
+                Toast.makeText(this, R.string.define_name_message, Toast.LENGTH_SHORT).show()
+                true
+            }
+        }
     }
 
     @Synchronized
