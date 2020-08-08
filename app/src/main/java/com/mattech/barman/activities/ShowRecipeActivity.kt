@@ -60,7 +60,6 @@ class ShowRecipeActivity : AppCompatActivity() {
         else -> super.onOptionsItemSelected(item)
     }
 
-    @Synchronized
     private fun onEditActionSelected() {
         if (clickEnabled) {
             val intent = Intent(this, CreateRecipeActivity::class.java).apply {
