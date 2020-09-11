@@ -12,9 +12,11 @@ import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
 import android.widget.ArrayAdapter
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.mattech.barman.R
+import com.mattech.barman.databinding.ActivityShowRecipeBinding
 import com.mattech.barman.models.Recipe
 import com.mattech.barman.utils.ImageUtil
 import com.mattech.barman.view_models.ShowRecipeViewModel
@@ -26,10 +28,11 @@ const val RECIPE_ID_TAG = "recipeId"
 class ShowRecipeActivity : AppCompatActivity() {
     private var recipeId: Int = -1
     private var clickEnabled = true
+    private lateinit var binding: ActivityShowRecipeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_show_recipe)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_show_recipe)
         setSupportActionBar(toolbar)
         makeStatusBarTransparent()
         supportActionBar?.apply {
@@ -79,9 +82,10 @@ class ShowRecipeActivity : AppCompatActivity() {
     }
 
     private fun displayRecipe(recipe: Recipe) = with(recipe) {
-        recipe_name.text = name
-        displayDescriptionIfDefined(description)
-        displayIngredientsIfDefined(ingredients)
+        binding.recipe = recipe
+        if (ingredients.isNotEmpty()) {
+            ingredients_list.adapter = ArrayAdapter<String>(this@ShowRecipeActivity, R.layout.ingredient_show_item, ingredients)
+        }
         displayPhotoIfExists(photoPath)
     }
 
@@ -94,19 +98,5 @@ class ShowRecipeActivity : AppCompatActivity() {
         if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             Blurry.with(this).from(photo).into(background)
         }
-    }
-
-    private fun displayIngredientsIfDefined(ingredients: List<String>) = if (ingredients.isNotEmpty()) {
-        ingredient_list_container.visibility = View.VISIBLE
-        ingredients_list.adapter = ArrayAdapter<String>(this, R.layout.ingredient_show_item, ingredients)
-    } else {
-        ingredient_list_container.visibility = View.GONE
-    }
-
-    private fun displayDescriptionIfDefined(description: String) = if (description.isNotBlank()) {
-        recipe_description_container.visibility = View.VISIBLE
-        recipe_description.text = description
-    } else {
-        recipe_description_container.visibility = View.GONE
     }
 }
