@@ -1,44 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginHorizontal="8dp"
-    app:cardBackgroundColor="@android:color/white"
-    app:cardCornerRadius="8dp">
-
-    <LinearLayout
+<layout>
+    <data>
+        <variable
+            name="recipe"
+            type="com.mattech.barman.models.Recipe" />
+    </data>
+    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:layout_marginHorizontal="8dp"
+        app:cardBackgroundColor="@android:color/white"
+        app:cardCornerRadius="8dp">
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            app:cardCornerRadius="8dp"
-            android:layout_margin="2dp">
-
-            <ImageView
-                android:id="@+id/recipe_photo"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:contentDescription="@string/recipe_photo_description"
-                android:scaleType="fitXY"
-                android:src="@drawable/photo_placeholder" />
-
-        </androidx.cardview.widget.CardView>
-
-        <TextView
-            android:id="@+id/recipe_name"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:text="@string/recipe_name_placeholder"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-    </LinearLayout>
+            <androidx.cardview.widget.CardView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                app:cardCornerRadius="8dp"
+                android:layout_margin="2dp">
 
-</androidx.cardview.widget.CardView>
+                <ImageView
+                    android:id="@+id/recipe_photo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/recipe_photo_description"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/photo_placeholder" />
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@{recipe.name}"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>

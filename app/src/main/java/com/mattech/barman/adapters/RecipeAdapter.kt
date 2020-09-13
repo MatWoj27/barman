@@ -4,13 +4,12 @@ import android.content.Context
 import android.content.Intent
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
 import com.mattech.barman.R
 import com.mattech.barman.activities.RECIPE_ID_TAG
 import com.mattech.barman.activities.ShowRecipeActivity
+import com.mattech.barman.databinding.RecipeItemBinding
 import com.mattech.barman.models.Recipe
 import com.mattech.barman.utils.ImageUtil
 import com.mattech.barman.utils.ViewAnimator
@@ -21,11 +20,11 @@ class RecipeAdapter(private val recipes: MutableList<Recipe> = mutableListOf(), 
     private var category = ""
     var clickEnabled = true
 
-    inner class RecipeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val recipeName: TextView = view.recipe_name
-        val recipePhoto: ImageView = view.recipe_photo
+    inner class RecipeViewHolder(private val binding: RecipeItemBinding) : RecyclerView.ViewHolder(binding.root) {
+        val recipePhoto: ImageView = binding.root.recipe_photo
 
         init {
+            val view = binding.root
             view.setOnClickListener { itemClicked(adapterPosition) }
             view.setOnLongClickListener {
                 recipes[adapterPosition].let {
@@ -39,6 +38,11 @@ class RecipeAdapter(private val recipes: MutableList<Recipe> = mutableListOf(), 
                 }
                 true
             }
+        }
+
+        fun bind(recipe: Recipe) {
+            binding.recipe = recipe
+            binding.executePendingBindings()
         }
 
         private fun animateCheckedPhotoChange(select: Boolean) {
@@ -56,10 +60,10 @@ class RecipeAdapter(private val recipes: MutableList<Recipe> = mutableListOf(), 
 
     override fun getItemCount() = recipes.size
 
-    override fun onCreateViewHolder(parentViewGroup: ViewGroup, viewType: Int) = RecipeViewHolder(LayoutInflater.from(context).inflate(R.layout.recipe_item, parentViewGroup, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = RecipeViewHolder(RecipeItemBinding.inflate(LayoutInflater.from(context), parent, false))
 
     override fun onBindViewHolder(viewHolder: RecipeViewHolder, position: Int) = recipes[position].let {
-        viewHolder.recipeName.text = it.name
+        viewHolder.bind(it)
         if (selectedRecipes.contains(it)) {
             viewHolder.recipePhoto.setImageDrawable(context.getDrawable(R.drawable.checked_item))
         } else {
