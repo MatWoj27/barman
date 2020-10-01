@@ -6,16 +6,16 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.method.ScrollingMovementMethod
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
-import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.tabs.TabLayoutMediator
 import com.mattech.barman.R
+import com.mattech.barman.adapters.RecipeContentPageAdapter
 import com.mattech.barman.databinding.ActivityShowRecipeBinding
 import com.mattech.barman.models.Recipe
 import com.mattech.barman.utils.ImageUtil
@@ -39,7 +39,6 @@ class ShowRecipeActivity : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
             setDisplayShowTitleEnabled(false)
         }
-        recipe_description.movementMethod = ScrollingMovementMethod()
         recipeId = intent.getIntExtra(RECIPE_ID_TAG, -1)
         val viewModel = ViewModelProvider(this).get(ShowRecipeViewModel::class.java)
         viewModel.getRecipe(recipeId).observe(this, Observer { displayRecipe(it) })
@@ -83,10 +82,15 @@ class ShowRecipeActivity : AppCompatActivity() {
 
     private fun displayRecipe(recipe: Recipe) = with(recipe) {
         binding.recipe = recipe
-        if (ingredients.isNotEmpty()) {
-            ingredients_list.adapter = ArrayAdapter<String>(this@ShowRecipeActivity, R.layout.ingredient_show_item, ingredients)
-        }
+        setUpRecipePager(recipe)
         displayPhotoIfExists(photoPath)
+    }
+
+    private fun setUpRecipePager(recipe: Recipe) {
+        pager.adapter = RecipeContentPageAdapter(this, recipe)
+        TabLayoutMediator(tab_layout, pager) { tab, position ->
+            tab.text = getString(if (position == 0) R.string.preparation else R.string.ingredients)
+        }.attach()
     }
 
     private fun displayPhotoIfExists(photoPath: String) = ImageUtil.getBitmap(photoPath)?.let {

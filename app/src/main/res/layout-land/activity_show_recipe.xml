@@ -73,60 +73,16 @@
                             android:text="@{recipe.name}"
                             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
-                        <LinearLayout
+                        <com.google.android.material.tabs.TabLayout
+                            android:id="@+id/tab_layout"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:visibility="@{recipe.ingredients.empty ? View.GONE : View.VISIBLE}">
+                            android:layout_height="wrap_content"/>
 
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@color/colorPrimaryLight"
-                                android:paddingHorizontal="8dp"
-                                android:text="@string/ingredients"
-                                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                                android:textColor="@android:color/black" />
-
-                            <ListView
-                                android:id="@+id/ingredients_list"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:paddingHorizontal="8dp"
-                                android:listSelector="@android:color/transparent"
-                                android:scrollbarStyle="outsideOverlay"
-                                android:divider="@null" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
+                        <androidx.viewpager2.widget.ViewPager2
+                            android:id="@+id/pager"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:visibility="@{recipe.description.trim().isEmpty() ? View.GONE : View.VISIBLE}">
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@color/colorPrimaryLight"
-                                android:paddingHorizontal="8dp"
-                                android:text="@string/preparation"
-                                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                                android:textColor="@android:color/black"/>
-
-                            <TextView
-                                android:id="@+id/recipe_description"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:paddingHorizontal="8dp"
-                                android:layout_marginTop="2dp"
-                                android:scrollbars="vertical"
-                                android:scrollbarStyle="outsideOverlay"
-                                android:text="@{recipe.description}"
-                                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                                android:textColor="@android:color/black" />
-
-                        </LinearLayout>
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
 
                     </LinearLayout>
 
