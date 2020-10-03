@@ -44,4 +44,5 @@
     <string name="recipe_name_placeholder">Recipe name</string>
     <string name="recipe_photo_description">Photo of the recipe</string>
     <string name="edit_action">Edit</string>
+    <string name="add_preparation">Add a description</string>
 </resources>

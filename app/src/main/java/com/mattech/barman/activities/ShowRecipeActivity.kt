@@ -17,6 +17,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.mattech.barman.R
 import com.mattech.barman.adapters.RecipeContentPageAdapter
 import com.mattech.barman.databinding.ActivityShowRecipeBinding
+import com.mattech.barman.fragments.DescriptionActionListener
 import com.mattech.barman.models.Recipe
 import com.mattech.barman.utils.ImageUtil
 import com.mattech.barman.view_models.ShowRecipeViewModel
@@ -25,7 +26,7 @@ import kotlinx.android.synthetic.main.activity_show_recipe.*
 
 const val RECIPE_ID_TAG = "recipeId"
 
-class ShowRecipeActivity : AppCompatActivity() {
+class ShowRecipeActivity : AppCompatActivity(), DescriptionActionListener {
     private var recipeId: Int = -1
     private var clickEnabled = true
     private lateinit var binding: ActivityShowRecipeBinding
@@ -60,6 +61,11 @@ class ShowRecipeActivity : AppCompatActivity() {
             true
         }
         else -> super.onOptionsItemSelected(item)
+    }
+
+    @Synchronized
+    override fun addDescription() {
+        onEditActionSelected()
     }
 
     private fun onEditActionSelected() {
