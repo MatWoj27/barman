@@ -22,6 +22,7 @@ import kotlinx.android.synthetic.main.activity_create_recipe.*
 import kotlinx.android.synthetic.main.ingredients_edit_layout.*
 
 const val IS_EDIT_TAG = "isEdit"
+const val FOCUS_ELEMENT_TAG = "focusElement"
 const val RECIPE_CATEGORY_TAG = "recipeCategory"
 
 class CreateRecipeActivity : AppCompatActivity(), IngredientListListener, ConfirmationDialogFragment.ConfirmActionListener {
@@ -29,8 +30,15 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener, Confir
 
     private var saveClickEnabled = true
     private var cancelClickEnabled = true
+    private var focusElement = 0
 
     private lateinit var viewModel: CreateRecipeViewModel
+
+    companion object {
+        const val FOCUS_NAME = 1
+        const val FOCUS_DESCRIPTION = 2
+        const val FOCUS_INGREDIENTS = 3
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +48,7 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener, Confir
         presetToolbar()
         if (viewModel.isEdit) {
             viewModel.recipeId = intent.getIntExtra(RECIPE_ID_TAG, 0)
+            focusElement = intent.getIntExtra(FOCUS_ELEMENT_TAG, FOCUS_NAME)
             viewModel.getRecipe().observe(this, Observer { displayRecipe(it) })
         } else {
             viewModel.recipeCategory = intent.getStringExtra(RECIPE_CATEGORY_TAG)
@@ -116,11 +125,23 @@ class CreateRecipeActivity : AppCompatActivity(), IngredientListListener, Confir
 
     private fun displayRecipe(recipe: Recipe) {
         recipe_name.setText(recipe.name)
-        if (viewModel.displayIngredientList) {
+        if (viewModel.displayIngredientList || focusElement == FOCUS_INGREDIENTS) {
             showIngredientList()
         }
         recipe_description.setText(recipe.description)
         displayPhotoThumbnailAsAddPhoto()
+        focusRelevantElement()
+    }
+
+    private fun focusRelevantElement() {
+        when (focusElement) {
+            FOCUS_NAME -> {
+                recipe_name.requestFocus()
+                recipe_name.setSelection(recipe_name.text.lastIndex + 1)
+            }
+            FOCUS_DESCRIPTION -> recipe_description.requestFocus()
+            FOCUS_INGREDIENTS -> ingredient_list.requestFocus()
+        }
     }
 
     private fun displayPhotoThumbnailAsAddPhoto() = ImageUtil.getBitmap(viewModel.photoPath)?.let {

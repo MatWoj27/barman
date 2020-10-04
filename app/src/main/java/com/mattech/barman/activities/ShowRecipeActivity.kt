@@ -58,7 +58,7 @@ class ShowRecipeActivity : AppCompatActivity(), DescriptionActionListener, Ingre
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.action_edit -> {
-            onEditActionSelected()
+            onEditActionSelected(CreateRecipeActivity.FOCUS_NAME)
             true
         }
         else -> super.onOptionsItemSelected(item)
@@ -66,19 +66,20 @@ class ShowRecipeActivity : AppCompatActivity(), DescriptionActionListener, Ingre
 
     @Synchronized
     override fun addDescription() {
-        onEditActionSelected()
+        onEditActionSelected(CreateRecipeActivity.FOCUS_DESCRIPTION)
     }
 
     @Synchronized
     override fun addIngredients() {
-        onEditActionSelected()
+        onEditActionSelected(CreateRecipeActivity.FOCUS_INGREDIENTS)
     }
 
-    private fun onEditActionSelected() {
+    private fun onEditActionSelected(elementToFocus: Int) {
         if (clickEnabled) {
             val intent = Intent(this, CreateRecipeActivity::class.java).apply {
                 putExtra(IS_EDIT_TAG, true)
                 putExtra(RECIPE_ID_TAG, recipeId)
+                putExtra(FOCUS_ELEMENT_TAG, elementToFocus)
             }
             startActivity(intent)
             clickEnabled = false
